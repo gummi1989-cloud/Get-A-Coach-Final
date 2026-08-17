@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
+import { createDefaultCoachProfile } from '../../utils/coachUtils';
 import { WorkingHoursDay, BlockedTimeSlot, SessionSlot } from '../../types';
 import {
   Calendar as CalendarIcon,
@@ -41,7 +41,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
   } = useApp();
 
   // Find coach profile for current user
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || createDefaultCoachProfile(currentUser);
 
   // Calendar view state: Selected Date (defaults to today or 2026-07-27)
   const [selectedDateStr, setSelectedDateStr] = useState<string>('2026-07-27');

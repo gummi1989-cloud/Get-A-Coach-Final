@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../data/mockData';
+import { createDefaultCoachProfile } from '../utils/coachUtils';
 import {
   X,
   Send,
@@ -48,7 +48,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
   const [offerTime, setOfferTime] = useState<string>('14:00 - 15:00 Uhr');
   const [offerDescription, setOfferDescription] = useState<string>('Individuelles Coaching Paket');
 
-  const targetCoach = coaches.find(c => c.id === targetCoachId) || coaches[0] || MOCK_COACH_PROFILE;
+  const targetCoach = coaches.find(c => c.id === targetCoachId) || coaches[0] || createDefaultCoachProfile();
 
   const conversationMsgs = chatMessages.filter(
     m => m.coachId === targetCoachId || m.userId === currentUser.id

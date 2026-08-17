@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
+import { createDefaultCoachProfile } from '../../utils/coachUtils';
 import {
   CheckCircle2,
   ShieldCheck,
@@ -23,8 +23,8 @@ interface CoachPricingAndFeesTabProps {
 export const CoachPricingAndFeesTab: React.FC<CoachPricingAndFeesTabProps> = ({ onOpenTaxInfo }) => {
   const { coaches, currentUser, isAuthenticated, switchRole } = useApp();
 
-  // Find current user's coach profile, or fallback to first coach
-  const existingCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  // Find current user's coach profile, or fallback to default coach profile
+  const existingCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || createDefaultCoachProfile(currentUser);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-200">

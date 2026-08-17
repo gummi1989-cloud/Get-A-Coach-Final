@@ -4,6 +4,7 @@ import { CoachProfile, SessionSlot } from '../../types';
 import { CoachCard } from './CoachCard';
 import { INITIAL_SPORTS } from '../../data/mockData';
 import { SWISS_TOP_30_CITIES } from '../../data/swissTop30Cities';
+import { coachMatchesSportFilter } from '../../utils/sportMatcher';
 import {
   Trophy,
   Search,
@@ -194,7 +195,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
 
       // 3. Sport Filter Match
       const matchesSport =
-        selectedSport === 'ALL' || coach.sports.includes(selectedSport);
+        selectedSport === 'ALL' || coachMatchesSportFilter(coach.sports, selectedSport);
 
       if (matchesSearch && matchesRegion && matchesSport) {
         coach.sports.forEach(sport => {
@@ -219,8 +220,14 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
         return list && list.length > 0;
       });
     } else {
-      const list = groupedCoachesBySport.get(selectedSport);
-      return list && list.length > 0 ? [selectedSport] : [];
+      const matchingSports = availableSports.filter(sport => {
+        const matches = coachMatchesSportFilter([sport], selectedSport);
+        const list = groupedCoachesBySport.get(sport);
+        return matches && list && list.length > 0;
+      });
+      if (matchingSports.length > 0) return matchingSports;
+      const directList = groupedCoachesBySport.get(selectedSport);
+      return directList && directList.length > 0 ? [selectedSport] : [];
     }
   }, [availableSports, selectedSport, groupedCoachesBySport]);
 
@@ -512,10 +519,10 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
         )}
 
         {/* Quick Sport Pills Selection */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs scrollbar-none pt-1">
+        <div className="flex flex-wrap items-center gap-1.5 text-xs pt-1">
           <button
             onClick={() => setSelectedSport('ALL')}
-            className={`px-3 py-1.5 rounded-xl font-bold transition shrink-0 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl font-bold transition cursor-pointer ${
               selectedSport === 'ALL'
                 ? 'bg-[#1A265A] text-white shadow-xs'
                 : 'bg-[#FEF6ED] text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
@@ -530,7 +537,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
               <button
                 key={sport}
                 onClick={() => setSelectedSport(sport)}
-                className={`px-3 py-1.5 rounded-xl font-bold transition shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
                   selectedSport === sport
                     ? 'bg-[#F1600D] text-white shadow-xs'
                     : 'bg-[#FEF6ED] text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'

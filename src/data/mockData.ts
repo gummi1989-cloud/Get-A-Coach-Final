@@ -1,5 +1,4 @@
 import { CoachProfile, SportCategory, SessionSlot, Booking, User, ChatMessage } from '../types';
-import { generate300CoachesAndSessions } from './mockDataGenerator';
 
 export const INITIAL_SPORTS: SportCategory[] = [
   {
@@ -203,7 +202,7 @@ export const MOCK_COACH_PROFILE: CoachProfile = {
   calendarSettings: MOCK_COACH_USER.calendarSettings
 };
 
-export const INITIAL_COACHES: CoachProfile[] = [MOCK_COACH_PROFILE];
+export const INITIAL_COACHES: CoachProfile[] = [];
 export const INITIAL_SESSIONS: SessionSlot[] = [];
 export const INITIAL_BOOKINGS: Booking[] = [];
 export const INITIAL_MESSAGES: ChatMessage[] = [];

@@ -1,4 +1,18 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { db, auth } from '../lib/firebase';
+import { clearAllDemoDataFromFirestore } from '../utils/cleanFirestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  onSnapshot
+} from 'firebase/firestore';
+import {
+  signOut,
+  onAuthStateChanged
+} from 'firebase/auth';
 import {
   User,
   CoachProfile,
@@ -19,7 +33,6 @@ import {
   MOCK_CLIENT_USER,
   MOCK_COACH_USER,
   MOCK_ADMIN_USER,
-  MOCK_COACH_PROFILE,
   INITIAL_COACHES,
   INITIAL_SESSIONS,
   INITIAL_BOOKINGS,
@@ -189,16 +202,114 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       };
       setCurrentUser(activeCust);
     } else {
-      setCurrentUser(MOCK_COACH_USER);
-      setCoaches(prev => {
-        if (!prev.some(c => c.userId === MOCK_COACH_USER.id || c.id === 'coach_1')) {
-          return [MOCK_COACH_PROFILE, ...prev];
-        }
-        return prev;
-      });
+      const userEmail = emailInput && emailInput.trim() ? emailInput.trim() : 'coach@getacoach.ch';
+      let coachName = 'Angemeldete/r Coach';
+      if (emailInput && emailInput.includes('@')) {
+        const prefix = emailInput.split('@')[0].replace(/[\._\-\+]/g, ' ');
+        coachName = prefix.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+      const existingCoach = coaches.find(c => c.userId === userEmail || c.name.toLowerCase() === coachName.toLowerCase());
+      const coachUserId = existingCoach?.userId || 'user_coach_' + Date.now();
+      const activeCoach: User = {
+        id: coachUserId,
+        name: existingCoach?.name || coachName,
+        email: userEmail,
+        role: 'coach',
+        avatar: existingCoach?.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+        phone: '+41 79 123 45 67',
+        city: existingCoach?.locationName || 'Zürich',
+        canton: existingCoach?.canton || 'ZH',
+        isVerified: existingCoach?.isVerified ?? false,
+        verificationStatus: existingCoach?.isVerified ? 'verifiziert' : 'ausstehend',
+        agb_accepted_at: new Date().toISOString(),
+        agb_version: '1.0',
+        coach_tax_declaration_accepted_at: new Date().toISOString()
+      };
+      setCurrentUser(activeCoach);
     }
     setAuthNotice(null);
   };
+
+  // Permanently wipe any residual demo data from Firestore and establish clean baseline
+  useEffect(() => {
+    clearAllDemoDataFromFirestore().catch((err) => {
+      console.warn('Error during Firestore cleanup:', err);
+    });
+  }, []);
+
+  // Firestore real-time listeners (Clean production baseline)
+  useEffect(() => {
+    const unsubCoaches = onSnapshot(collection(db, 'coaches'), (snapshot) => {
+      if (snapshot.empty) {
+        setCoaches([]);
+      } else {
+        const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as CoachProfile));
+        setCoaches(loaded);
+      }
+    }, (e) => console.warn('Firestore coaches listener fallback:', e));
+
+    const unsubSessions = onSnapshot(collection(db, 'sessions'), (snapshot) => {
+      if (snapshot.empty) {
+        setSessions([]);
+      } else {
+        const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as SessionSlot));
+        setSessions(loaded);
+      }
+    }, (e) => console.warn('Firestore sessions listener fallback:', e));
+
+    const unsubBookings = onSnapshot(collection(db, 'bookings'), (snapshot) => {
+      if (snapshot.empty) {
+        setBookings([]);
+      } else {
+        const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Booking));
+        setBookings(loaded);
+      }
+    }, (e) => console.warn('Firestore bookings listener fallback:', e));
+
+    const unsubChat = onSnapshot(collection(db, 'chatMessages'), (snapshot) => {
+      if (snapshot.empty) {
+        setChatMessages([]);
+      } else {
+        const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as ChatMessage));
+        setChatMessages(loaded);
+      }
+    }, (e) => console.warn('Firestore chat listener fallback:', e));
+
+    const unsubRequests = onSnapshot(collection(db, 'customRequests'), (snapshot) => {
+      if (snapshot.empty) {
+        setCustomRequests([]);
+      } else {
+        const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as CustomRequest));
+        setCustomRequests(loaded);
+      }
+    }, (e) => console.warn('Firestore requests listener fallback:', e));
+
+    return () => {
+      unsubCoaches();
+      unsubSessions();
+      unsubBookings();
+      unsubChat();
+      unsubRequests();
+    };
+  }, []);
+
+  // Firebase Auth State Listener
+  useEffect(() => {
+    const unsubAuth = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setIsAuthenticated(true);
+        try {
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            setCurrentUser(userDoc.data() as User);
+          }
+        } catch (e) {
+          console.error('Error fetching user profile from Firestore:', e);
+        }
+      }
+    });
+    return () => unsubAuth();
+  }, []);
 
   const registerCustomer = (data: { username: string; email: string; phone: string; password?: string }) => {
     const formattedPhone = data.phone.trim().startsWith('+') ? data.phone.trim() : `+41 ${data.phone.trim().replace(/^0/, '')}`;
@@ -217,6 +328,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setCurrentUser(newUser);
     setIsAuthenticated(true);
     setAuthNotice(null);
+
+    // Save user to Firestore asynchronously
+    setDoc(doc(db, 'users', newUser.id), newUser).catch(err => console.error('Error saving user to Firestore:', err));
+
     return { success: true, message: 'Erfolgreich als Kunde registriert!' };
   };
 
@@ -267,6 +382,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setCurrentUser(newUser);
     setIsAuthenticated(true);
     setAuthNotice(null);
+
+    // Save user and coach profile to Firestore
+    setDoc(doc(db, 'users', newUser.id), newUser).catch(err => console.error('Error saving coach user to Firestore:', err));
+    setDoc(doc(db, 'coaches', newCoachProfile.id), newCoachProfile).catch(err => console.error('Error saving coach profile to Firestore:', err));
+
     return { success: true, message: 'Stufe 1 Account-Erstellung erfolgreich!' };
   };
 
@@ -274,6 +394,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setIsAuthenticated(false);
     setCurrentUser(MOCK_CLIENT_USER);
     setAuthNotice(null);
+    signOut(auth).catch(() => {});
   };
 
   const openAuthModalWithNotice = (notice?: string) => {
@@ -383,6 +504,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       ...extra
     };
     setChatMessages(prev => [...prev, newMsg]);
+    setDoc(doc(db, 'chatMessages', newMsg.id), newMsg).catch(e => console.error('Error saving chat message:', e));
   };
 
   // Periodically check and auto-expire pending 2-hour booking requests
@@ -493,6 +615,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     setBookings(prev => [newBooking, ...prev]);
+    setDoc(doc(db, 'bookings', newBooking.id), newBooking).catch(e => console.error('Error saving booking to Firestore:', e));
 
     // Update Session reservation timer
     setSessions(prev =>
@@ -695,6 +818,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     setCustomRequests(prev => [newReq, ...prev]);
+    setDoc(doc(db, 'customRequests', newReq.id), newReq).catch(e => console.error('Error saving custom request to Firestore:', e));
 
     const targetCoach = coaches.find(c => c.id === requestData.coachId);
     const coachUserId = targetCoach?.userId || 'user_coach_1';
@@ -999,12 +1123,22 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     } else if (role === 'admin') {
       setCurrentUser(MOCK_ADMIN_USER);
     } else {
-      setCurrentUser(MOCK_COACH_USER);
-      setCoaches(prev => {
-        if (!prev.some(c => c.userId === MOCK_COACH_USER.id || c.id === 'coach_1')) {
-          return [MOCK_COACH_PROFILE, ...prev];
-        }
-        return prev;
+      const existingCoach = coaches.find(c => c.userId === currentUser.id);
+      const coachUserId = existingCoach?.userId || (currentUser.role === 'coach' ? currentUser.id : 'user_coach_' + Date.now());
+      setCurrentUser({
+        id: coachUserId,
+        name: existingCoach?.name || (currentUser.role === 'coach' ? currentUser.name : 'Coach'),
+        email: currentUser.email || 'coach@getacoach.ch',
+        role: 'coach',
+        phone: currentUser.phone || '+41 79 123 45 67',
+        avatar: existingCoach?.avatar || currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+        city: existingCoach?.locationName || currentUser.city || 'Zürich',
+        canton: existingCoach?.canton || (currentUser.canton as CantonCode) || 'ZH',
+        isVerified: existingCoach?.isVerified || false,
+        verificationStatus: existingCoach?.isVerified ? 'verifiziert' : 'ausstehend',
+        agb_accepted_at: new Date().toISOString(),
+        agb_version: '1.0',
+        coach_tax_declaration_accepted_at: new Date().toISOString()
       });
     }
   };
@@ -1397,6 +1531,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     setSessions(prev => [newSession, ...prev]);
+    setDoc(doc(db, 'sessions', newSession.id), newSession).catch(e => console.error('Error creating session in Firestore:', e));
   };
 
   // Update existing session by Coach
@@ -1406,13 +1541,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         if (s.id === sessionId) {
           const nextMax = updatedFields.maxParticipants ?? s.maxParticipants;
           const nextParticipants = s.currentParticipants;
-          const newStatus = nextParticipants >= nextMax ? 'ausgebucht' : 'verfuegbar';
-          return {
+          const newStatus: 'verfuegbar' | 'storniert' | 'ausgebucht' = nextParticipants >= nextMax ? 'ausgebucht' : 'verfuegbar';
+          const updated = {
             ...s,
             ...updatedFields,
             maxParticipants: nextMax,
             status: newStatus
           };
+          updateDoc(doc(db, 'sessions', sessionId), updatedFields).catch(e => console.error('Error updating session in Firestore:', e));
+          return updated;
         }
         return s;
       })
@@ -1463,6 +1600,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setCoaches(prev =>
       prev.map(c => (c.id === coachId ? { ...c, ...updatedFields } : c))
     );
+    updateDoc(doc(db, 'coaches', coachId), updatedFields).catch(e => console.error('Error updating coach profile in Firestore:', e));
     setNotifications(prev => [
       {
         id: 'notif_prof_' + Date.now(),

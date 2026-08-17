@@ -45,7 +45,6 @@ export const Header: React.FC<HeaderProps> = ({
   const {
     isAuthenticated,
     currentUser,
-    switchRole,
     logout,
     notifications,
     markNotificationRead,
@@ -68,85 +67,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#50A5B1]/20 shadow-xs">
-      
-      {/* Provisorischer Vorschau-Umschalter für Kunden und Coaches */}
-      <div className="bg-[#1A265A] text-white py-1.5 px-3 border-b border-[#50A5B1]/30">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2 font-medium">
-            <span className="bg-[#F1600D] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-2xs">
-              Provisorische Vorschau
-            </span>
-            <span className="hidden sm:inline text-white/90 text-[11px] font-semibold">Bereich wählen:</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 scrollbar-none">
-            <button
-              onClick={() => {
-                switchRole('kunde');
-                setActiveTab('search');
-              }}
-              className={`px-3 py-1 rounded-lg font-extrabold text-[11px] transition flex items-center gap-1.5 cursor-pointer ${
-                isAuthenticated && currentUser.role === 'kunde'
-                  ? 'bg-[#50A5B1] text-white shadow-xs ring-1 ring-white/40'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-              }`}
-              title="Kunden-Bereich aktivieren"
-            >
-              <UserIcon className="w-3.5 h-3.5 text-sky-200" />
-              <span>👤 Kunden-Bereich</span>
-            </button>
-
-            <button
-              onClick={() => {
-                switchRole('coach');
-                setActiveTab('coach_dashboard');
-              }}
-              className={`px-3 py-1 rounded-lg font-extrabold text-[11px] transition flex items-center gap-1.5 cursor-pointer ${
-                isAuthenticated && currentUser.role === 'coach'
-                  ? 'bg-[#F1600D] text-white shadow-xs ring-1 ring-white/40'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-              }`}
-              title="Coach-Bereich aktivieren"
-            >
-              <Zap className="w-3.5 h-3.5 text-orange-200" />
-              <span>⚡ Coach-Bereich</span>
-            </button>
-
-            <button
-              onClick={() => {
-                switchRole('admin');
-                setActiveTab('admin_dashboard');
-              }}
-              className={`px-3 py-1 rounded-lg font-extrabold text-[11px] transition flex items-center gap-1.5 cursor-pointer ${
-                isAuthenticated && currentUser.role === 'admin'
-                  ? 'bg-emerald-600 text-white shadow-xs ring-1 ring-white/40'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-              }`}
-              title="Admin-Bereich aktivieren"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-200" />
-              <span>🛡️ Admin-Bereich</span>
-            </button>
-
-            <button
-              onClick={() => {
-                logout();
-                setActiveTab('search');
-              }}
-              className={`px-3 py-1 rounded-lg font-extrabold text-[11px] transition flex items-center gap-1.5 cursor-pointer ${
-                !isAuthenticated
-                  ? 'bg-slate-700 text-white shadow-xs ring-1 ring-white/40'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
-              }`}
-              title="Unangemeldet als Gast ansehen"
-            >
-              <Search className="w-3.5 h-3.5 text-slate-300" />
-              <span>🌐 Gast (Öffentlich)</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 sm:h-24 lg:h-28 gap-2 sm:gap-4 overflow-hidden py-2">
           

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { CantonCode } from '../../types';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
+import { createDefaultCoachProfile } from '../../utils/coachUtils';
 import { X, Calendar, Clock, Plus, Users, Zap, CheckCircle2, MapPin, Coins, Sparkles, FileText } from 'lucide-react';
 
 interface CreateSessionModalProps {
@@ -11,7 +11,7 @@ interface CreateSessionModalProps {
 
 export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({ isOpen, onClose }) => {
   const { currentUser, coaches, createSession } = useApp();
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || createDefaultCoachProfile(currentUser);
 
   const defaultSport = currentCoach.sports && currentCoach.sports.length > 0 ? currentCoach.sports[0] : 'Padel Tennis';
 

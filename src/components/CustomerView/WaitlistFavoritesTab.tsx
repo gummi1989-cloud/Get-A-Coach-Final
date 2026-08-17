@@ -50,22 +50,11 @@ export const WaitlistFavoritesTab: React.FC<WaitlistFavoritesTabProps> = ({
       <div className="bg-white rounded-3xl p-6 border border-[#50A5B1]/20 shadow-xs space-y-4">
 
         {waitlistedSessions.length === 0 ? (
-          <div className="bg-[#FEF6ED] rounded-2xl p-8 text-center text-[#1A265A]/70 text-xs border border-[#50A5B1]/20 space-y-3">
-            <p>Du bist zurzeit auf keiner Warteliste eingetragen.</p>
-            <div className="p-4 bg-white rounded-xl border border-[#50A5B1]/30 text-[#1A265A] text-left max-w-lg mx-auto shadow-xs">
-              <span className="font-extrabold block mb-1 text-[#F1600D]">💡 Teste das Wartelisten-Feature:</span>
-              <p>
-                In den Demodaten ist die Lektion <strong>"Padel Gruppen-Match (4 Personen)"</strong> bei Svenja Meier am 30.07. ausgebucht mit einer aktiven Warteliste.
-                Klicke unten, um eine Stornierung zu simulieren und den Live-Alarm auszulösen!
-              </p>
-              <button
-                onClick={() => triggerCancellationTestForWaitlist('session_2')}
-                className="mt-3 bg-[#F1600D] hover:bg-[#d85208] text-white font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-xs cursor-pointer flex items-center gap-2"
-              >
-                <Sparkles className="w-4 h-4" />
-                Stornierung simulieren & Wartelisten-Alarm auslösen
-              </button>
-            </div>
+          <div className="bg-[#FEF6ED] rounded-2xl p-8 text-center text-[#1A265A]/70 text-xs border border-[#50A5B1]/20 space-y-2">
+            <p className="font-extrabold text-[#1A265A] text-sm">Du bist zurzeit auf keiner Warteliste eingetragen.</p>
+            <p className="max-w-md mx-auto text-[#1A265A]/70">
+              Sobald du dich bei einer ausgebuchten Lektion auf die Warteliste setzt, erscheint sie hier. Du wirst automatisch benachrichtigt, sobald ein Platz frei wird.
+            </p>
           </div>
         ) : (
           <div className="space-y-3">

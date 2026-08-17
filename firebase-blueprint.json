@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0",
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "User profile records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "avatar": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email", "role"]
+    },
+    "coaches": {
+      "title": "Coaches",
+      "description": "Coach profile records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "avatar": { "type": "string" },
+        "sports": { "type": "array" },
+        "canton": { "type": "string" },
+        "location": { "type": "string" },
+        "bio": { "type": "string" },
+        "hourlyRate": { "type": "number" },
+        "rating": { "type": "number" },
+        "verified": { "type": "boolean" },
+        "idVerified": { "type": "boolean" }
+      },
+      "required": ["id", "name", "email"]
+    },
+    "sessions": {
+      "title": "Sessions",
+      "description": "Training session slots",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "coachId": { "type": "string" },
+        "coachName": { "type": "string" },
+        "sport": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "duration": { "type": "number" },
+        "location": { "type": "string" },
+        "price": { "type": "number" },
+        "maxParticipants": { "type": "number" },
+        "currentParticipants": { "type": "number" },
+        "status": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "coachId", "sport", "date", "price"]
+    },
+    "bookings": {
+      "title": "Bookings",
+      "description": "Session bookings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "coachId": { "type": "string" },
+        "status": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "price": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "sessionId", "customerId", "coachId", "status"]
+    },
+    "customRequests": {
+      "title": "Custom Requests",
+      "description": "Individuelle Anfragen von Kunden an Coaches",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "coachId": { "type": "string" },
+        "status": { "type": "string" },
+        "sport": { "type": "string" }
+      },
+      "required": ["id", "customerId", "coachId"]
+    },
+    "chatMessages": {
+      "title": "Chat Messages",
+      "description": "Nachrichten zwischen Benutzern und Coaches",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "senderId", "receiverId", "text"]
+    }
+  },
+  "firestore": {
+    "collections": {
+      "users": {
+        "entity": "users",
+        "description": "System users collection"
+      },
+      "coaches": {
+        "entity": "coaches",
+        "description": "Public coach profiles"
+      },
+      "sessions": {
+        "entity": "sessions",
+        "description": "Session slots"
+      },
+      "bookings": {
+        "entity": "bookings",
+        "description": "Bookings collection"
+      },
+      "customRequests": {
+        "entity": "customRequests",
+        "description": "Custom request entries"
+      },
+      "chatMessages": {
+        "entity": "chatMessages",
+        "description": "Chat messages"
+      }
+    }
+  }
+}

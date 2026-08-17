@@ -1,11 +1,11 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
+import { createDefaultCoachProfile } from '../../utils/coachUtils';
 import { Star, MessageSquare, CheckCircle2, User, Calendar } from 'lucide-react';
 
 export const BlindRatingsCoachTab: React.FC = () => {
   const { bookings, coaches, currentUser } = useApp();
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || createDefaultCoachProfile(currentUser);
 
   const coachBookings = bookings.filter(b => b.coachId === currentCoach.id);
   const reviewedBookings = coachBookings.filter(b => b.clientRated && b.clientRating);

@@ -32,6 +32,7 @@ import { AdminDashboard } from './components/AdminView/AdminDashboard';
 import { CoachProfile, SessionSlot } from './types';
 import { Sparkles, Trophy, MapPin, Search, Zap } from 'lucide-react';
 import { calculateDistanceKm, getCityCoordsForLocation, CityCoords } from './utils/geoUtils';
+import { coachMatchesSportFilter } from './utils/sportMatcher';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 const MainApp: React.FC = () => {
@@ -131,7 +132,7 @@ const MainApp: React.FC = () => {
   const filteredCoaches = coaches.filter(c => {
     if (!c.isProfileActive) return false; // Mandatory Profile-Lock filter!
 
-    if (selectedSport !== 'ALL' && !c.sports.includes(selectedSport)) return false;
+    if (selectedSport !== 'ALL' && !coachMatchesSportFilter(c.sports, selectedSport)) return false;
 
     // Multi-location and radius filtering
     if (selectedLocations.length > 0) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
+import { createDefaultCoachProfile } from '../../utils/coachUtils';
 import {
   Inbox,
   Clock,
@@ -38,7 +38,7 @@ export const CoachRequestsTab: React.FC = () => {
     rejectCustomRequest
   } = useApp();
 
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || createDefaultCoachProfile(currentUser);
   const coachId = currentCoach.id;
 
   // Custom offer form modal/inline state

@@ -1,12 +1,37 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
-import { SessionSlot, CantonCode } from '../../types';
+import { SessionSlot, CoachProfile, CantonCode } from '../../types';
 import { Plus, Calendar, Clock, Users, Zap, CheckCircle2, Edit, Info, X, Save, AlertCircle } from 'lucide-react';
 
 export const SessionManagement: React.FC = () => {
   const { sessions, createSession, updateSession, currentUser, coaches } = useApp();
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+
+  const defaultCoachProfile: CoachProfile = {
+    id: 'coach_' + currentUser.id,
+    userId: currentUser.id,
+    name: currentUser.name || 'Coach',
+    avatar: currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    locationName: currentUser.city || 'Zürich',
+    canton: (currentUser.canton as CantonCode) || 'ZH',
+    coordinates: { lat: 47.3769, lng: 8.5417 },
+    hourlyRate: 100,
+    groupRate: 50,
+    fiveSessionDiscount: 0,
+    tenSessionDiscount: 0,
+    rating: 5.0,
+    reviewCount: 0,
+    sports: [],
+    bio: '',
+    achievements: [],
+    certificates: [],
+    isVerified: currentUser.isVerified || false,
+    languages: ['Deutsch'],
+    slogan: '',
+    isProfileActive: false,
+    featured: false
+  };
+
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || defaultCoachProfile;
 
   const mySessions = sessions.filter(s => s.coachId === currentCoach.id);
 

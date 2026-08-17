@@ -1,6 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { MOCK_COACH_PROFILE } from '../../data/mockData';
+import { createDefaultCoachProfile } from '../../utils/coachUtils';
 import {
   Calendar,
   Download
@@ -9,7 +9,7 @@ import {
 export const CalendarSyncAndExportCard: React.FC = () => {
   const { coaches, currentUser, bookings } = useApp();
 
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || createDefaultCoachProfile(currentUser);
 
   // Filter bookings for this coach
   const coachBookings = bookings.filter(b => b.coachId === currentCoach.id && b.status === 'bestaetigt');

@@ -406,11 +406,11 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
         </div>
       )}
 
-      {/* Quick Sports Badges Horizontal Scroll Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none pt-1">
+      {/* Quick Sports Badges Grid / Wrap */}
+      <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-[#50A5B1]/20">
         <button
           onClick={() => setSelectedSport('ALL')}
-          className={`px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+          className={`px-3 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
             selectedSport === 'ALL'
               ? 'bg-[#1A265A] text-white shadow-xs'
               : 'bg-[#FEF6ED] hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
@@ -425,7 +425,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
             <button
               key={sport.id}
               onClick={() => setSelectedSport(sport.name)}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 cursor-pointer ${
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                 isSelected
                   ? 'bg-[#1A265A] text-white shadow-xs'
                   : isSonstiges

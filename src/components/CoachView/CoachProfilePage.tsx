@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
-import { INITIAL_SPORTS, MOCK_COACH_PROFILE } from '../../data/mockData';
+import { INITIAL_SPORTS } from '../../data/mockData';
 import { SWISS_MUNICIPALITIES } from '../../data/swissMunicipalities';
 import { CantonCode, CoachProfile } from '../../types';
 import { validateSwissIBAN } from '../../utils/ibanUtils';
@@ -105,15 +105,40 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
             className="bg-[#F1600D] hover:bg-[#d85208] text-white font-black text-xs sm:text-sm px-6 py-3.5 rounded-2xl transition shadow-xl border border-white/20 flex items-center justify-center gap-2 mx-auto cursor-pointer"
           >
             <Zap className="w-4 h-4 text-white fill-white" />
-            <span>Jetzt zu Coach-Konto (Svenja) wechseln</span>
+            <span>Jetzt als Coach starten</span>
           </button>
         </div>
       </div>
     );
   }
 
+  const defaultCoachProfile: CoachProfile = {
+    id: 'coach_' + currentUser.id,
+    userId: currentUser.id,
+    name: currentUser.name || 'Coach',
+    avatar: currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    locationName: currentUser.city || 'Zürich',
+    canton: (currentUser.canton as CantonCode) || 'ZH',
+    coordinates: { lat: 47.3769, lng: 8.5417 },
+    hourlyRate: 100,
+    groupRate: 50,
+    fiveSessionDiscount: 0,
+    tenSessionDiscount: 0,
+    rating: 5.0,
+    reviewCount: 0,
+    sports: [],
+    bio: '',
+    achievements: [],
+    certificates: [],
+    isVerified: currentUser.isVerified || false,
+    languages: ['Deutsch'],
+    slogan: '',
+    isProfileActive: false,
+    featured: false
+  };
+
   // Find logged in coach profile
-  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || MOCK_COACH_PROFILE;
+  const currentCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id) || coaches[0] || defaultCoachProfile;
 
   // Editable Profile Form State
   const [name, setName] = useState(currentCoach.name);
