@@ -183,7 +183,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-[#FEF6ED]/90 mt-1">
+                <p className="text-xs text-white/90 mt-1">
                   {(currentCoach.sports || []).join(', ')} · {currentCoach.locationName || ''}
                 </p>
               </div>
@@ -280,7 +280,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
 
           <div className="bg-white rounded-3xl p-6 border border-[#50A5B1]/20 shadow-xs space-y-4">
             {confirmedBookings.length === 0 ? (
-              <div className="text-center py-10 text-xs text-[#1A265A]/60 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20 space-y-2">
+              <div className="text-center py-10 text-xs text-[#1A265A]/60 bg-slate-50 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                 <CheckCircle2 className="w-8 h-8 text-slate-300 mx-auto" />
                 <p className="font-bold text-[#1A265A]">Zurzeit keine bestätigten Buchungen in der Liste.</p>
                 <p className="text-[11px] text-[#1A265A]/60">
@@ -335,7 +335,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                         
                         {/* Customer Info */}
-                        <div className="bg-[#FEF6ED]/60 p-3.5 rounded-xl border border-[#50A5B1]/20 space-y-1.5">
+                        <div className="bg-slate-50 p-3.5 rounded-xl border border-[#50A5B1]/20 space-y-1.5">
                           <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#50A5B1] block">
                             Kunde
                           </span>
@@ -349,7 +349,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
                         </div>
 
                         {/* Financials */}
-                        <div className="bg-[#FEF6ED]/60 p-3.5 rounded-xl border border-[#50A5B1]/20 space-y-1.5">
+                        <div className="bg-slate-50 p-3.5 rounded-xl border border-[#50A5B1]/20 space-y-1.5">
                           <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#50A5B1] block">
                             Einnahmen & Auszahlung
                           </span>
@@ -368,7 +368,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
                         </div>
 
                         {/* Quick Actions */}
-                        <div className="bg-[#FEF6ED]/60 p-3.5 rounded-xl border border-[#50A5B1]/20 space-y-2 flex flex-col justify-between">
+                        <div className="bg-slate-50 p-3.5 rounded-xl border border-[#50A5B1]/20 space-y-2 flex flex-col justify-between">
                           <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#50A5B1] block">
                             Coach-Aktionen
                           </span>
@@ -447,7 +447,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
             </div>
 
             {pendingBookingRequests.length === 0 ? (
-              <div className="text-center py-8 px-4 text-xs text-[#1A265A]/70 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20 space-y-2">
+              <div className="text-center py-8 px-4 text-xs text-[#1A265A]/70 bg-slate-50 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                 <Clock className="w-8 h-8 text-[#50A5B1] mx-auto" />
                 <p className="font-extrabold text-[#1A265A] text-sm">
                   Du hast aktuell keine ausstehenden Anfragen.
@@ -542,7 +542,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
             </div>
 
             {coachCustomRequests.length === 0 ? (
-              <div className="text-center py-6 text-xs text-[#1A265A]/60 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20">
+              <div className="text-center py-6 text-xs text-[#1A265A]/60 bg-slate-50 rounded-2xl border border-[#50A5B1]/20">
                 Zurzeit keine individuellen Spezialanfragen vorhanden.
               </div>
             ) : (
@@ -550,7 +550,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
                 {coachCustomRequests.map(cReq => (
                   <div
                     key={cReq.id}
-                    className="p-4 rounded-2xl border border-[#50A5B1]/30 bg-[#FEF6ED] space-y-3"
+                    className="p-4 rounded-2xl border border-[#50A5B1]/30 bg-slate-50 space-y-3"
                   >
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-[#50A5B1]/20 pb-2">
                       <div>
@@ -736,7 +736,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
           </div>
 
           {/* 2. AKTUELLES MONAT (Juli 2026) - Immer angezeigt */}
-          <div className="bg-[#FEF6ED] border border-[#F1600D]/30 rounded-2xl p-5 space-y-4 shadow-xs">
+          <div className="bg-slate-50 border border-[#F1600D]/30 rounded-2xl p-5 space-y-4 shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F1600D]/20 pb-3">
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />

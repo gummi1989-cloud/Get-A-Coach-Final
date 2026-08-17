@@ -64,7 +64,7 @@ export const CoachPricingAndFeesTab: React.FC<CoachPricingAndFeesTabProps> = ({ 
 
       {/* Special Banner for Interested Coaches without a profile */}
       {!existingCoach && (
-        <div className="bg-gradient-to-r from-[#FEF6ED] via-amber-50 to-[#FEF6ED] p-5 sm:p-6 rounded-3xl border-2 border-[#F1600D]/30 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-[#FFFFFF] via-amber-50 to-[#FFFFFF] p-5 sm:p-6 rounded-3xl border-2 border-[#F1600D]/30 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-[#F1600D] font-extrabold text-sm">
               <Sparkles className="w-5 h-5 shrink-0" />
@@ -181,28 +181,28 @@ export const CoachPricingAndFeesTab: React.FC<CoachPricingAndFeesTabProps> = ({ 
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                 <h4 className="font-bold text-[#1A265A]">Wann wird mein Geld ausbezahlt?</h4>
                 <p className="text-[#1A265A]/80 leading-relaxed">
                   Die Auszahlungen erfolgen gebündelt jeweils zum 1. Arbeitstag des Folgemonats direkt auf dein angegebenes Schweizer Bankkonto (IBAN).
                 </p>
               </div>
 
-              <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                 <h4 className="font-bold text-[#1A265A]">Was passiert bei Stornierungen durch Kunden?</h4>
                 <p className="text-[#1A265A]/80 leading-relaxed">
                   Bei Absagen mehr als 24 Stunden vor Termin erhält der Kunde 100% Rückerstattung. Bei Absagen unter 24h vor Termin erhältst du 50% Ausfallentschädigung.
                 </p>
               </div>
 
-              <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                 <h4 className="font-bold text-[#1A265A]">Muss ich TWINT/Stripe Gebühren bezahlen?</h4>
                 <p className="text-[#1A265A]/80 leading-relaxed">
                   Nein! Alle Transaktionskosten (TWINT, Visa, Mastercard, Stripe) werden zu 100% von GET A COACH.ch im Rahmen der 15% Provision übernommen.
                 </p>
               </div>
 
-              <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                 <h4 className="font-bold text-[#1A265A]">Gibt es Mindestumsätze oder Vertragsfristen?</h4>
                 <p className="text-[#1A265A]/80 leading-relaxed">
                   Keine Vertragsbindung. Du kannst dein Profil jederzeit pausieren oder löschen. Wenn du keine Lektionen anbietest, zahlst du absolut nichts.
@@ -212,7 +212,7 @@ export const CoachPricingAndFeesTab: React.FC<CoachPricingAndFeesTabProps> = ({ 
 
             {/* Steuern & Rechtliches Infoseite Banner */}
             {onOpenTaxInfo && (
-              <div className="pt-2 border-t border-[#50A5B1]/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#FEF6ED]/60 p-4 rounded-2xl border border-[#50A5B1]/20">
+              <div className="pt-2 border-t border-[#50A5B1]/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20">
                 <div className="flex items-center gap-2.5">
                   <Scale className="w-5 h-5 text-[#F1600D] shrink-0" />
                   <div>

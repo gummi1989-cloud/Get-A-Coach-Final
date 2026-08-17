@@ -10,7 +10,7 @@ export const CoachTaxInfoPage: React.FC<CoachTaxInfoPageProps> = ({ onBack }) =>
   const { currentUser } = useApp();
 
   return (
-    <div className="bg-[#FEF6ED] text-[#1A265A] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-slate-50 text-[#1A265A] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Navigation & Header */}
@@ -60,7 +60,7 @@ export const CoachTaxInfoPage: React.FC<CoachTaxInfoPageProps> = ({ onBack }) =>
 
         {/* Highlight Summary Banner */}
         <div className="bg-white rounded-3xl p-6 border border-[#50A5B1]/30 shadow-sm flex items-start gap-4">
-          <div className="p-3 bg-[#FEF6ED] rounded-2xl text-[#F1600D] border border-[#50A5B1]/20 shrink-0 hidden sm:block">
+          <div className="p-3 bg-slate-50 rounded-2xl text-[#F1600D] border border-[#50A5B1]/20 shrink-0 hidden sm:block">
             <BookOpen className="w-6 h-6" />
           </div>
           <div className="text-xs sm:text-sm text-[#1A265A]/90 leading-relaxed space-y-1.5">
@@ -114,15 +114,15 @@ export const CoachTaxInfoPage: React.FC<CoachTaxInfoPageProps> = ({ onBack }) =>
                 Als selbstständiger Coach bestimmst du deine Rahmenbedingungen 100% eigenverantwortlich:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                <div className="bg-[#FEF6ED]/70 p-3.5 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+                <div className="bg-slate-50 p-3.5 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                   <span className="font-bold text-xs text-[#F1600D] block">Freie Preisgestaltung</span>
                   <p className="text-[11px] text-[#1A265A]/80">Du legst deine Stundensätze (z.B. CHF 90.–/Std.) und Gruppenpreise selbst fest.</p>
                 </div>
-                <div className="bg-[#FEF6ED]/70 p-3.5 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+                <div className="bg-slate-50 p-3.5 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                   <span className="font-bold text-xs text-[#50A5B1] block">Eigene Arbeitszeiten</span>
                   <p className="text-[11px] text-[#1A265A]/80">Du steuerst deine Kalender-Verfügbarkeiten und Ferientage voll flexibel im Kalender-Manager.</p>
                 </div>
-                <div className="bg-[#FEF6ED]/70 p-3.5 rounded-2xl border border-[#50A5B1]/20 space-y-1">
+                <div className="bg-slate-50 p-3.5 rounded-2xl border border-[#50A5B1]/20 space-y-1">
                   <span className="font-bold text-xs text-[#1A265A] block">Keine Mindeststunden</span>
                   <p className="text-[11px] text-[#1A265A]/80">Es gibt keine Vorgaben oder Exklusivitätsklauseln – du trainierst wann und wo du willst.</p>
                 </div>
@@ -195,7 +195,7 @@ export const CoachTaxInfoPage: React.FC<CoachTaxInfoPageProps> = ({ onBack }) =>
               href="https://www.ch.ch/de/steuern-und-finanzen/selbstandig-machen/"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-[#FEF6ED]/60 rounded-xl border border-[#50A5B1]/20 hover:border-[#F1600D] transition flex items-center justify-between font-bold text-[#1A265A]"
+              className="p-3 bg-slate-50 rounded-xl border border-[#50A5B1]/20 hover:border-[#F1600D] transition flex items-center justify-between font-bold text-[#1A265A]"
             >
               <span>ch.ch – Selbstständig machen in der Schweiz</span>
               <ExternalLink className="w-3.5 h-3.5 text-[#F1600D]" />
@@ -204,7 +204,7 @@ export const CoachTaxInfoPage: React.FC<CoachTaxInfoPageProps> = ({ onBack }) =>
               href="https://www.ahv-iv.ch/p/2.02.d"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-3 bg-[#FEF6ED]/60 rounded-xl border border-[#50A5B1]/20 hover:border-[#F1600D] transition flex items-center justify-between font-bold text-[#1A265A]"
+              className="p-3 bg-slate-50 rounded-xl border border-[#50A5B1]/20 hover:border-[#F1600D] transition flex items-center justify-between font-bold text-[#1A265A]"
             >
               <span>AHV/IV Merkblatt 2.02 – Beiträge Selbstständige</span>
               <ExternalLink className="w-3.5 h-3.5 text-[#F1600D]" />

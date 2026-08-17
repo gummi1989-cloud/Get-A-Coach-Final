@@ -105,7 +105,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
   const allReviews = [...realReviews, ...fallbackReviews];
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs overflow-y-auto py-6 sm:py-10 px-3 sm:px-6 flex items-start sm:items-center justify-center min-h-screen">
+    <div className="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-xs overflow-y-auto py-6 sm:py-10 px-3 sm:px-6 flex items-start sm:items-center justify-center min-h-screen">
       <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto relative animate-in fade-in zoom-in-95 duration-150">
         
         {/* Always-visible sticky header bar for close button */}
@@ -164,12 +164,12 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
                 </p>
               )}
 
-              <p className="text-xs text-[#FEF6ED]/80 mt-1.5 flex items-center justify-center sm:justify-start gap-1">
+              <p className="text-xs text-white/80 mt-1.5 flex items-center justify-center sm:justify-start gap-1">
                 <MapPin className="w-3.5 h-3.5 text-[#50A5B1] shrink-0" />
                 {coach.locationName}
               </p>
 
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-3 text-xs font-semibold text-[#FEF6ED]/80">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-3 text-xs font-semibold text-white/80">
                 <button
                   onClick={() => setActiveTab('bewertungen')}
                   className="flex items-center gap-1.5 text-[#F1600D] hover:text-white transition cursor-pointer bg-white/10 px-3 py-1 rounded-xl border border-white/20 shadow-2xs"
@@ -177,7 +177,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
                 >
                   <Star className="w-4 h-4 fill-[#F1600D] stroke-[#F1600D]" />
                   <span className="font-extrabold text-white">{(coach.rating || 5.0).toFixed(2)}</span>
-                  <span className="text-[#FEF6ED]/80 font-bold">({coach.reviewCount || allReviews.length} Bewertungen)</span>
+                  <span className="text-white/80 font-bold">({coach.reviewCount || allReviews.length} Bewertungen)</span>
                 </button>
               </div>
             </div>
@@ -185,7 +185,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-[#50A5B1]/20 bg-[#FEF6ED] px-4 sm:px-6 font-bold text-xs text-[#1A265A]/70 overflow-x-auto">
+        <div className="flex border-b border-[#50A5B1]/20 bg-slate-50 px-4 sm:px-6 font-bold text-xs text-[#1A265A]/70 overflow-x-auto">
           <button
             onClick={() => setActiveTab('termine')}
             className={`py-3.5 px-3 sm:px-4 border-b-2 transition cursor-pointer shrink-0 ${
@@ -234,7 +234,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
                     Individuelle Anfrage
                   </span>
                   <h4 className="font-extrabold text-sm text-white">Kein passender Termin dabei?</h4>
-                  <p className="text-[11px] text-[#FEF6ED]/80">
+                  <p className="text-[11px] text-white/80">
                     Sende {coach.name} eine massgeschneiderte Anfrage für Wunschdatum, Gruppenevent oder Spezialtraining.
                   </p>
                 </div>
@@ -270,7 +270,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
                   return (
                     <div
                       key={session.id}
-                      className="bg-[#FEF6ED] rounded-2xl p-4 border border-[#50A5B1]/20 flex flex-col space-y-2 hover:border-[#50A5B1]/40 transition"
+                      className="bg-slate-50 rounded-2xl p-4 border border-[#50A5B1]/20 flex flex-col space-y-2 hover:border-[#50A5B1]/40 transition"
                     >
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                         <div className="space-y-1">
@@ -379,7 +379,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
           {activeTab === 'bewertungen' && (
             <div className="space-y-4">
               {/* Privacy & Transparency Notice Banner */}
-              <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="p-2 bg-[#F1600D]/10 rounded-xl text-[#F1600D]">
@@ -460,7 +460,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
                     </div>
 
                     {rev.comment && (
-                      <p className="text-xs text-[#1A265A]/90 italic bg-[#FEF6ED]/60 p-2.5 rounded-xl border border-[#50A5B1]/10 font-medium">
+                      <p className="text-xs text-[#1A265A]/90 italic bg-slate-50 p-2.5 rounded-xl border border-[#50A5B1]/10 font-medium">
                         «{rev.comment}»
                       </p>
                     )}
@@ -475,7 +475,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
             <div className="space-y-5 text-xs text-[#1A265A]">
               
               {/* Section: Über mich & Trainingsphilosophie */}
-              <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                 <h4 className="text-sm text-[#1A265A] flex items-center gap-1.5">
                   <BookOpen className="w-4 h-4 text-[#F1600D]" />
                   Über mich & Trainingsphilosophie
@@ -500,7 +500,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
 
               {/* Section: Erfolge & Highlights */}
               {achievementsList.length > 0 && (
-                <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
+                <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                   <h4 className="text-sm text-[#1A265A] flex items-center gap-1.5">
                     <Trophy className="w-4 h-4 text-[#F1600D]" />
                     Erfolge & Highlights
@@ -534,7 +534,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 
                 {/* Diplome & Zertifikate Badges */}
-                <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
+                <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                   <h4 className="text-sm text-[#1A265A] flex items-center gap-1.5">
                     <GraduationCap className="w-4 h-4 text-[#50A5B1]" />
                     Diplome & Zertifikate
@@ -563,7 +563,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
                 </div>
 
                 {/* Sprachen Badges */}
-                <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
+                <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                   <h4 className="text-sm text-[#1A265A] flex items-center gap-1.5">
                     <Globe className="w-4 h-4 text-[#50A5B1]" />
                     Sprachen
@@ -590,7 +590,7 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
         </div>
 
         {/* Modal Footer Actions */}
-        <div className="p-4 bg-[#FEF6ED] border-t border-[#50A5B1]/20 flex items-center justify-between">
+        <div className="p-4 bg-slate-50 border-t border-[#50A5B1]/20 flex items-center justify-between">
           <button
             onClick={() => {
               onClose();

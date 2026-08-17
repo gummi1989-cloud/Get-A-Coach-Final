@@ -248,19 +248,19 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
             <span>COACHES</span>
           </h1>
 
-          <p className="text-xs sm:text-sm text-[#FEF6ED]/80 font-medium leading-relaxed">
-            Übersicht aller auf GET A COACH.ch registrierten Coaches, strukturiert nach Sportdisziplinen. Klicke auf ein Profil, um freie Termine, Videos, Preise und Bewertungen einzusehen.
+          <p className="text-xs sm:text-sm text-white/80 font-medium leading-relaxed">
+            Übersicht aller auf GET A COACH.ch registrierten Coaches, strukturiert nach Sport- & Wellbeing-Disziplinen. Klicke auf ein Profil, um freie Termine, Videos, Preise und Bewertungen einzusehen.
           </p>
 
           {/* Quick Stats Pill */}
           <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-semibold text-[#50A5B1]">
-            <span className="bg-white/10 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5 text-[#FEF6ED]">
+            <span className="bg-white/10 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5 text-white">
               <User className="w-3.5 h-3.5 text-[#50A5B1]" />
               <strong>{activeCoaches.length}</strong> Registrierte Coaches
             </span>
-            <span className="bg-white/10 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5 text-[#FEF6ED]">
+            <span className="bg-white/10 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5 text-white">
               <Layers className="w-3.5 h-3.5 text-[#50A5B1]" />
-              <strong>{availableSports.length}</strong> Sportarten
+              <strong>{availableSports.length}</strong> Kategorien & Sportarten
             </span>
           </div>
         </div>
@@ -282,7 +282,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
                 placeholder="Suchbegriff / Coach..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] focus:outline-none focus:border-[#F1600D] focus:ring-2 focus:ring-[#F1600D]/20 text-xs text-[#1A265A] font-medium transition"
+                className="w-full pl-10 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 focus:outline-none focus:border-[#F1600D] focus:ring-2 focus:ring-[#F1600D]/20 text-xs text-[#1A265A] font-medium transition"
               />
               {searchQuery && (
                 <button
@@ -304,7 +304,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
             <button
               type="button"
               onClick={() => setShowSportDropdown(!showSportDropdown)}
-              className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] hover:bg-[#FEF6ED]/80 text-left focus:outline-none focus:border-[#F1600D] text-xs font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
+              className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 hover:bg-slate-100/80 text-left focus:outline-none focus:border-[#F1600D] text-xs font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
             >
               <div className="flex items-center gap-2 truncate">
                 <Trophy className="w-4 h-4 text-[#F1600D] shrink-0" />
@@ -321,8 +321,8 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
                 <button
                   type="button"
                   onClick={() => handleSelectSport('ALL')}
-                  className={`w-full text-left px-3.5 py-2.5 text-xs font-bold hover:bg-[#FEF6ED] transition flex items-center justify-between cursor-pointer ${
-                    selectedSport === 'ALL' ? 'bg-[#FEF6ED] text-[#F1600D]' : 'text-[#1A265A]'
+                  className={`w-full text-left px-3.5 py-2.5 text-xs font-bold hover:bg-slate-100 transition flex items-center justify-between cursor-pointer ${
+                    selectedSport === 'ALL' ? 'bg-slate-50 text-[#F1600D]' : 'text-[#1A265A]'
                   }`}
                 >
                   <span>Alle Sportarten ({INITIAL_SPORTS.length})</span>
@@ -336,8 +336,8 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
                       key={sport.id}
                       type="button"
                       onClick={() => handleSelectSport(sport.name)}
-                      className={`w-full text-left px-3.5 py-2.5 text-xs font-medium hover:bg-[#FEF6ED] transition flex items-center justify-between cursor-pointer ${
-                        isSelected ? 'bg-[#FEF6ED] text-[#F1600D] font-bold' : 'text-[#1A265A]'
+                      className={`w-full text-left px-3.5 py-2.5 text-xs font-medium hover:bg-slate-100 transition flex items-center justify-between cursor-pointer ${
+                        isSelected ? 'bg-slate-50 text-[#F1600D] font-bold' : 'text-[#1A265A]'
                       } ${isSonstiges ? 'bg-[#50A5B1]/15 font-bold text-[#1A265A]' : ''}`}
                     >
                       <div className="flex flex-col">
@@ -367,7 +367,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
             <button
               type="button"
               onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-              className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] hover:bg-[#FEF6ED]/80 text-left focus:outline-none focus:border-[#F1600D] text-xs font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
+              className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 hover:bg-slate-100/80 text-left focus:outline-none focus:border-[#F1600D] text-xs font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
             >
               <div className="flex items-center gap-2 truncate">
                 <MapPin className="w-4 h-4 text-[#50A5B1] shrink-0" />
@@ -392,7 +392,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
             {/* Multi-Select Cities Dropdown Menu */}
             {showLocationDropdown && (
               <div className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-[#50A5B1]/30 rounded-2xl shadow-xl max-h-80 overflow-y-auto z-50 divide-y divide-[#50A5B1]/15">
-                <div className="p-3 bg-[#FEF6ED] space-y-2 sticky top-0 z-10 border-b border-[#50A5B1]/20">
+                <div className="p-3 bg-slate-50 space-y-2 sticky top-0 z-10 border-b border-[#50A5B1]/20">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-[#1A265A] flex items-center gap-1">
                       <Building2 className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -451,7 +451,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
                           type="button"
                           onClick={() => toggleLocation(city.name)}
                           className={`w-full text-left px-3 py-2 text-xs font-medium rounded-xl transition flex items-center justify-between cursor-pointer ${
-                            isChecked ? 'bg-[#50A5B1]/15 text-[#1A265A] font-bold' : 'hover:bg-[#FEF6ED] text-[#1A265A]'
+                            isChecked ? 'bg-[#50A5B1]/15 text-[#1A265A] font-bold' : 'hover:bg-slate-100 text-[#1A265A]'
                           }`}
                         >
                           <div className="flex items-center gap-2.5">
@@ -525,7 +525,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
             className={`px-3 py-1.5 rounded-xl font-bold transition cursor-pointer ${
               selectedSport === 'ALL'
                 ? 'bg-[#1A265A] text-white shadow-xs'
-                : 'bg-[#FEF6ED] text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
+                : 'bg-slate-50 text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
             }`}
           >
             Alle ({activeCoaches.length})
@@ -540,7 +540,7 @@ export const CoachesBySportPage: React.FC<CoachesBySportPageProps> = ({
                 className={`px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 cursor-pointer ${
                   selectedSport === sport
                     ? 'bg-[#F1600D] text-white shadow-xs'
-                    : 'bg-[#FEF6ED] text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
+                    : 'bg-slate-50 text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
                 }`}
               >
                 <span>{sport}</span>

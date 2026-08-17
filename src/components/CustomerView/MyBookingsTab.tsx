@@ -105,7 +105,7 @@ export const MyBookingsTab: React.FC = () => {
           <div className="flex sm:flex-col items-center sm:items-end justify-between gap-2">
             {/* Visual Status Badges */}
             {isPending && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#FEF6ED] text-[#F1600D] border border-[#F1600D]/40 text-xs font-extrabold rounded-full">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-[#F1600D] border border-[#F1600D]/40 text-xs font-extrabold rounded-full">
                 <Clock className="w-3.5 h-3.5 text-[#50A5B1] animate-pulse" />
                 Ausstehend / Bevorstehend
               </span>
@@ -135,7 +135,7 @@ export const MyBookingsTab: React.FC = () => {
         {/* Details Grid */}
         <div className={`grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs p-3.5 rounded-2xl border ${
           isPending
-            ? 'bg-[#FEF6ED]/80 border-[#F1600D]/20 text-[#1A265A]'
+            ? 'bg-slate-50 border-[#F1600D]/20 text-[#1A265A]'
             : isCompleted
             ? 'bg-emerald-50/40 border-emerald-200/50 text-[#1A265A]/90'
             : 'bg-slate-100/60 border-slate-200 text-slate-700'
@@ -184,7 +184,7 @@ export const MyBookingsTab: React.FC = () => {
             {/* PDF Receipt Button */}
             <button
               onClick={() => setSelectedReceiptBooking(booking)}
-              className="bg-white hover:bg-[#FEF6ED] text-[#1A265A] font-bold text-xs px-3.5 py-2 rounded-xl transition border border-[#50A5B1]/30 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              className="bg-white hover:bg-slate-100 text-[#1A265A] font-bold text-xs px-3.5 py-2 rounded-xl transition border border-[#50A5B1]/30 flex items-center gap-1.5 cursor-pointer shadow-2xs"
             >
               <FileText className="w-4 h-4 text-[#50A5B1]" />
               PDF Quittung
@@ -255,7 +255,7 @@ export const MyBookingsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
             activeTab === 'all'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/20'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/20'
           }`}
         >
           Alle Buchungen ({myBookings.length})
@@ -266,7 +266,7 @@ export const MyBookingsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
             activeTab === 'pending'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/30'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/30'
           }`}
         >
           <Clock className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -278,7 +278,7 @@ export const MyBookingsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
             activeTab === 'completed'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/30'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/30'
           }`}
         >
           <CheckCircle2 className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -291,7 +291,7 @@ export const MyBookingsTab: React.FC = () => {
             className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'cancelled'
                 ? 'bg-[#1A265A] text-white shadow-xs'
-                : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/30'
+                : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/30'
             }`}
           >
             <XCircle className="w-3.5 h-3.5 text-[#50A5B1]" />

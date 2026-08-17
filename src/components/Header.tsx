@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { Logo } from './Logo';
 import {
   Search,
   Calendar,
@@ -26,7 +27,8 @@ import {
   LayoutDashboard,
   Users,
   BarChart3,
-  Banknote
+  Banknote,
+  X
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -66,9 +68,9 @@ export const Header: React.FC<HeaderProps> = ({
     (customRequests ? customRequests.filter(r => r.coachId === currentCoachProfile?.id && r.status === 'offen').length : 0);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#50A5B1]/20 shadow-xs">
+    <header className="sticky top-0 z-[60] bg-white/95 backdrop-blur-md border-b border-[#50A5B1]/20 shadow-xs">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 sm:h-24 lg:h-28 gap-2 sm:gap-4 overflow-hidden py-2">
+        <div className="flex items-center justify-between h-20 sm:h-24 lg:h-28 gap-2 sm:gap-4 overflow-visible py-2">
           
           {/* Logo & Brand - Prominent Logo with White Background */}
           <div className="flex items-center shrink-0">
@@ -76,10 +78,9 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => setActiveTab(isAuthenticated && currentUser.role === 'coach' ? 'coach_dashboard' : 'search')}
               className="flex items-center group text-left cursor-pointer border-0 outline-none bg-white p-1 rounded-xl shadow-2xs transition-transform hover:scale-102"
             >
-              <img
-                src="/getacoachlogo.png"
-                alt="GET A COACH Logo"
+              <Logo
                 className="h-16 sm:h-20 md:h-22 lg:h-26 w-auto object-contain rounded-lg"
+                alt="GET A COACH Logo"
               />
             </button>
           </div>
@@ -103,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {/* Direct Chat Trigger */}
                 <button
                   onClick={onOpenChat}
-                  className="p-1.5 sm:p-2.5 rounded-xl text-[#1A265A] bg-[#FEF6ED] hover:bg-[#F1600D]/10 transition relative cursor-pointer border border-[#50A5B1]/20 flex items-center justify-center shrink-0"
+                  className="p-1.5 sm:p-2.5 rounded-xl text-[#1A265A] bg-[#FFFFFF] hover:bg-[#F1600D]/10 transition relative cursor-pointer border border-[#50A5B1]/20 flex items-center justify-center shrink-0"
                   title="Nachrichten & Chat"
                   aria-label="Nachrichten & Chat"
                 >
@@ -115,7 +116,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="relative shrink-0">
                   <button
                     onClick={() => setShowNotifications(!showNotifications)}
-                    className="p-1.5 sm:p-2.5 rounded-xl text-[#1A265A] bg-[#FEF6ED] hover:bg-[#F1600D]/10 transition relative cursor-pointer border border-[#50A5B1]/20 flex items-center justify-center shrink-0"
+                    className="p-1.5 sm:p-2.5 rounded-xl text-[#1A265A] bg-[#FFFFFF] hover:bg-[#F1600D]/10 transition relative cursor-pointer border border-[#50A5B1]/20 flex items-center justify-center shrink-0"
                     title="Benachrichtigungen & Warteliste"
                     aria-label="Benachrichtigungen"
                   >
@@ -127,41 +128,61 @@ export const Header: React.FC<HeaderProps> = ({
                     )}
                   </button>
 
-                  {/* Notification Popover */}
+                  {/* Notification Popover - Always in foreground */}
                   {showNotifications && (
                     <>
+                      {/* Fixed backdrop to prevent background click interference */}
                       <div
-                        className="fixed inset-0 z-40 bg-black/10 sm:bg-transparent"
+                        className="fixed inset-0 z-[90] bg-black/20 backdrop-blur-xs"
                         onClick={() => setShowNotifications(false)}
                       />
-                      <div className="fixed inset-x-3 top-16 sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 w-auto sm:w-96 max-w-[calc(100vw-1.5rem)] bg-white rounded-2xl shadow-2xl border border-[#50A5B1]/30 p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
+                      <div className="fixed inset-x-3 top-20 sm:absolute sm:inset-auto sm:right-0 sm:top-full sm:mt-2 w-auto sm:w-96 max-w-[calc(100vw-1.5rem)] bg-white rounded-2xl shadow-2xl border border-[#50A5B1]/30 p-4 z-[100] animate-in fade-in zoom-in-95 duration-150">
                         <div className="flex items-center justify-between pb-3 border-b border-[#50A5B1]/20">
-                          <h4 className="font-bold text-sm text-[#1A265A] flex items-center gap-1.5">
-                            <Bell className="w-4 h-4 text-[#F1600D]" />
-                            Benachrichtigungen
-                          </h4>
-                          {notifications.length > 0 && (
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-sm text-[#1A265A] flex items-center gap-1.5">
+                              <Bell className="w-4 h-4 text-[#F1600D]" />
+                              Benachrichtigungen
+                            </h4>
+                            {unreadCount > 0 && (
+                              <span className="bg-[#F1600D]/10 text-[#F1600D] text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                                {unreadCount} neu
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {notifications.length > 0 && (
+                              <button
+                                onClick={clearNotifications}
+                                className="text-[11px] font-semibold text-[#50A5B1] hover:text-[#1A265A] transition cursor-pointer"
+                              >
+                                Alle leeren
+                              </button>
+                            )}
                             <button
-                              onClick={clearNotifications}
-                              className="text-[11px] font-semibold text-[#50A5B1] hover:text-[#1A265A]"
+                              onClick={() => setShowNotifications(false)}
+                              className="p-1 rounded-lg text-slate-400 hover:text-[#1A265A] hover:bg-slate-100 transition cursor-pointer"
+                              title="Fenster schliessen"
+                              aria-label="Fenster schliessen"
                             >
-                              Alle löschen
+                              <X className="w-4 h-4" />
                             </button>
-                          )}
+                          </div>
                         </div>
 
                         <div className="divide-y divide-[#50A5B1]/10 max-h-80 overflow-y-auto my-2">
                           {notifications.length === 0 ? (
-                            <div className="py-6 text-center text-xs text-[#1A265A]/60">
-                              Keine neuen Mitteilungen.
+                            <div className="py-8 text-center text-xs text-[#1A265A]/60 space-y-1">
+                              <Bell className="w-6 h-6 text-slate-300 mx-auto mb-1" />
+                              <p className="font-semibold text-slate-700">Keine neuen Benachrichtigungen</p>
+                              <p className="text-[11px] text-slate-400">Du wirst hier über neue Buchungen & Wartelisten informiert.</p>
                             </div>
                           ) : (
                             notifications.map(n => (
                               <div
                                 key={n.id}
                                 onClick={() => markNotificationRead(n.id)}
-                                className={`py-2.5 px-2 hover:bg-[#FEF6ED] rounded-lg cursor-pointer transition ${
-                                  !n.read ? 'bg-[#FEF6ED] font-medium' : ''
+                                className={`py-2.5 px-2.5 hover:bg-sky-50/50 rounded-xl cursor-pointer transition ${
+                                  !n.read ? 'bg-orange-50/40 font-medium border-l-2 border-[#F1600D]' : ''
                                 }`}
                               >
                                 <div className="flex items-start justify-between gap-2">
@@ -174,6 +195,16 @@ export const Header: React.FC<HeaderProps> = ({
                               </div>
                             ))
                           )}
+                        </div>
+
+                        <div className="pt-2 border-t border-[#50A5B1]/10 flex items-center justify-between text-[11px] text-slate-500">
+                          <span>Klicke auf einen Eintrag zum Lesen</span>
+                          <button
+                            onClick={() => setShowNotifications(false)}
+                            className="font-bold text-[#1A265A] hover:text-[#F1600D] transition cursor-pointer"
+                          >
+                            Schliessen
+                          </button>
                         </div>
                       </div>
                     </>
@@ -231,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'search'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Search className="w-4 h-4 text-[#50A5B1]" />
@@ -243,7 +274,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'sports_overview' || activeTab === 'coaches_by_sport'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Users className="w-4 h-4 text-[#50A5B1]" />
@@ -255,7 +286,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'coach_pricing'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Coins className="w-4 h-4 text-[#50A5B1]" />
@@ -273,7 +304,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'search'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Search className="w-4 h-4 text-[#50A5B1]" />
@@ -285,7 +316,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'sports_overview' || activeTab === 'coaches_by_sport'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Users className="w-4 h-4 text-[#50A5B1]" />
@@ -297,7 +328,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'customer_dashboard'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <LayoutDashboard className={`w-4 h-4 ${activeTab === 'customer_dashboard' ? 'text-white' : 'text-[#50A5B1]'}`} />
@@ -309,7 +340,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'my_bookings'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Calendar className="w-4 h-4 text-[#50A5B1]" />
@@ -321,7 +352,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'my_requests'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <FileText className="w-4 h-4 text-[#50A5B1]" />
@@ -333,7 +364,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'waitlist'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Clock className="w-4 h-4 text-[#50A5B1]" />
@@ -345,7 +376,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'coach_pricing'
                     ? 'bg-[#1A265A] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Coins className="w-4 h-4 text-[#50A5B1]" />
@@ -360,7 +391,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'coach_dashboard' || activeTab === 'coach_accounting' || activeTab === 'coach_overview'
                     ? 'bg-[#F1600D] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <LayoutDashboard className={`w-4 h-4 ${activeTab === 'coach_dashboard' || activeTab === 'coach_accounting' || activeTab === 'coach_overview' ? 'text-white' : 'text-[#F1600D]'}`} />
@@ -372,7 +403,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer relative ${
                   activeTab === 'coach_requests'
                     ? 'bg-[#F1600D] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <Inbox className={`w-4 h-4 ${activeTab === 'coach_requests' ? 'text-white' : 'text-[#F1600D]'}`} />
@@ -397,7 +428,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'coach_confirmed'
                     ? 'bg-[#F1600D] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <CheckCircle2 className={`w-4 h-4 ${activeTab === 'coach_confirmed' ? 'text-white' : 'text-[#F1600D]'}`} />
@@ -409,7 +440,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   activeTab === 'coach_calendar' || activeTab === 'coach_ms_sync'
                     ? 'bg-[#F1600D] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <CalendarCheck className={`w-4 h-4 ${activeTab === 'coach_calendar' || activeTab === 'coach_ms_sync' ? 'text-white' : 'text-[#F1600D]'}`} />
@@ -421,7 +452,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
                   ['coach_profile', 'coach_profile_offerings', 'coach_verification', 'coach_pricing', 'coach_reviews', 'coach_sessions'].includes(activeTab)
                     ? 'bg-[#F1600D] text-white font-bold shadow-xs'
-                    : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+                    : 'text-[#1A265A]/70 hover:bg-[#FFFFFF] hover:text-[#1A265A]'
                 }`}
               >
                 <UserIcon className={`w-4 h-4 ${

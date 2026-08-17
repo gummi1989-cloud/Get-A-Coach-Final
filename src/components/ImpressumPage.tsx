@@ -7,7 +7,7 @@ interface ImpressumPageProps {
 
 export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
   return (
-    <div className="bg-[#FEF6ED] text-[#1A265A] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-[#FFFFFF] text-[#1A265A] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Navigation & Header */}
@@ -47,7 +47,7 @@ export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
                 Kontakt-Adresse
               </h2>
             </div>
-            <div className="text-xs sm:text-sm text-[#1A265A]/90 space-y-1 font-medium leading-relaxed bg-[#FEF6ED]/60 p-4 rounded-2xl border border-[#50A5B1]/15">
+            <div className="text-xs sm:text-sm text-[#1A265A]/90 space-y-1 font-medium leading-relaxed bg-[#FFFFFF]/60 p-4 rounded-2xl border border-[#50A5B1]/15">
               <p className="font-bold text-[#1A265A] text-base">Michael Löffler</p>
               <p className="font-semibold text-[#F1600D]">GET A COACH</p>
               <p>Schachenweg 83</p>
@@ -68,7 +68,7 @@ export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
                 Vertretungsberechtigte Person
               </h2>
             </div>
-            <div className="text-xs sm:text-sm text-[#1A265A]/90 space-y-2 font-medium leading-relaxed bg-[#FEF6ED]/60 p-4 rounded-2xl border border-[#50A5B1]/15">
+            <div className="text-xs sm:text-sm text-[#1A265A]/90 space-y-2 font-medium leading-relaxed bg-[#FFFFFF]/60 p-4 rounded-2xl border border-[#50A5B1]/15">
               <p className="font-bold text-[#1A265A] text-base">Michael Löffler</p>
               <p className="text-xs text-[#1A265A]/80">Inhaber:in / Betreiber:in</p>
               <div className="pt-2 text-[11px] text-[#1A265A]/70 leading-normal border-t border-[#50A5B1]/20">
@@ -82,7 +82,7 @@ export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#50A5B1]/30 shadow-md space-y-8 text-[#1A265A] text-xs sm:text-sm leading-relaxed">
           
           {/* Haftungsausschluss */}
-          <section className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+          <section className="space-y-3 bg-[#FFFFFF]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-[#F1600D] shrink-0" />
               <h2 className="font-oswald font-medium text-lg text-[#1A265A] uppercase tracking-wide">
@@ -101,7 +101,7 @@ export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
           </section>
 
           {/* Haftung für Links */}
-          <section className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+          <section className="space-y-3 bg-[#FFFFFF]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
             <div className="flex items-center gap-2">
               <ExternalLink className="w-5 h-5 text-[#50A5B1] shrink-0" />
               <h2 className="font-oswald font-medium text-lg text-[#1A265A] uppercase tracking-wide">
@@ -114,7 +114,7 @@ export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
           </section>
 
           {/* Urheberrechte */}
-          <section className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+          <section className="space-y-3 bg-[#FFFFFF]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
             <div className="flex items-center gap-2">
               <Copyright className="w-5 h-5 text-[#1A265A] shrink-0" />
               <h2 className="font-oswald font-medium text-lg text-[#1A265A] uppercase tracking-wide">

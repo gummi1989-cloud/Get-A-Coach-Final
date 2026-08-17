@@ -166,7 +166,7 @@ export const AdminPayoutsTab: React.FC = () => {
             <h2 className="text-2xl md:text-3xl font-oswald font-medium uppercase tracking-wide">
               Coach-Auszahlungen & eBanking Export
             </h2>
-            <p className="text-xs text-[#FEF6ED]/80 leading-relaxed">
+            <p className="text-xs text-white/80 leading-relaxed">
               Verwalte unbezahlte Lektionen deiner Coaches. Führe Sammel-Auszahlungen per Stichtag durch und exportiere detaillierte Zahlungs-Dateien (CSV) für deine E-Banking Überweisungen.
             </p>
           </div>

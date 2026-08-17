@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { CoachProfile, Booking } from '../../types';
 import { FileText, Download, CheckCircle2, ShieldCheck, Printer, X, Building2 } from 'lucide-react';
+import { Logo } from '../Logo';
 
 interface CoachPayoutReceiptModalProps {
   coach: CoachProfile;
@@ -141,7 +142,7 @@ export const CoachPayoutReceiptModal: React.FC<CoachPayoutReceiptModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-6 overflow-y-auto">
       {/* Print CSS to isolate printable receipt and preserve background colors for PDF generation */}
       <style>{`
         @media print {
@@ -204,10 +205,9 @@ export const CoachPayoutReceiptModal: React.FC<CoachPayoutReceiptModalProps> = (
           <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-slate-200">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <img
-                  src="/getacoachlogo.png"
-                  alt="GET A COACH Logo"
+                <Logo
                   className="h-10 w-auto object-contain"
+                  alt="GET A COACH Logo"
                 />
               </div>
               <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 leading-snug">
@@ -232,7 +232,7 @@ export const CoachPayoutReceiptModal: React.FC<CoachPayoutReceiptModalProps> = (
           </div>
 
           {/* Coach Recipient Details */}
-          <div className="bg-[#FEF6ED] p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#50A5B1]/20 flex flex-col sm:flex-row justify-between gap-3 text-xs">
+          <div className="bg-slate-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-[#50A5B1]/20 flex flex-col sm:flex-row justify-between gap-3 text-xs">
             <div>
               <span className="text-[10px] font-extrabold text-[#50A5B1] uppercase tracking-wider block mb-0.5">Empfänger (Coach)</span>
               <h3 className="font-extrabold text-xs sm:text-sm text-[#1A265A]">{coach?.name || 'Coach'}</h3>

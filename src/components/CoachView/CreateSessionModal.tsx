@@ -66,7 +66,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({ isOpen, 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl max-w-xl w-full border border-[#50A5B1]/30 shadow-2xl overflow-hidden relative my-8">
         
         {/* Header */}
@@ -116,7 +116,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({ isOpen, 
                   }}
                   className={`p-3 rounded-2xl border transition text-left cursor-pointer flex items-center gap-2.5 ${
                     type === 'einzel'
-                      ? 'border-[#F1600D] bg-[#FEF6ED] text-[#1A265A] font-bold shadow-xs'
+                      ? 'border-[#F1600D] bg-slate-50 text-[#1A265A] font-bold shadow-xs'
                       : 'border-slate-200 bg-white text-slate-600 hover:border-[#50A5B1]/50'
                   }`}
                 >
@@ -135,7 +135,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({ isOpen, 
                   }}
                   className={`p-3 rounded-2xl border transition text-left cursor-pointer flex items-center gap-2.5 ${
                     type === 'gruppe'
-                      ? 'border-[#F1600D] bg-[#FEF6ED] text-[#1A265A] font-bold shadow-xs'
+                      ? 'border-[#F1600D] bg-slate-50 text-[#1A265A] font-bold shadow-xs'
                       : 'border-slate-200 bg-white text-slate-600 hover:border-[#50A5B1]/50'
                   }`}
                 >
@@ -155,7 +155,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({ isOpen, 
                 <select
                   value={sport}
                   onChange={e => setSport(e.target.value)}
-                  className="w-full bg-[#FEF6ED]/50 border border-[#50A5B1]/30 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full bg-slate-50 border border-[#50A5B1]/30 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 >
                   {(currentCoach.sports || ['Padel Tennis', 'Tennis', 'Fitness']).map(s => (
                     <option key={s} value={s}>{s}</option>
@@ -251,7 +251,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({ isOpen, 
 
             {/* Participants config */}
             {type === 'gruppe' ? (
-              <div className="grid grid-cols-2 gap-3 bg-[#FEF6ED] p-3 rounded-2xl border border-[#50A5B1]/30">
+              <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-2xl border border-[#50A5B1]/30">
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-[#1A265A] flex items-center gap-1">
                     <Users className="w-3.5 h-3.5 text-[#F1600D]" /> Min. Personen *

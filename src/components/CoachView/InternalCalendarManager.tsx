@@ -141,7 +141,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
             <CalendarIcon className="w-8 h-8 sm:w-10 sm:h-10 text-white bg-white/10 p-2 rounded-2xl shrink-0" />
             <span>Verfügbarkeiten, Arbeitszeiten & Pausen</span>
           </h2>
-          <p className="text-xs text-[#FEF6ED]/90 mt-1 max-w-xl">
+          <p className="text-xs text-white/90 mt-1 max-w-xl">
             Verwalte deine Arbeitszeiten, trage Ferientage ein und erstelle Kursslots. Gebuchte Lektionen blockieren automatisch deine Zeit im GET A COACH-System und im iCal-Feed.
           </p>
         </div>
@@ -203,7 +203,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
             <div className="flex items-center gap-2">
               <button
                 onClick={() => shiftSelectedDate(-1)}
-                className="p-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl hover:bg-[#50A5B1]/20 text-[#1A265A] transition"
+                className="p-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl hover:bg-[#50A5B1]/20 text-[#1A265A] transition"
                 title="Vorheriger Tag"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -214,7 +214,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                   type="date"
                   value={selectedDateStr}
                   onChange={e => setSelectedDateStr(e.target.value)}
-                  className="px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl font-extrabold text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl font-extrabold text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
                 <button
                   onClick={() => setSelectedDateStr('2026-07-27')}
@@ -226,7 +226,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
 
               <button
                 onClick={() => shiftSelectedDate(1)}
-                className="p-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl hover:bg-[#50A5B1]/20 text-[#1A265A] transition"
+                className="p-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl hover:bg-[#50A5B1]/20 text-[#1A265A] transition"
                 title="Nächster Tag"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -317,7 +317,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                         ? 'bg-[#F1600D]/10 border-[#F1600D]/30'
                         : isOutsideWorkingHours
                         ? 'bg-slate-50 border-slate-200 text-slate-400'
-                        : 'bg-[#FEF6ED] border-[#50A5B1]/20 hover:border-[#F1600D]'
+                        : 'bg-slate-50 border-[#50A5B1]/20 hover:border-[#F1600D]'
                     }`}
                   >
                     {/* Time Label */}
@@ -425,7 +425,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
               <div
                 key={wh.dayOfWeek}
                 className={`p-4 rounded-2xl border transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
-                  wh.isWorking ? 'bg-[#FEF6ED] border-[#50A5B1]/20' : 'bg-slate-50 border-slate-200 opacity-60'
+                  wh.isWorking ? 'bg-slate-50 border-[#50A5B1]/20' : 'bg-slate-50 border-slate-200 opacity-60'
                 }`}
               >
                 {/* Day Toggle */}
@@ -553,7 +553,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
               {blockedSlots.map(slot => (
                 <div
                   key={slot.id}
-                  className="p-4 bg-[#FEF6ED] border border-[#50A5B1]/20 rounded-2xl flex items-center justify-between gap-3 text-xs"
+                  className="p-4 bg-slate-50 border border-[#50A5B1]/20 rounded-2xl flex items-center justify-between gap-3 text-xs"
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold ${
@@ -617,7 +617,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                   placeholder="z.B. Sommerferien Tessin, Zahnarzt, Privater Termin"
                   value={blockTitle}
                   onChange={e => setBlockTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
               </div>
 
@@ -626,7 +626,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                 <select
                   value={blockType}
                   onChange={e => setBlockType(e.target.value as any)}
-                  className="w-full px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
+                  className="w-full px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
                 >
                   <option value="pause">Kurze Pause / Privater Termin</option>
                   <option value="ferien">Ferien / Mehrtägige Abwesenheit</option>
@@ -642,7 +642,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                     required
                     value={blockStartDate}
                     onChange={e => setBlockStartDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
                   />
                 </div>
                 <div>
@@ -652,7 +652,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                     required
                     value={blockEndDate}
                     onChange={e => setBlockEndDate(e.target.value)}
-                    className="w-full px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
                   />
                 </div>
               </div>
@@ -665,7 +665,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                       type="time"
                       value={blockStartTime}
                       onChange={e => setBlockStartTime(e.target.value)}
-                      className="w-full px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
+                      className="w-full px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
                     />
                   </div>
                   <div>
@@ -674,7 +674,7 @@ export const InternalCalendarManager: React.FC<InternalCalendarManagerProps> = (
                       type="time"
                       value={blockEndTime}
                       onChange={e => setBlockEndTime(e.target.value)}
-                      className="w-full px-3 py-2 bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
+                      className="w-full px-3 py-2 bg-slate-50 border border-[#50A5B1]/30 rounded-xl text-xs text-[#1A265A]"
                     />
                   </div>
                 </div>

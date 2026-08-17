@@ -28,7 +28,7 @@ export const BlindRatingsCoachTab: React.FC = () => {
       {/* Summary Stat Card */}
       <div className="bg-white p-6 rounded-3xl border border-[#50A5B1]/30 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="p-4 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20 text-[#F1600D] flex items-center justify-center">
+          <div className="p-4 bg-slate-50 rounded-2xl border border-[#50A5B1]/20 text-[#F1600D] flex items-center justify-center">
             <Star className="w-8 h-8 fill-[#F1600D]" />
           </div>
           <div>
@@ -96,7 +96,7 @@ export const BlindRatingsCoachTab: React.FC = () => {
 
               {/* Review Comment Content */}
               {b.clientRated && b.clientRating ? (
-                <div className="bg-[#FEF6ED]/70 p-3.5 rounded-xl border border-[#50A5B1]/20 text-xs space-y-1">
+                <div className="bg-slate-50 p-3.5 rounded-xl border border-[#50A5B1]/20 text-xs space-y-1">
                   <div className="flex items-center gap-1 text-[#F1600D] font-bold">
                     {[...Array(5)].map((_, i) => (
                       <Star

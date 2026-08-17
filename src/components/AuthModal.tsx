@@ -4,6 +4,7 @@ import { UserRole } from '../types';
 import { X, User as UserIcon, Zap, ArrowRight, Lock, Mail, Eye, EyeOff, ShieldCheck, LogIn, ArrowLeft } from 'lucide-react';
 import { CustomerRegisterPage } from './CustomerRegisterPage';
 import { CoachRegisterPage } from './CoachRegisterPage';
+import { Logo } from './Logo';
 
 interface AuthModalProps {
   onClose: () => void;
@@ -50,7 +51,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-[110] bg-slate-900/65 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto animate-in fade-in duration-150">
       <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-0 sm:my-6 max-h-[92vh] sm:max-h-[88vh] flex flex-col">
         
         {/* Header - Optimized for mobile tap targets */}
@@ -67,11 +68,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </button>
             )}
             <div>
-              <div className="mb-1">
-                <img
-                  src="/getacoachlogo.png"
+              <div className="mb-1 bg-white/95 p-1 rounded-lg inline-block">
+                <Logo
+                  className="h-8 sm:h-10 w-auto object-contain"
                   alt="GET A COACH Logo"
-                  className="h-10 sm:h-12 w-auto object-contain"
                 />
               </div>
               <h3 className="text-lg sm:text-xl font-black text-white">
@@ -93,7 +93,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Action Notice Banner if triggered from gated action */}
         {authNotice && (
-          <div className="shrink-0 bg-[#FEF6ED] border-b border-[#F1600D]/30 p-3.5 sm:p-4 flex items-start gap-3 text-xs font-bold text-[#1A265A]">
+          <div className="shrink-0 bg-[#FFFFFF] border-b border-[#F1600D]/30 p-3.5 sm:p-4 flex items-start gap-3 text-xs font-bold text-[#1A265A]">
             <Lock className="w-5 h-5 text-[#F1600D] shrink-0 mt-0.5" />
             <div className="space-y-0.5">
               <span className="text-[#F1600D] uppercase font-black text-[10px] block">Anmeldung erforderlich</span>
@@ -196,7 +196,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       value={loginEmail}
                       onChange={e => setLoginEmail(e.target.value)}
                       placeholder="deine.email@beispiel.ch"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/40 text-xs sm:text-sm font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white transition"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/40 text-xs sm:text-sm font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white transition"
                     />
                   </div>
                 </div>
@@ -224,7 +224,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                       value={loginPassword}
                       onChange={e => setLoginPassword(e.target.value)}
                       placeholder="Dein Passwort"
-                      className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/40 text-xs sm:text-sm font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white transition"
+                      className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/40 text-xs sm:text-sm font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white transition"
                     />
                     <button
                       type="button"

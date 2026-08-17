@@ -150,7 +150,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
             placeholder="Suchbegriff / Coach..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] focus:outline-none focus:border-[#F1600D] focus:ring-2 focus:ring-[#F1600D]/20 text-xs sm:text-sm font-medium transition text-[#1A265A]"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 focus:outline-none focus:border-[#F1600D] focus:ring-2 focus:ring-[#F1600D]/20 text-xs sm:text-sm font-medium transition text-[#1A265A]"
           />
         </div>
 
@@ -159,7 +159,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
           <button
             type="button"
             onClick={() => setShowSportDropdown(!showSportDropdown)}
-            className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] hover:bg-[#FEF6ED]/80 text-left focus:outline-none focus:border-[#F1600D] text-xs sm:text-sm font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
+            className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 hover:bg-slate-100/80 text-left focus:outline-none focus:border-[#F1600D] text-xs sm:text-sm font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
           >
             <div className="flex items-center gap-2 truncate">
               <Trophy className="w-4 h-4 text-[#F1600D] shrink-0" />
@@ -176,8 +176,8 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
               <button
                 type="button"
                 onClick={() => handleSelectSport('ALL')}
-                className={`w-full text-left px-3.5 py-2.5 text-xs font-bold hover:bg-[#FEF6ED] transition flex items-center justify-between cursor-pointer ${
-                  selectedSport === 'ALL' ? 'bg-[#FEF6ED] text-[#F1600D]' : 'text-[#1A265A]'
+                className={`w-full text-left px-3.5 py-2.5 text-xs font-bold hover:bg-slate-100 transition flex items-center justify-between cursor-pointer ${
+                  selectedSport === 'ALL' ? 'bg-slate-50 text-[#F1600D]' : 'text-[#1A265A]'
                 }`}
               >
                 <span>Alle Sportarten ({INITIAL_SPORTS.length})</span>
@@ -191,8 +191,8 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
                     key={sport.id}
                     type="button"
                     onClick={() => handleSelectSport(sport.name)}
-                    className={`w-full text-left px-3.5 py-2.5 text-xs font-medium hover:bg-[#FEF6ED] transition flex items-center justify-between cursor-pointer ${
-                      isSelected ? 'bg-[#FEF6ED] text-[#F1600D] font-bold' : 'text-[#1A265A]'
+                    className={`w-full text-left px-3.5 py-2.5 text-xs font-medium hover:bg-slate-100 transition flex items-center justify-between cursor-pointer ${
+                      isSelected ? 'bg-slate-50 text-[#F1600D] font-bold' : 'text-[#1A265A]'
                     } ${isSonstiges ? 'bg-[#50A5B1]/15 font-bold text-[#1A265A]' : ''}`}
                   >
                     <div className="flex flex-col">
@@ -219,7 +219,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
           <button
             type="button"
             onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-            className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] hover:bg-[#FEF6ED]/80 text-left focus:outline-none focus:border-[#F1600D] text-xs sm:text-sm font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
+            className="w-full pl-3.5 pr-8 py-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 hover:bg-slate-100/80 text-left focus:outline-none focus:border-[#F1600D] text-xs sm:text-sm font-semibold transition text-[#1A265A] flex items-center justify-between cursor-pointer"
           >
             <div className="flex items-center gap-2 truncate">
               <MapPin className="w-4 h-4 text-[#50A5B1] shrink-0" />
@@ -246,7 +246,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
             <div className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-[#50A5B1]/30 rounded-2xl shadow-xl max-h-80 overflow-y-auto z-50 divide-y divide-[#50A5B1]/15">
               
               {/* Header Controls inside Dropdown */}
-              <div className="p-3 bg-[#FEF6ED] space-y-2 sticky top-0 z-10 border-b border-[#50A5B1]/20">
+              <div className="p-3 bg-slate-50 space-y-2 sticky top-0 z-10 border-b border-[#50A5B1]/20">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#1A265A] flex items-center gap-1">
                     <Building2 className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -308,7 +308,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
                         type="button"
                         onClick={() => toggleLocation(city.name)}
                         className={`w-full text-left px-3 py-2 text-xs font-medium rounded-xl transition flex items-center justify-between cursor-pointer ${
-                          isChecked ? 'bg-[#50A5B1]/15 text-[#1A265A] font-bold' : 'hover:bg-[#FEF6ED] text-[#1A265A]'
+                          isChecked ? 'bg-[#50A5B1]/15 text-[#1A265A] font-bold' : 'hover:bg-slate-100 text-[#1A265A]'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
@@ -346,7 +346,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
             className={`px-3 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer shrink-0 ${
               showMap
                 ? 'bg-[#1A265A] text-white shadow-xs'
-                : 'bg-[#FEF6ED] hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
+                : 'bg-slate-50 hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
             }`}
             title={showMap ? 'Karte ausblenden' : 'Karte anzeigen'}
           >
@@ -392,7 +392,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
 
       {/* GPS Location Status Toast if active */}
       {geoStatusMsg && (
-        <div className="bg-[#FEF6ED] border border-[#F1600D]/30 text-[#1A265A] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-between animate-in fade-in">
+        <div className="bg-slate-50 border border-[#F1600D]/30 text-[#1A265A] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-between animate-in fade-in">
           <span className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#F1600D]" />
             {geoStatusMsg}
@@ -413,7 +413,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
           className={`px-3 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
             selectedSport === 'ALL'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-[#FEF6ED] hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
+              : 'bg-slate-50 hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
           }`}
         >
           Alle Sportarten ({INITIAL_SPORTS.length})
@@ -430,7 +430,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
                   ? 'bg-[#1A265A] text-white shadow-xs'
                   : isSonstiges
                   ? 'bg-[#50A5B1]/20 hover:bg-[#50A5B1]/30 text-[#1A265A] border border-[#50A5B1]'
-                  : 'bg-[#FEF6ED] hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
+                  : 'bg-slate-50 hover:bg-[#50A5B1]/10 text-[#1A265A] border border-[#50A5B1]/30'
               }`}
             >
               <span>{sport.name}</span>
@@ -464,7 +464,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
             type="date"
             value={selectedDate}
             onChange={e => setSelectedDate(e.target.value)}
-            className="w-full p-2 rounded-xl border border-[#50A5B1]/30 font-semibold bg-[#FEF6ED] text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+            className="w-full p-2 rounded-xl border border-[#50A5B1]/30 font-semibold bg-slate-50 text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
           />
         </div>
 
@@ -490,7 +490,7 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({ showMap, setSh
       </div>
 
       {/* Total offers count banner */}
-      <div className="bg-[#FEF6ED] rounded-xl p-2.5 text-center text-[11px] font-bold text-[#1A265A] border border-[#50A5B1]/20 flex items-center justify-center gap-2">
+      <div className="bg-slate-50 rounded-xl p-2.5 text-center text-[11px] font-bold text-[#1A265A] border border-[#50A5B1]/20 flex items-center justify-center gap-2">
         <Sparkles className="w-3.5 h-3.5 text-[#F1600D]" />
         <span>Insg. {sessions.length} buchbare Angebote & Termine verfügbar</span>
       </div>

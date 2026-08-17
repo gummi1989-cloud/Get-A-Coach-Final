@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { createDefaultCoachProfile } from '../utils/coachUtils';
 import {
@@ -14,7 +14,9 @@ import {
   Lock,
   Sparkles,
   Plus,
-  DollarSign
+  DollarSign,
+  ChevronDown,
+  UserCheck
 } from 'lucide-react';
 
 interface ChatDrawerProps {
@@ -37,9 +39,29 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
     createCustomOffer
   } = useApp();
 
+  const [selectedCoachId, setSelectedCoachId] = useState<string>(targetCoachId);
+  const [showCoachSelector, setShowCoachSelector] = useState<boolean>(false);
   const [inputText, setInputText] = useState('');
   const [selectedPdfName, setSelectedPdfName] = useState<string | null>(null);
   const [showOfferForm, setShowOfferForm] = useState(false);
+
+  // Sync active coach if targetCoachId prop changes
+  useEffect(() => {
+    if (targetCoachId) {
+      setSelectedCoachId(targetCoachId);
+    }
+  }, [targetCoachId]);
+
+  // Handle ESC key to close drawer smoothly
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   // Coach offer form state
   const [offerPrice, setOfferPrice] = useState<number>(120);
@@ -48,10 +70,10 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
   const [offerTime, setOfferTime] = useState<string>('14:00 - 15:00 Uhr');
   const [offerDescription, setOfferDescription] = useState<string>('Individuelles Coaching Paket');
 
-  const targetCoach = coaches.find(c => c.id === targetCoachId) || coaches[0] || createDefaultCoachProfile();
+  const targetCoach = coaches.find(c => c.id === selectedCoachId) || coaches.find(c => c.id === targetCoachId) || coaches[0] || createDefaultCoachProfile();
 
   const conversationMsgs = chatMessages.filter(
-    m => m.coachId === targetCoachId || m.userId === currentUser.id
+    m => m.coachId === targetCoach.id || (m.userId === currentUser.id && (!m.coachId || m.coachId === targetCoach.id))
   );
 
   const handleSend = (e: React.FormEvent) => {
@@ -106,45 +128,104 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex justify-end">
-      <div className="bg-white w-full max-w-lg h-full shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200">
+    <div className="fixed inset-0 z-[120] flex justify-end overflow-hidden">
+      {/* Interactive Dimmed Backdrop - click to close */}
+      <div
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity cursor-pointer animate-in fade-in duration-150"
+        onClick={onClose}
+        aria-label="Chat-Fenster schliessen"
+      />
+
+      {/* Main Drawer Sheet */}
+      <div className="relative z-10 bg-white w-full max-w-lg h-full shadow-2xl flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-200">
         
         {/* Header */}
-        <div className="bg-[#1A265A] text-white p-4 flex items-center justify-between border-b border-[#50A5B1]/20">
+        <div className="bg-[#1A265A] text-white p-4 flex items-center justify-between border-b border-[#50A5B1]/20 relative">
           <div className="flex items-center gap-3">
             <img
               src={targetCoach.avatar}
               alt={targetCoach.name}
-              className="w-10 h-10 rounded-xl object-cover border-2 border-[#50A5B1]/40"
+              className="w-11 h-11 rounded-xl object-cover border-2 border-[#50A5B1]/40 shrink-0"
             />
-            <div>
-              <div className="font-extrabold text-sm text-white flex items-center gap-1">
-                {targetCoach.name}
+            <div className="relative">
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setShowCoachSelector(!showCoachSelector)}
+                  className="font-extrabold text-sm text-white flex items-center gap-1 hover:text-[#50A5B1] transition text-left cursor-pointer"
+                  title="Coach wechseln"
+                >
+                  <span>{targetCoach.name}</span>
+                  {coaches.length > 1 && <ChevronDown className="w-3.5 h-3.5 text-[#50A5B1]" />}
+                </button>
                 {targetCoach.isVerified && (
-                  <span title="Ausweis Verifiziert">
+                  <span title="Ausweis & Zertifikat Verifiziert">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#F1600D]" />
                   </span>
                 )}
               </div>
-              <div className="text-[11px] text-[#FEF6ED]/70">
-                {targetCoach.sports[0]} · {targetCoach.locationName}
+              <div className="text-[11px] text-[#FFFFFF]/75 flex items-center gap-1.5">
+                <span>{targetCoach.sports[0]}</span>
+                <span>·</span>
+                <span>{targetCoach.locationName}</span>
               </div>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-2 rounded-full hover:bg-white/10 text-white transition cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition cursor-pointer flex items-center gap-1 text-xs font-bold"
+              title="Chat schliessen (ESC)"
+              aria-label="Chat schliessen"
+            >
+              <X className="w-4 h-4" />
+              <span className="hidden sm:inline">Schliessen</span>
+            </button>
+          </div>
+
+          {/* Optional Coach Selector Dropdown */}
+          {showCoachSelector && coaches.length > 1 && (
+            <>
+              <div
+                className="fixed inset-0 z-20"
+                onClick={() => setShowCoachSelector(false)}
+              />
+              <div className="absolute top-full left-4 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 z-30 p-2 text-slate-800 animate-in fade-in zoom-in-95 duration-150">
+                <div className="text-[10px] font-extrabold uppercase text-slate-400 px-3 py-1.5 border-b border-slate-100">
+                  Unterhaltung wählen
+                </div>
+                <div className="max-h-60 overflow-y-auto divide-y divide-slate-100 py-1">
+                  {coaches.map(c => (
+                    <button
+                      key={c.id}
+                      onClick={() => {
+                        setSelectedCoachId(c.id);
+                        setShowCoachSelector(false);
+                      }}
+                      className={`w-full flex items-center gap-2.5 p-2 rounded-xl text-left transition cursor-pointer ${
+                        c.id === targetCoach.id ? 'bg-[#50A5B1]/10 text-[#1A265A] font-bold' : 'hover:bg-slate-50'
+                      }`}
+                    >
+                      <img src={c.avatar} alt={c.name} className="w-8 h-8 rounded-lg object-cover" />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-bold truncate text-[#1A265A]">{c.name}</div>
+                        <div className="text-[10px] text-slate-500 truncate">{c.sports[0]} · {c.locationName}</div>
+                      </div>
+                      {c.id === targetCoach.id && <UserCheck className="w-4 h-4 text-[#50A5B1] shrink-0" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Kontaktschutz & Fairplay Policy Banner */}
-        <div className="bg-[#FEF6ED] border-b border-[#50A5B1]/20 p-2.5 px-4 flex items-center gap-2 text-[11px] text-[#1A265A]/80 font-medium">
+        <div className="bg-[#FFFFFF] border-b border-[#50A5B1]/20 p-2.5 px-4 flex items-center gap-2 text-[11px] text-[#1A265A]/80 font-medium">
           <Lock className="w-3.5 h-3.5 text-[#F1600D] shrink-0" />
           <span>
-            <strong>Kontaktschutz aktiv:</strong> E-Mails & Telefonnummern werden gefiltert. Alle Anfragen & Buchungen laufen sicher über GET A COACH.
+            <strong>Kontaktschutz aktiv:</strong> E-Mails & Telefonnummern werden geschützt. Alle Anfragen & Buchungen laufen direkt über GET A COACH.
           </span>
         </div>
 
@@ -195,7 +276,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
 
                     {/* RENDER CUSTOM OFFER CARD */}
                     {msg.type === 'custom_offer' && msg.offerDetails && (
-                      <div className="mt-3 p-3.5 bg-[#FEF6ED] text-[#1A265A] rounded-2xl border-2 border-[#F1600D] space-y-2">
+                      <div className="mt-3 p-3.5 bg-[#FFFFFF] text-[#1A265A] rounded-2xl border-2 border-[#F1600D] space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="bg-[#F1600D] text-white font-extrabold text-[9px] px-2 py-0.5 rounded uppercase flex items-center gap-1">
                             <Sparkles className="w-2.5 h-2.5" />
@@ -263,7 +344,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
 
                     {/* RENDER BOOKING REQUEST CARD */}
                     {msg.type === 'booking_request' && msg.bookingDetails && (
-                      <div className="mt-3 p-3.5 bg-[#FEF6ED] text-[#1A265A] rounded-2xl border-2 border-[#50A5B1] space-y-2">
+                      <div className="mt-3 p-3.5 bg-[#FFFFFF] text-[#1A265A] rounded-2xl border-2 border-[#50A5B1] space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="bg-[#1A265A] text-white font-extrabold text-[9px] px-2 py-0.5 rounded uppercase flex items-center gap-1">
                             <Clock className="w-2.5 h-2.5 text-[#F1600D]" />
@@ -358,7 +439,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
 
         {/* Coach Offer Creation Form Modal/Panel */}
         {showOfferForm && (
-          <div className="p-4 bg-[#FEF6ED] border-t-2 border-[#F1600D] space-y-3 text-xs text-[#1A265A]">
+          <div className="p-4 bg-[#FFFFFF] border-t-2 border-[#F1600D] space-y-3 text-xs text-[#1A265A]">
             <div className="flex items-center justify-between font-extrabold text-sm text-[#1A265A]">
               <span className="flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-[#F1600D]" />

@@ -104,7 +104,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
             onClick={() => setActiveSubTab('bookings')}
             className={`p-2.5 sm:p-3.5 rounded-2xl border transition cursor-pointer space-y-1.5 sm:space-y-2 group ${
               activeSubTab === 'bookings'
-                ? 'bg-[#FEF6ED] border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
+                ? 'bg-slate-50 border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
                 : 'bg-white border-[#50A5B1]/20 shadow-xs hover:border-[#50A5B1]/50'
             }`}
           >
@@ -136,7 +136,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
             onClick={() => setActiveSubTab('requests')}
             className={`p-2.5 sm:p-3.5 rounded-2xl border transition cursor-pointer space-y-1.5 sm:space-y-2 group ${
               activeSubTab === 'requests'
-                ? 'bg-[#FEF6ED] border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
+                ? 'bg-slate-50 border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
                 : 'bg-white border-[#50A5B1]/20 shadow-xs hover:border-[#50A5B1]/50'
             }`}
           >
@@ -170,7 +170,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
             onClick={() => setActiveSubTab('abos')}
             className={`p-2.5 sm:p-3.5 rounded-2xl border transition cursor-pointer space-y-1.5 sm:space-y-2 group ${
               activeSubTab === 'abos'
-                ? 'bg-[#FEF6ED] border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
+                ? 'bg-slate-50 border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
                 : 'bg-white border-[#50A5B1]/20 shadow-xs hover:border-[#50A5B1]/50'
             }`}
           >
@@ -178,7 +178,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
               <span className="p-1.5 sm:p-2 bg-teal-100 text-[#50A5B1] rounded-xl group-hover:scale-105 transition">
                 <CreditCard className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#50A5B1]" />
               </span>
-              <span className="text-[9px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 rounded-full bg-[#FEF6ED] text-[#F1600D] shrink-0">
+              <span className="text-[9px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 rounded-full bg-slate-50 text-[#F1600D] shrink-0">
                 Aktiv
               </span>
             </div>
@@ -198,7 +198,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
             onClick={() => setActiveSubTab('favorites')}
             className={`p-2.5 sm:p-3.5 rounded-2xl border transition cursor-pointer space-y-1.5 sm:space-y-2 group ${
               activeSubTab === 'favorites'
-                ? 'bg-[#FEF6ED] border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
+                ? 'bg-slate-50 border-2 border-[#50A5B1] shadow-md ring-2 ring-[#50A5B1]/20'
                 : 'bg-white border-[#50A5B1]/20 shadow-xs hover:border-[#50A5B1]/50'
             }`}
           >
@@ -331,7 +331,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
           </div>
 
           {myBookings.length === 0 ? (
-            <div className="text-center py-12 px-4 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20 space-y-3">
+            <div className="text-center py-12 px-4 bg-slate-50 rounded-2xl border border-[#50A5B1]/20 space-y-3">
               <Calendar className="w-10 h-10 text-[#50A5B1] mx-auto" />
               <div className="space-y-1">
                 <h3 className="font-extrabold text-[#1A265A] text-sm">Du hast noch keine Lektionen gebucht</h3>
@@ -354,7 +354,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
               {myBookings.map(booking => (
                 <div
                   key={booking.id}
-                  className="bg-[#FEF6ED] p-5 rounded-2xl border border-[#50A5B1]/20 space-y-3 transition hover:shadow-xs"
+                  className="bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/20 space-y-3 transition hover:shadow-xs"
                 >
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-[#50A5B1]/15 pb-2">
                     <div>
@@ -444,13 +444,13 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
           </div>
 
           {myRequests.length === 0 ? (
-            <div className="text-center py-12 text-xs text-[#1A265A]/60 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20">
+            <div className="text-center py-12 text-xs text-[#1A265A]/60 bg-slate-50 rounded-2xl border border-[#50A5B1]/20">
               Du hast zurzeit keine Anfragen gestellt.
             </div>
           ) : (
             <div className="space-y-4">
               {myRequests.map(req => (
-                <div key={req.id} className="bg-[#FEF6ED] p-5 rounded-2xl border border-[#50A5B1]/20 space-y-3">
+                <div key={req.id} className="bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/20 space-y-3">
                   <div className="flex items-center justify-between border-b border-[#50A5B1]/15 pb-2">
                     <div>
                       <span className="font-extrabold text-sm text-[#1A265A]">{req.sport} – Coach {req.coachName}</span>
@@ -534,12 +534,12 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
             </h3>
 
             {myVouchers.length === 0 ? (
-              <div className="text-center py-8 text-xs text-[#1A265A]/60 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20">
+              <div className="text-center py-8 text-xs text-[#1A265A]/60 bg-slate-50 rounded-2xl border border-[#50A5B1]/20">
                 Keine verbleibenden Wertgutscheine.
               </div>
             ) : (
               myVouchers.map(v => (
-                <div key={v.code} className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
+                <div key={v.code} className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-black text-xs text-[#1A265A]">Code: <code className="bg-white px-2 py-0.5 rounded text-[#F1600D]">{v.code}</code></span>
                     <span className="font-black text-xs text-emerald-700">
@@ -570,13 +570,13 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
           </div>
 
           {myFavoriteCoaches.length === 0 ? (
-            <div className="text-center py-12 text-xs text-[#1A265A]/60 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20">
+            <div className="text-center py-12 text-xs text-[#1A265A]/60 bg-slate-50 rounded-2xl border border-[#50A5B1]/20">
               Du hast noch keine Coaches als Favorit gespeichert. Klicke bei einem Coach-Profil auf das Herz-Icon!
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {myFavoriteCoaches.map(coach => (
-                <div key={coach.id} className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-3 flex flex-col justify-between">
+                <div key={coach.id} className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-3 flex flex-col justify-between">
                   <div className="flex items-center gap-3">
                     <img src={coach.avatar} alt={coach.name} className="w-12 h-12 rounded-full object-cover ring-2 ring-[#50A5B1]" />
                     <div>

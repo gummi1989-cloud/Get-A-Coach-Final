@@ -119,7 +119,7 @@ export const CoachCard: React.FC<CoachCardProps> = ({
               }
               onOpenChatWithCoach(coach);
             }}
-            className="p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] hover:bg-[#50A5B1]/10 transition cursor-pointer"
+            className="p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] hover:bg-[#50A5B1]/10 transition cursor-pointer"
             title="Coach kontaktieren"
           >
             <MessageSquare className="w-4 h-4 text-[#50A5B1]" />

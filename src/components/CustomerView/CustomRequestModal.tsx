@@ -64,7 +64,7 @@ export const CustomRequestModal: React.FC<CustomRequestModalProps> = ({ coach, o
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-6 animate-in fade-in zoom-in-95 duration-150">
         
         {/* Modal Header */}
@@ -87,7 +87,7 @@ export const CustomRequestModal: React.FC<CustomRequestModalProps> = ({ coach, o
         </div>
 
         {/* Coach Preview Card */}
-        <div className="p-4 bg-[#FEF6ED] border-b border-[#50A5B1]/20 flex items-center gap-3">
+        <div className="p-4 bg-slate-50 border-b border-[#50A5B1]/20 flex items-center gap-3">
           <img
             src={coach.avatar}
             alt={coach.name}
@@ -211,7 +211,7 @@ export const CustomRequestModal: React.FC<CustomRequestModalProps> = ({ coach, o
             </div>
 
             {/* Platform notice */}
-            <div className="bg-[#FEF6ED] p-3 rounded-xl border border-[#50A5B1]/20 flex items-start gap-2 text-[11px] text-[#1A265A]/80">
+            <div className="bg-slate-50 p-3 rounded-xl border border-[#50A5B1]/20 flex items-start gap-2 text-[11px] text-[#1A265A]/80">
               <ShieldCheck className="w-4 h-4 text-[#50A5B1] shrink-0 mt-0.5" />
               <p>
                 <strong>Unverbindlich & Kostenlos:</strong> Du sendest eine Anfrage. Erst wenn du das spätere Angebot des Coaches im Chat akzeptierst, erfolgt die Zahlung.

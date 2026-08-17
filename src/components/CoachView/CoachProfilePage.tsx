@@ -82,17 +82,17 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           <h2 className="text-2xl sm:text-3xl font-black text-white pt-1">
             Coach-Portal & Angebotsverwaltung
           </h2>
-          <p className="text-xs sm:text-sm text-[#FEF6ED]/80 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-white/80 max-w-xl mx-auto leading-relaxed">
             Dieser Bereich ist ausschliesslich für verifizierte Coaches und Sport-Dienstleister reserviert. Hier verwalten Coaches ihr eigenes Profil, präsentieren ihr Sportangebot, legen Stundensätze fest und schalten buchbare Termine auf.
           </p>
         </div>
 
-        <div className="bg-white/10 rounded-2xl p-4 border border-[#50A5B1]/30 text-left max-w-md mx-auto text-xs space-y-2 text-[#FEF6ED]">
+        <div className="bg-white/10 rounded-2xl p-4 border border-[#50A5B1]/30 text-left max-w-md mx-auto text-xs space-y-2 text-white">
           <div className="font-bold text-[#F1600D] flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-[#50A5B1]" />
             Vorteile für GET A COACH Coaches:
           </div>
-          <ul className="space-y-1 pl-4 list-disc text-[11px] text-[#FEF6ED]/90">
+          <ul className="space-y-1 pl-4 list-disc text-[11px] text-white/90">
             <li>Integrierter GET A COACH-Kalender & iCal Sync (Apple, Google, Outlook)</li>
             <li>Bargeldlose TWINT-Abrechnung in CHF mit Auszahlungs-Garantie</li>
             <li>Verifiziertes Siegel & Blind-Ratings Bewertungsschutz</li>
@@ -414,7 +414,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           className={`px-4 py-2.5 rounded-2xl font-extrabold text-xs transition flex items-center gap-2 cursor-pointer whitespace-nowrap ${
             activeProfileTab === 'profile'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+              : 'text-[#1A265A]/70 hover:bg-slate-100 hover:text-[#1A265A]'
           }`}
         >
           <User className="w-4 h-4 text-[#F1600D]" />
@@ -426,7 +426,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           className={`px-4 py-2.5 rounded-2xl font-extrabold text-xs transition flex items-center gap-2 cursor-pointer whitespace-nowrap ${
             activeProfileTab === 'sessions'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+              : 'text-[#1A265A]/70 hover:bg-slate-100 hover:text-[#1A265A]'
           }`}
         >
           <Calendar className="w-4 h-4 text-[#F1600D]" />
@@ -438,7 +438,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           className={`px-4 py-2.5 rounded-2xl font-extrabold text-xs transition flex items-center gap-2 cursor-pointer whitespace-nowrap ${
             activeProfileTab === 'verification'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+              : 'text-[#1A265A]/70 hover:bg-slate-100 hover:text-[#1A265A]'
           }`}
         >
           <ShieldCheck className="w-4 h-4 text-[#F1600D]" />
@@ -457,7 +457,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           className={`px-4 py-2.5 rounded-2xl font-extrabold text-xs transition flex items-center gap-2 cursor-pointer whitespace-nowrap ${
             activeProfileTab === 'pricing'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+              : 'text-[#1A265A]/70 hover:bg-slate-100 hover:text-[#1A265A]'
           }`}
         >
           <Coins className="w-4 h-4 text-[#F1600D]" />
@@ -469,7 +469,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           className={`px-4 py-2.5 rounded-2xl font-extrabold text-xs transition flex items-center gap-2 cursor-pointer whitespace-nowrap ${
             activeProfileTab === 'reviews'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'text-[#1A265A]/70 hover:bg-[#FEF6ED] hover:text-[#1A265A]'
+              : 'text-[#1A265A]/70 hover:bg-slate-100 hover:text-[#1A265A]'
           }`}
         >
           <Star className="w-4 h-4 text-[#F1600D] fill-[#F1600D]" />
@@ -494,7 +494,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
           </div>
           <div className="space-y-1">
             <h1 className="text-2xl text-white">{name}</h1>
-            <p className="text-xs text-[#FEF6ED]/80 flex items-center gap-2">
+            <p className="text-xs text-white/80 flex items-center gap-2">
               <span>{locationName} ({canton})</span>
               <span>·</span>
               <span>{selectedSports.join(', ')}</span>
@@ -576,12 +576,12 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                   value={name}
                   onChange={e => setName(e.target.value)}
                   required
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
               </div>
 
               {/* Profilbild Upload (JPG / PNG) */}
-              <div className="col-span-1 sm:col-span-2 bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/30">
+              <div className="col-span-1 sm:col-span-2 bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/30">
                 <label className="font-extrabold text-[#1A265A] block mb-2 text-xs flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Upload className="w-4 h-4 text-[#F1600D]" />
@@ -650,7 +650,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                   }}
                   required
                   placeholder="z.B. Zürich, Ebikon, Bern..."
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
                 {showMuniDropdown && (
                   <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-[#50A5B1]/30 rounded-2xl shadow-xl max-h-48 overflow-y-auto z-50 divide-y divide-[#50A5B1]/20">
@@ -663,7 +663,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                           setCanton(m.canton as CantonCode);
                           setShowMuniDropdown(false);
                         }}
-                        className="w-full text-left px-3 py-2 text-xs hover:bg-[#FEF6ED] flex items-center justify-between cursor-pointer"
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-slate-100 flex items-center justify-between cursor-pointer"
                       >
                         <span className="font-bold text-[#1A265A]">{m.plz} {m.name}</span>
                         <span className="text-[10px] bg-[#50A5B1]/20 px-1.5 py-0.5 rounded font-black text-[#1A265A]">
@@ -681,7 +681,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 <select
                   value={canton}
                   onChange={e => setCanton(e.target.value as CantonCode)}
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                 >
                   {CANTONS.map(c => (
                     <option key={c} value={c}>Kanton {c}</option>
@@ -708,7 +708,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 placeholder="z.B. Dein Erfolg ist mein Fokus – mit Präzision & Leidenschaft zum Ziel."
                 value={slogan}
                 onChange={e => setSlogan(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
               />
             </div>
 
@@ -729,7 +729,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                         isChecked
                           ? 'bg-[#1A265A] text-white shadow-xs'
-                          : 'bg-[#FEF6ED] text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
+                          : 'bg-slate-50 text-[#1A265A] border border-[#50A5B1]/30 hover:bg-[#50A5B1]/20'
                       }`}
                     >
                       {isChecked && <Check className="w-3.5 h-3.5 text-[#50A5B1]" />}
@@ -752,12 +752,12 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 onChange={e => setBio(e.target.value)}
                 required
                 placeholder="Beschreibe deine Ausbildung, deine Coaching-Philosophie und deine Trainingsmethoden..."
-                className="w-full p-3 rounded-2xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-xs font-medium text-[#1A265A] focus:outline-none focus:border-[#F1600D] leading-relaxed"
+                className="w-full p-3 rounded-2xl border border-[#50A5B1]/30 bg-slate-50 text-xs font-medium text-[#1A265A] focus:outline-none focus:border-[#F1600D] leading-relaxed"
               />
             </div>
 
             {/* Erfolge & Highlights */}
-            <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/30 space-y-3">
+            <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/30 space-y-3">
               <label className="font-bold text-[#1A265A] text-xs flex items-center gap-1.5">
                 <Trophy className="w-4 h-4 text-[#F1600D]" />
                 Erfolge & Highlights:
@@ -804,7 +804,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
             </div>
 
             {/* Diplome & Zertifikate */}
-            <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/30 space-y-3">
+            <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/30 space-y-3">
               <label className="font-bold text-[#1A265A] text-xs flex items-center gap-1.5">
                 <GraduationCap className="w-4 h-4 text-[#50A5B1]" />
                 Diplome & Zertifikate:
@@ -854,7 +854,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
             </div>
 
             {/* Sprachen */}
-            <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/30 space-y-3">
+            <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/30 space-y-3">
               <label className="font-bold text-[#1A265A] text-xs flex items-center gap-1.5">
                 <Globe className="w-4 h-4 text-[#50A5B1]" />
                 Sprachen:
@@ -921,7 +921,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
               </div>
 
               {/* Informationstext Kasten */}
-              <div className="bg-[#FEF6ED] p-3.5 rounded-2xl border border-[#50A5B1]/30 flex items-start gap-3">
+              <div className="bg-slate-50 p-3.5 rounded-2xl border border-[#50A5B1]/30 flex items-start gap-3">
                 <Info className="w-5 h-5 text-[#50A5B1] shrink-0 mt-0.5" />
                 <div className="text-xs text-[#1A265A] space-y-1">
                   <p className="font-bold">Warum benötigen wir deine Bankverbindung?</p>
@@ -944,7 +944,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     placeholder="Vor- und Nachname / Firmenname"
                     value={accountHolder}
                     onChange={e => setAccountHolder(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
                   />
                 </div>
 
@@ -967,7 +967,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                         setIbanError('');
                       }
                     }}
-                    className={`w-full p-2.5 rounded-xl border ${ibanError ? 'border-red-500 bg-red-50' : 'border-[#50A5B1]/30 bg-[#FEF6ED]'} text-[#1A265A] font-mono text-xs focus:outline-none focus:border-[#F1600D]`}
+                    className={`w-full p-2.5 rounded-xl border ${ibanError ? 'border-red-500 bg-red-50' : 'border-[#50A5B1]/30 bg-slate-50'} text-[#1A265A] font-mono text-xs focus:outline-none focus:border-[#F1600D]`}
                   />
                   {ibanError && (
                     <p className="text-[10px] text-red-600 font-bold">{ibanError}</p>
@@ -985,7 +985,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     placeholder="z.B. UBS, ZKB, PostFinance, Raiffeisen"
                     value={bankName}
                     onChange={e => setBankName(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
                   />
                 </div>
               </div>
@@ -1003,7 +1003,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 </div>
               )}
 
-              <div className="flex items-center justify-between bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/30">
+              <div className="flex items-center justify-between bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/30">
                 <div>
                   <h4 className="font-bold text-xs text-[#1A265A]">Profil-Status</h4>
                   <p className="text-[11px] text-[#1A265A]/70">
@@ -1109,7 +1109,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                   value={slotTitle}
                   onChange={e => setSlotTitle(e.target.value)}
                   required
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
               </div>
 
@@ -1124,7 +1124,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                   placeholder="z.B. Mietmaterial (Schläger/Schuhe) nicht im Preis enthalten. Kann vor Ort bezogen werden."
                   value={slotDescription}
                   onChange={e => setSlotDescription(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
                 />
               </div>
 
@@ -1134,7 +1134,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                   <select
                     value={slotSport}
                     onChange={e => setSlotSport(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   >
                     {selectedSports.map(s => (
                       <option key={s} value={s}>{s}</option>
@@ -1147,7 +1147,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                   <select
                     value={slotType}
                     onChange={e => setSlotType(e.target.value as 'einzel' | 'gruppe')}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   >
                     <option value="einzel">Einzelcoaching</option>
                     <option value="gruppe">Gruppenkurs</option>
@@ -1163,7 +1163,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     value={slotDate}
                     onChange={e => setSlotDate(e.target.value)}
                     required
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   />
                 </div>
 
@@ -1175,7 +1175,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     onChange={e => setSlotStartTime(e.target.value)}
                     required
                     placeholder="09:00"
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   />
                 </div>
 
@@ -1187,7 +1187,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     onChange={e => setSlotEndTime(e.target.value)}
                     required
                     placeholder="10:00"
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   />
                 </div>
               </div>
@@ -1201,7 +1201,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     step="5"
                     value={slotPrice}
                     onChange={e => setSlotPrice(Number(e.target.value))}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-black text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-black text-[#1A265A]"
                   />
                 </div>
 
@@ -1215,7 +1215,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                         max={slotMaxParticipants}
                         value={slotMinParticipants}
                         onChange={e => setSlotMinParticipants(Math.max(1, Number(e.target.value)))}
-                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                       />
                     </div>
                     <div>
@@ -1226,7 +1226,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                         max="30"
                         value={slotMaxParticipants}
                         onChange={e => setSlotMaxParticipants(Math.max(slotMinParticipants, Number(e.target.value)))}
-                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                       />
                     </div>
                   </>
@@ -1237,7 +1237,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 <button
                   type="button"
                   onClick={() => setShowAddSlotModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-[#FEF6ED] cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 cursor-pointer"
                 >
                   Abbrechen
                 </button>
@@ -1310,7 +1310,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 </h3>
 
                 {mySessions.length === 0 ? (
-                  <div className="text-center py-8 text-xs text-[#1A265A]/60 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20">
+                  <div className="text-center py-8 text-xs text-[#1A265A]/60 bg-slate-50 rounded-2xl border border-[#50A5B1]/20">
                     Du hast zurzeit keine eigenen Termine aufgeschaltet.
                   </div>
                 ) : (
@@ -1318,7 +1318,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                     {mySessions.map(session => (
                       <div
                         key={session.id}
-                        className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2"
+                        className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-2"
                       >
                         <div className="flex items-center justify-between">
                           <span className="bg-[#1A265A] text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">

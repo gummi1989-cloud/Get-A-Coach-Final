@@ -36,8 +36,8 @@ export const FavoriteHeartButton: React.FC<FavoriteHeartButtonProps> = ({
 
     // Default 'light'
     return active
-      ? 'bg-[#FEF6ED] text-[#F1600D] border border-[#F1600D]/40 hover:bg-[#F1600D]/10 shadow-2xs'
-      : 'bg-white/90 hover:bg-[#FEF6ED] text-slate-400 hover:text-[#F1600D] border border-slate-200/80 hover:border-[#F1600D]/40 shadow-2xs';
+      ? 'bg-slate-50 text-[#F1600D] border border-[#F1600D]/40 hover:bg-[#F1600D]/10 shadow-2xs'
+      : 'bg-white/90 hover:bg-slate-100 text-slate-400 hover:text-[#F1600D] border border-slate-200/80 hover:border-[#F1600D]/40 shadow-2xs';
   };
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Booking } from '../../types';
 import { X, Printer, CheckCircle2, ShieldCheck, Download } from 'lucide-react';
+import { Logo } from '../Logo';
 
 interface ReceiptModalProps {
   booking: Booking;
@@ -16,7 +17,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ booking, onClose }) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[110] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden my-6 print:shadow-none print:border-none print:m-0 print:w-full">
         
         {/* Print Header Action */}
@@ -35,7 +36,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ booking, onClose }) 
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-[#50A5B1]/20 text-[#FEF6ED]/80 hover:text-white transition"
+              className="p-1.5 rounded-full hover:bg-[#50A5B1]/20 text-white/80 hover:text-white transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -49,10 +50,9 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ booking, onClose }) 
           <div className="flex items-start justify-between border-b border-[#50A5B1]/20 pb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <img
-                  src="/getacoachlogo.png"
-                  alt="GET A COACH Logo"
+                <Logo
                   className="h-10 sm:h-12 w-auto object-contain"
+                  alt="GET A COACH Logo"
                 />
               </div>
               <p className="text-xs text-[#1A265A]/70 font-medium mt-0.5">
@@ -76,7 +76,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ booking, onClose }) 
           </div>
 
           {/* Client & Coach Details Grid */}
-          <div className="grid grid-cols-2 gap-4 text-xs p-4 bg-[#FEF6ED] rounded-2xl border border-[#50A5B1]/20">
+          <div className="grid grid-cols-2 gap-4 text-xs p-4 bg-slate-50 rounded-2xl border border-[#50A5B1]/20">
             <div>
               <span className="text-[10px] uppercase font-bold text-[#1A265A]/60 block mb-1">Kund:in / Rechnungsempfänger:in:</span>
               <div className="font-extrabold text-[#1A265A]">{booking.userName}</div>
@@ -146,7 +146,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ booking, onClose }) 
           </div>
 
           {/* Payment Method Badge & Watermark */}
-          <div className="bg-[#FEF6ED] p-3 rounded-xl border border-[#50A5B1]/30 flex items-center justify-between text-xs text-[#1A265A] font-bold">
+          <div className="bg-slate-50 p-3 rounded-xl border border-[#50A5B1]/30 flex items-center justify-between text-xs text-[#1A265A] font-bold">
             <span>Zahlungsmittel: {booking.paymentMethod}</span>
             <span>Ref: {booking.twintRefId || 'GETACOACH-PAY-OK'}</span>
           </div>
@@ -154,7 +154,7 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ booking, onClose }) 
         </div>
 
         {/* Modal Footer Close */}
-        <div className="p-4 bg-[#FEF6ED] border-t border-[#50A5B1]/20 text-center print:hidden">
+        <div className="p-4 bg-slate-50 border-t border-[#50A5B1]/20 text-center print:hidden">
           <button
             onClick={onClose}
             className="bg-[#1A265A] hover:bg-[#1A265A]/90 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition cursor-pointer"

@@ -50,7 +50,7 @@ export const WaitlistFavoritesTab: React.FC<WaitlistFavoritesTabProps> = ({
       <div className="bg-white rounded-3xl p-6 border border-[#50A5B1]/20 shadow-xs space-y-4">
 
         {waitlistedSessions.length === 0 ? (
-          <div className="bg-[#FEF6ED] rounded-2xl p-8 text-center text-[#1A265A]/70 text-xs border border-[#50A5B1]/20 space-y-2">
+          <div className="bg-slate-50 rounded-2xl p-8 text-center text-[#1A265A]/70 text-xs border border-[#50A5B1]/20 space-y-2">
             <p className="font-extrabold text-[#1A265A] text-sm">Du bist zurzeit auf keiner Warteliste eingetragen.</p>
             <p className="max-w-md mx-auto text-[#1A265A]/70">
               Sobald du dich bei einer ausgebuchten Lektion auf die Warteliste setzt, erscheint sie hier. Du wirst automatisch benachrichtigt, sobald ein Platz frei wird.
@@ -61,7 +61,7 @@ export const WaitlistFavoritesTab: React.FC<WaitlistFavoritesTabProps> = ({
             {waitlistedSessions.map(session => (
               <div
                 key={session.id}
-                className="bg-[#FEF6ED] rounded-2xl p-4 border border-[#50A5B1]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                className="bg-slate-50 rounded-2xl p-4 border border-[#50A5B1]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               >
                 <div>
                   <div className="flex items-center gap-2">
@@ -110,8 +110,8 @@ export const WaitlistFavoritesTab: React.FC<WaitlistFavoritesTabProps> = ({
         </div>
 
         {favoriteCoaches.length === 0 ? (
-          <div className="bg-[#FEF6ED] rounded-2xl p-8 text-center text-[#1A265A]/70 text-xs border border-[#50A5B1]/20 space-y-3">
-            <div className="w-12 h-12 mx-auto rounded-full bg-[#FEF6ED] text-[#50A5B1] border border-[#50A5B1]/30 flex items-center justify-center">
+          <div className="bg-slate-50 rounded-2xl p-8 text-center text-[#1A265A]/70 text-xs border border-[#50A5B1]/20 space-y-3">
+            <div className="w-12 h-12 mx-auto rounded-full bg-slate-50 text-[#50A5B1] border border-[#50A5B1]/30 flex items-center justify-center">
               <Heart className="w-6 h-6 text-[#50A5B1] fill-[#50A5B1]" />
             </div>
             <h3 className="font-extrabold text-sm text-[#1A265A]">Keine gemerkten Coaches</h3>

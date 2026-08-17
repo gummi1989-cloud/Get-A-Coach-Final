@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ShieldCheck, Lock, ArrowLeft, KeyRound, QrCode, Copy, Check, RefreshCw, X, Smartphone, AlertCircle } from 'lucide-react';
+import { Logo } from '../Logo';
 import {
   getAdmin2FASecret,
   generateQRCodeDataURL,
@@ -122,16 +123,15 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onBac
 
         <div className="text-center space-y-2 pt-2">
           <div className="mb-2 inline-block">
-            <img
-              src="/getacoachlogo.png"
-              alt="GET A COACH Logo"
+            <Logo
               className="h-12 w-auto mx-auto object-contain"
+              alt="GET A COACH Logo"
             />
           </div>
           <div className="w-12 h-12 bg-[#1A265A] text-white rounded-2xl flex items-center justify-center mx-auto shadow-md border border-[#50A5B1]/30">
             <ShieldCheck className="w-6 h-6 text-[#50A5B1]" />
           </div>
-          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#50A5B1] bg-[#FEF6ED] px-3.5 py-1 rounded-full border border-[#50A5B1]/20 inline-block">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#50A5B1] bg-[#FFFFFF] px-3.5 py-1 rounded-full border border-[#50A5B1]/20 inline-block">
             Passwortloses 2FA TOTP Login
           </span>
           <h1 className="text-2xl font-oswald font-medium uppercase tracking-wide text-[#1A265A]">
@@ -173,7 +173,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onBac
               </label>
               <span className="text-[10px] font-bold text-[#50A5B1] flex items-center gap-1">
                 <span>Code-Wechsel in:</span>
-                <span className="bg-[#FEF6ED] px-1.5 py-0.5 rounded border border-[#50A5B1]/20 text-[#F1600D] font-mono">
+                <span className="bg-[#FFFFFF] px-1.5 py-0.5 rounded border border-[#50A5B1]/20 text-[#F1600D] font-mono">
                   {secondsLeft}s
                 </span>
               </span>
@@ -190,7 +190,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onBac
                   const val = e.target.value.replace(/\D/g, '').slice(0, 6);
                   setTotpCode(val);
                 }}
-                className="w-full px-4 py-3 rounded-xl border-2 border-[#1A265A]/20 text-center text-2xl font-mono tracking-[0.4em] font-extrabold text-[#1A265A] focus:border-[#F1600D] focus:ring-0 outline-none transition bg-[#FEF6ED]/30"
+                className="w-full px-4 py-3 rounded-xl border-2 border-[#1A265A]/20 text-center text-2xl font-mono tracking-[0.4em] font-extrabold text-[#1A265A] focus:border-[#F1600D] focus:ring-0 outline-none transition bg-[#FFFFFF]/30"
                 placeholder="123456"
                 autoComplete="one-time-code"
                 required
@@ -218,7 +218,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onBac
         <div className="pt-2 text-center border-t border-slate-100 space-y-3">
           <button
             onClick={handleOpenSetupModal}
-            className="w-full py-2.5 px-3 bg-[#FEF6ED] hover:bg-[#fdecdb] text-[#1A265A] border border-[#50A5B1]/30 rounded-xl font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2"
+            className="w-full py-2.5 px-3 bg-[#FFFFFF] hover:bg-[#fdecdb] text-[#1A265A] border border-[#50A5B1]/30 rounded-xl font-bold text-xs transition cursor-pointer flex items-center justify-center gap-2"
           >
             <QrCode className="w-4 h-4 text-[#F1600D]" />
             <span>Erst-Verknüpfung / QR-Code anzeigen</span>
@@ -248,7 +248,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onBac
             </button>
 
             <div className="text-center space-y-1.5">
-              <div className="w-12 h-12 bg-[#FEF6ED] text-[#F1600D] rounded-2xl flex items-center justify-center mx-auto border border-[#50A5B1]/20">
+              <div className="w-12 h-12 bg-[#FFFFFF] text-[#F1600D] rounded-2xl flex items-center justify-center mx-auto border border-[#50A5B1]/20">
                 <QrCode className="w-6 h-6" />
               </div>
               <h2 className="text-lg font-bold text-[#1A265A]">
@@ -260,7 +260,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onSuccess, onBac
             </div>
 
             {/* QR Code Container */}
-            <div className="bg-[#FEF6ED]/50 border border-[#50A5B1]/20 rounded-2xl p-4 flex flex-col items-center justify-center space-y-3">
+            <div className="bg-[#FFFFFF]/50 border border-[#50A5B1]/20 rounded-2xl p-4 flex flex-col items-center justify-center space-y-3">
               {qrCodeDataUrl ? (
                 <img
                   src={qrCodeDataUrl}

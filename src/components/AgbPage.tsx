@@ -15,7 +15,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="bg-[#FEF6ED] text-[#1A265A] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-slate-50 text-[#1A265A] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Navigation & Header Banner */}
@@ -73,12 +73,12 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
 
         {/* Introduction Summary Box */}
         <div className="bg-white rounded-3xl p-6 border border-[#50A5B1]/20 shadow-xs flex items-start gap-4">
-          <div className="p-3 bg-[#FEF6ED] rounded-2xl text-[#F1600D] border border-[#50A5B1]/20 shrink-0 hidden sm:block">
+          <div className="p-3 bg-slate-50 rounded-2xl text-[#F1600D] border border-[#50A5B1]/20 shrink-0 hidden sm:block">
             <Scale className="w-6 h-6" />
           </div>
           <div className="text-xs sm:text-sm text-[#1A265A]/90 leading-relaxed space-y-2">
             <p className="font-bold text-[#1A265A] text-sm">
-              Willkommen bei GET A COACH – der Schweizer Online-Plattform für Sport- & Fitness-Coaching.
+              Willkommen bei GET A COACH – der Schweizer Online-Plattform für Sport-, Fitness- & Wellbeing-Coaching.
             </p>
             <p>
               Diese Allgemeinen Geschäftsbedingungen (AGB) regeln die Nutzung der Plattform GET A COACH für Sportler:innen und Kund:innen (Teil A) sowie für selbstständige Coaches (Teil B) und enthalten allgemeine Schlussbestimmungen (Teil C).
@@ -99,7 +99,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 1 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#1A265A] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">1</span>
                 Geltungsbereich & Plattformrolle
@@ -118,7 +118,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 2 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#1A265A] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">2</span>
                 Buchungen, Zahlung & Stornierung
@@ -145,7 +145,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 3 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#1A265A] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">3</span>
                 Haftung & Haftungsausschluss
@@ -171,7 +171,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 4 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#50A5B1] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">4</span>
                 Status der Coaches
@@ -187,7 +187,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 5 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#50A5B1] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">5</span>
                 Gebühren & Provision
@@ -206,7 +206,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 6 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#50A5B1] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">6</span>
                 Plattform-Treue, Kontaktschutz & Umgehungsverbot (Fairplay-Richtlinie)
@@ -238,7 +238,7 @@ export const AgbPage: React.FC<AgbPageProps> = ({ onBack }) => {
             </div>
 
             {/* Section 7 */}
-            <div className="space-y-3 bg-[#FEF6ED]/50 p-5 rounded-2xl border border-[#50A5B1]/15">
+            <div className="space-y-3 bg-slate-50 p-5 rounded-2xl border border-[#50A5B1]/15">
               <h3 className="font-bold text-base text-[#1A265A] flex items-center gap-2">
                 <span className="bg-[#1A265A] text-white w-6 h-6 rounded-lg text-xs font-black flex items-center justify-center shrink-0">7</span>
                 Datenschutz & Anwendbares Recht

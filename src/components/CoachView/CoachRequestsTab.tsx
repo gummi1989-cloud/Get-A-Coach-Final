@@ -192,7 +192,7 @@ export const CoachRequestsTab: React.FC = () => {
                     </div>
 
                     {/* Countdown Timer Badge */}
-                    <div className="bg-[#FEF6ED] border border-[#F1600D]/30 p-2 rounded-2xl text-right shrink-0">
+                    <div className="bg-slate-50 border border-[#F1600D]/30 p-2 rounded-2xl text-right shrink-0">
                       <div className="text-[9px] uppercase font-bold text-[#1A265A]/70">Restzeit für Antwort</div>
                       <div className="text-xs font-mono font-black text-[#F1600D]">
                         {getRemainingTime(req.reservedUntil)}
@@ -202,7 +202,7 @@ export const CoachRequestsTab: React.FC = () => {
 
                   {/* Customer details & Lektion details */}
                   <div className="space-y-2 text-xs">
-                    <div className="bg-[#FEF6ED]/70 p-3 rounded-2xl border border-[#50A5B1]/10 space-y-1.5">
+                    <div className="bg-slate-50 p-3 rounded-2xl border border-[#50A5B1]/10 space-y-1.5">
                       <div className="font-bold text-[#1A265A] flex items-center gap-1">
                         <UserIcon className="w-3.5 h-3.5 text-[#F1600D]" />
                         <span>Kund:in: <strong>{req.userName}</strong></span>
@@ -324,7 +324,7 @@ export const CoachRequestsTab: React.FC = () => {
                   </div>
 
                   {/* Request Message */}
-                  <div className="bg-[#FEF6ED] p-3.5 rounded-2xl border border-[#50A5B1]/15 text-xs text-[#1A265A]/90">
+                  <div className="bg-slate-50 p-3.5 rounded-2xl border border-[#50A5B1]/15 text-xs text-[#1A265A]/90">
                     <span className="font-bold block text-[11px] uppercase text-[#50A5B1] mb-1">Nachricht des:der Kund:in:</span>
                     "{req.description}"
                   </div>

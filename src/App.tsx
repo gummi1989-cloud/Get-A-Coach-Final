@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -34,6 +34,7 @@ import { Sparkles, Trophy, MapPin, Search, Zap } from 'lucide-react';
 import { calculateDistanceKm, getCityCoordsForLocation, CityCoords } from './utils/geoUtils';
 import { coachMatchesSportFilter } from './utils/sportMatcher';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { Logo } from './components/Logo';
 
 const MainApp: React.FC = () => {
   const {
@@ -51,6 +52,45 @@ const MainApp: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<string>('search');
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
+  const spacerRef = useRef<HTMLDivElement>(null);
+  const [logoPosition, setLogoPosition] = useState<{ top: number; height: number } | null>(null);
+
+  // Dynamic precise measurement: Center logo exactly between blue header bottom and search field top
+  useEffect(() => {
+    const updatePosition = () => {
+      if (spacerRef.current) {
+        const rect = spacerRef.current.getBoundingClientRect();
+        // The un-scrolled viewport top coordinate is rect.top + window.scrollY
+        const top = rect.top + window.scrollY;
+        const height = rect.height;
+        if (top > 0 && height > 0) {
+          setLogoPosition({ top, height });
+        }
+      }
+    };
+
+    // Run measurement immediately and on next animation frame for font/DOM settlement
+    updatePosition();
+    const rafId = requestAnimationFrame(updatePosition);
+    const timeoutId = setTimeout(updatePosition, 100);
+
+    let observer: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && spacerRef.current) {
+      observer = new ResizeObserver(() => updatePosition());
+      observer.observe(spacerRef.current);
+      if (spacerRef.current.parentElement) {
+        observer.observe(spacerRef.current.parentElement);
+      }
+    }
+
+    window.addEventListener('resize', updatePosition);
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updatePosition);
+      if (observer) observer.disconnect();
+    };
+  }, [activeTab]);
 
   // Auto-open Auth modal when an auth notice is triggered
   useEffect(() => {
@@ -204,7 +244,26 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FEF6ED] text-[#1A265A]">
+    <div className="min-h-screen flex flex-col bg-white text-[#1A265A] relative">
+      
+      {/* Fixed Background Watermark Logo - Dynamically and precisely centered between bottom of blue header and top of search field */}
+      <div 
+        aria-hidden="true" 
+        style={logoPosition ? {
+          top: `${logoPosition.top}px`,
+          height: `${logoPosition.height}px`
+        } : undefined}
+        className={`fixed inset-x-0 pointer-events-none z-0 flex items-center justify-center select-none px-4 ${
+          !logoPosition ? 'top-[330px] h-36' : ''
+        }`}
+      >
+        <div className="w-full max-w-[85vw] sm:max-w-md md:max-w-lg lg:max-w-xl h-full flex items-center justify-center opacity-25 select-none transition-all">
+          <Logo
+            className="w-auto max-h-[82%] max-w-full object-contain select-none"
+            alt=""
+          />
+        </div>
+      </div>
       
       {/* Navigation Header */}
       <Header
@@ -215,7 +274,7 @@ const MainApp: React.FC = () => {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
         {/* AGB PAGE VIEW (Accessible across all roles) */}
         {activeTab === 'agb' && (
@@ -305,27 +364,25 @@ const MainApp: React.FC = () => {
             {activeTab === 'search' && (
               <div className="space-y-6">
                 
-                {/* Hero Feature Banner */}
-                <div className="bg-gradient-to-r from-[#1A265A] via-[#263773] to-[#50A5B1] text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#50A5B1]/30 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                  <div className="relative z-10 max-w-2xl space-y-2">
-                    <h1 className="text-2xl sm:text-4xl text-white flex items-center gap-3 font-oswald font-medium uppercase tracking-wide">
+                {/* Hero Header Banner */}
+                <div className="bg-gradient-to-r from-[#1A265A] via-[#263773] to-[#50A5B1] text-white rounded-3xl p-5 sm:p-8 shadow-sm border border-[#50A5B1]/30 relative overflow-hidden flex flex-col justify-center">
+                  <div className="relative z-10 max-w-3xl space-y-2">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl text-white flex items-center gap-3 font-oswald font-medium uppercase tracking-wide">
                       <Search className="w-8 h-8 sm:w-10 sm:h-10 text-white bg-white/10 p-2 rounded-2xl shrink-0" />
                       <span>Coaches und Angebote suchen</span>
                     </h1>
                     <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed pt-1">
-                      Die Schweizer Plattform GET A COACH.ch für verifizierte Sport- & Fitness-Coaches · Echtzeit-Kalender-Sync · Bargeldlos (TWINT/Kreditkarte).
+                      Die Schweizer Plattform GET A COACH.ch für verifizierte Sport-, Fitness- & Wellbeing-Coaches · Echtzeit-Kalender-Sync · Bargeldlos (TWINT/Kreditkarte).
                     </p>
                   </div>
-
-                  {/* Prominent Logo Banner */}
-                  <div className="relative z-10 shrink-0 flex flex-col items-center justify-center text-center min-w-[220px] w-full md:w-auto">
-                    <img
-                      src="/getacoachlogo.png"
-                      alt="GET A COACH Logo"
-                      className="h-24 sm:h-32 md:h-36 w-auto object-contain drop-shadow-md"
-                    />
-                  </div>
                 </div>
+
+                {/* Clear Spacer Window between Blue Header and Search Field (Dynamically measured reference area) */}
+                <div 
+                  ref={spacerRef}
+                  className="h-24 sm:h-32 md:h-40 lg:h-44 w-full pointer-events-none" 
+                  aria-hidden="true"
+                />
 
                 {/* Search & Filter Bar */}
                 <SearchFilterBar showMap={showMap} setShowMap={setShowMap} />
@@ -347,7 +404,7 @@ const MainApp: React.FC = () => {
                 <div id="coach-results-section" className="flex items-center justify-between">
                   <h2 className="text-xl text-[#1A265A] flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-[#F1600D]" />
-                    Verfügbare Sport-Coaches ({filteredCoaches.length})
+                    Verfügbare Coaches ({filteredCoaches.length})
                   </h2>
                   <span className="text-xs font-semibold text-[#50A5B1]">
                     Verifizierte Coaches ✓
@@ -357,7 +414,7 @@ const MainApp: React.FC = () => {
                 {/* Coaches Grid */}
                 {filteredCoaches.length === 0 ? (
                   <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-[#50A5B1]/30 shadow-md space-y-4 max-w-2xl mx-auto my-6">
-                    <div className="w-14 h-14 bg-[#FEF6ED] text-[#F1600D] rounded-2xl flex items-center justify-center mx-auto border border-[#50A5B1]/20 shadow-xs">
+                    <div className="w-14 h-14 bg-slate-50 text-[#F1600D] rounded-2xl flex items-center justify-center mx-auto border border-[#50A5B1]/20 shadow-xs">
                       <Search className="w-7 h-7 text-[#50A5B1]" />
                     </div>
                     <div className="space-y-1.5">
@@ -365,7 +422,7 @@ const MainApp: React.FC = () => {
                         Aktuell sind in dieser Region noch keine Coaches online.
                       </h3>
                       <p className="text-xs sm:text-sm text-[#1A265A]/70 max-w-md mx-auto leading-relaxed">
-                        Bist du Trainer oder Coach? Registriere dich jetzt und schalte als einer der ersten Coaches in deiner Region deine Sportangebote frei!
+                        Bist du Trainer oder Coach? Registriere dich jetzt und schalte als einer der ersten Coaches in deiner Region deine Sport-, Fitness- & Wellbeing-Angebote frei!
                       </p>
                     </div>
                     <div className="pt-2">

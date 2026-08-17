@@ -51,7 +51,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-6 animate-in fade-in zoom-in-95 duration-150">
         
         {/* Header */}
@@ -65,7 +65,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full bg-[#1A265A]/80 hover:bg-[#50A5B1]/20 text-[#FEF6ED]/80 hover:text-white transition cursor-pointer"
+            className="p-2 rounded-full bg-[#1A265A]/80 hover:bg-[#50A5B1]/20 text-white/80 hover:text-white transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -83,7 +83,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
         </div>
 
         {/* Booking Summary Box */}
-        <div className="p-5 bg-[#FEF6ED] border-b border-[#50A5B1]/20">
+        <div className="p-5 bg-slate-50 border-b border-[#50A5B1]/20">
           <div className="flex items-start justify-between gap-3">
             <div>
               <span className="bg-[#F1600D]/15 text-[#F1600D] font-semibold text-[10px] px-2 py-0.5 rounded">
@@ -178,7 +178,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
 
           {/* TWINT QR Preview Simulation */}
           {paymentMethod === 'TWINT' && (
-            <div className="bg-[#FEF6ED] border border-[#50A5B1]/30 rounded-2xl p-3.5 flex items-center gap-3">
+            <div className="bg-slate-50 border border-[#50A5B1]/30 rounded-2xl p-3.5 flex items-center gap-3">
               <QrCode className="w-12 h-12 text-[#1A265A] shrink-0 bg-white p-1 rounded-lg border border-[#50A5B1]/30" />
               <div className="text-xs text-[#1A265A]">
                 <span className="font-extrabold block">TWINT QR-Code Zahlung:</span>
@@ -189,15 +189,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
 
           {/* Pricing Breakdown */}
           <div className="bg-[#1A265A] text-white rounded-2xl p-4 space-y-2 text-xs">
-            <div className="flex justify-between text-[#FEF6ED]/80">
+            <div className="flex justify-between text-white/80">
               <span>Lektionspreis ({session.type === 'einzel' ? 'Einzel' : 'Gruppe'}):</span>
               <span className="font-bold text-white">CHF {session.price}.–</span>
             </div>
-            <div className="flex justify-between text-[#FEF6ED]/60 text-[10px]">
+            <div className="flex justify-between text-white/60 text-[10px]">
               <span>Zahlungs- & Servicegebühren (TWINT/Kreditkarte):</span>
               <span className="text-emerald-400 font-extrabold">CHF 0.00 (Inklusive)</span>
             </div>
-            <div className="flex justify-between text-[#FEF6ED]/60 text-[10px]">
+            <div className="flex justify-between text-white/60 text-[10px]">
               <span>MwSt. (8.1% Schweizer MwSt. inkl.):</span>
               <span>Inbegriffen</span>
             </div>
@@ -231,7 +231,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 bg-[#FEF6ED] border-t border-[#50A5B1]/20 flex items-center justify-between gap-3">
+        <div className="p-4 bg-slate-50 border-t border-[#50A5B1]/20 flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={onClose}

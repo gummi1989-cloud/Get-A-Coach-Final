@@ -102,7 +102,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
             <span>ERSTELLE DEINEN COACH-ZUGANG BEI <span className="whitespace-nowrap">GET A COACH.CH</span></span>
           </h1>
           <p className="text-xs sm:text-sm text-orange-50 font-medium leading-relaxed pt-1">
-            Registrierung für Coaches.
+            Registrierung für Sport-, Fitness- & Wellbeing-Coaches.
           </p>
         </div>
       </div>
@@ -132,7 +132,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
                 value={firstName}
                 onChange={e => setFirstName(e.target.value)}
                 placeholder="z.B. Svenja"
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
               />
             </div>
           </div>
@@ -151,7 +151,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
                 value={lastName}
                 onChange={e => setLastName(e.target.value)}
                 placeholder="z.B. Meier"
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
               />
             </div>
           </div>
@@ -172,7 +172,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="svenja.meier@coach.ch"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
           </div>
         </div>
@@ -192,7 +192,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
               value={phone}
               onChange={e => setPhone(e.target.value)}
               placeholder="+41 78 987 65 43"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
           </div>
           <p className="text-[11px] text-[#1A265A]/70">
@@ -216,7 +216,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Mindestens 6 Zeichen"
-              className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
             <button
               type="button"

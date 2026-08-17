@@ -182,7 +182,7 @@ export const SessionManagement: React.FC = () => {
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 required
-                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-semibold focus:outline-none focus:border-[#F1600D]"
+                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-semibold focus:outline-none focus:border-[#F1600D]"
               />
             </div>
 
@@ -197,7 +197,7 @@ export const SessionManagement: React.FC = () => {
                 placeholder="z.B. Mietmaterial (Schläger/Schuhe) nicht im Preis enthalten. Kann vor Ort bezogen werden."
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
+                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-medium text-xs focus:outline-none focus:border-[#F1600D]"
               />
             </div>
 
@@ -221,7 +221,7 @@ export const SessionManagement: React.FC = () => {
                 value={date}
                 onChange={e => setDate(e.target.value)}
                 required
-                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-semibold"
+                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-semibold"
               />
             </div>
 
@@ -233,7 +233,7 @@ export const SessionManagement: React.FC = () => {
                   value={startTime}
                   onChange={e => setStartTime(e.target.value)}
                   placeholder="10:00"
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-semibold"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-semibold"
                 />
               </div>
               <div>
@@ -243,7 +243,7 @@ export const SessionManagement: React.FC = () => {
                   value={endTime}
                   onChange={e => setEndTime(e.target.value)}
                   placeholder="11:00"
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-semibold"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-semibold"
                 />
               </div>
             </div>
@@ -278,7 +278,7 @@ export const SessionManagement: React.FC = () => {
                     max={maxParticipants}
                     value={minParticipants}
                     onChange={e => setMinParticipants(Math.max(1, Number(e.target.value)))}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-semibold"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-semibold"
                   />
                 </div>
                 <div>
@@ -289,7 +289,7 @@ export const SessionManagement: React.FC = () => {
                     max="30"
                     value={maxParticipants}
                     onChange={e => setMaxParticipants(Math.max(minParticipants, Number(e.target.value)))}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-semibold"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-semibold"
                   />
                 </div>
               </div>
@@ -306,7 +306,7 @@ export const SessionManagement: React.FC = () => {
                 step="5"
                 value={price}
                 onChange={e => setPrice(Number(e.target.value))}
-                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] text-[#1A265A] font-black"
+                className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 text-[#1A265A] font-black"
               />
               <span className="text-[10px] text-[#1A265A]/60 font-medium">Standard-Tarif überschreiben falls gewünscht.</span>
             </div>
@@ -316,7 +316,7 @@ export const SessionManagement: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowAddForm(false)}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-[#FEF6ED] cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 cursor-pointer"
             >
               Abbrechen
             </button>
@@ -343,7 +343,7 @@ export const SessionManagement: React.FC = () => {
             {mySessions.map(session => (
               <div
                 key={session.id}
-                className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 flex flex-col space-y-2 hover:border-[#50A5B1]/40 transition"
+                className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 flex flex-col space-y-2 hover:border-[#50A5B1]/40 transition"
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
@@ -434,7 +434,7 @@ export const SessionManagement: React.FC = () => {
                   value={editTitle}
                   onChange={e => setEditTitle(e.target.value)}
                   required
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
               </div>
 
@@ -447,7 +447,7 @@ export const SessionManagement: React.FC = () => {
                   rows={2}
                   value={editDescription}
                   onChange={e => setEditDescription(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-medium text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
+                  className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-medium text-xs text-[#1A265A] focus:outline-none focus:border-[#F1600D]"
                 />
               </div>
 
@@ -457,7 +457,7 @@ export const SessionManagement: React.FC = () => {
                   <select
                     value={editSport}
                     onChange={e => setEditSport(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   >
                     {currentCoach.sports.map(s => (
                       <option key={s} value={s}>{s}</option>
@@ -470,7 +470,7 @@ export const SessionManagement: React.FC = () => {
                   <select
                     value={editType}
                     onChange={e => setEditType(e.target.value as 'einzel' | 'gruppe')}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   >
                     <option value="einzel">Einzelcoaching</option>
                     <option value="gruppe">Gruppenkurs</option>
@@ -486,7 +486,7 @@ export const SessionManagement: React.FC = () => {
                     value={editDate}
                     onChange={e => setEditDate(e.target.value)}
                     required
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   />
                 </div>
 
@@ -497,7 +497,7 @@ export const SessionManagement: React.FC = () => {
                     value={editStartTime}
                     onChange={e => setEditStartTime(e.target.value)}
                     required
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   />
                 </div>
 
@@ -508,7 +508,7 @@ export const SessionManagement: React.FC = () => {
                     value={editEndTime}
                     onChange={e => setEditEndTime(e.target.value)}
                     required
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                   />
                 </div>
               </div>
@@ -522,7 +522,7 @@ export const SessionManagement: React.FC = () => {
                     step="5"
                     value={editPrice}
                     onChange={e => setEditPrice(Number(e.target.value))}
-                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-black text-[#1A265A]"
+                    className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-black text-[#1A265A]"
                   />
                 </div>
 
@@ -536,7 +536,7 @@ export const SessionManagement: React.FC = () => {
                         max={editMaxParticipants}
                         value={editMinParticipants}
                         onChange={e => setEditMinParticipants(Math.max(1, Number(e.target.value)))}
-                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                       />
                     </div>
                     <div>
@@ -547,7 +547,7 @@ export const SessionManagement: React.FC = () => {
                         max="30"
                         value={editMaxParticipants}
                         onChange={e => setEditMaxParticipants(Math.max(editMinParticipants, Number(e.target.value)))}
-                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED] font-semibold text-[#1A265A]"
+                        className="w-full p-2.5 rounded-xl border border-[#50A5B1]/30 bg-slate-50 font-semibold text-[#1A265A]"
                       />
                     </div>
                   </>
@@ -558,7 +558,7 @@ export const SessionManagement: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setEditingSession(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-[#FEF6ED] cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 cursor-pointer"
                 >
                   Abbrechen
                 </button>

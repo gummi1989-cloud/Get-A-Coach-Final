@@ -1,6 +1,6 @@
 {
   "name": "GET A COACH",
-  "description": "GET A COACH.ch – Schweizer Buchungsplattform für Sport-Coaches & Kurse. Finde deinen Coach.",
+  "description": "GET A COACH.ch – Schweizer Buchungsplattform für Sport-, Fitness- & Wellbeing-Coaches & Kurse. Finde deinen Coach.",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -138,7 +138,7 @@ export const MyRequestsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
             filter === 'all'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/20'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/20'
           }`}
         >
           Alle ({myCustomRequests.length + myPendingSlotRequests.length})
@@ -149,7 +149,7 @@ export const MyRequestsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
             filter === 'pending'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/20'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/20'
           }`}
         >
           <Clock className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -161,7 +161,7 @@ export const MyRequestsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
             filter === 'offers'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/20'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/20'
           }`}
         >
           <Sparkles className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -173,7 +173,7 @@ export const MyRequestsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
             filter === 'accepted'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/20'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/20'
           }`}
         >
           <CheckCircle2 className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -185,7 +185,7 @@ export const MyRequestsTab: React.FC = () => {
           className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer flex items-center gap-1.5 ${
             filter === 'closed'
               ? 'bg-[#1A265A] text-white shadow-xs'
-              : 'bg-white text-[#1A265A]/70 hover:bg-[#FEF6ED] border border-[#50A5B1]/20'
+              : 'bg-white text-[#1A265A]/70 hover:bg-slate-100 border border-[#50A5B1]/20'
           }`}
         >
           <Ban className="w-3.5 h-3.5 text-[#50A5B1]" />
@@ -222,7 +222,7 @@ export const MyRequestsTab: React.FC = () => {
                   </div>
 
                   {/* Countdown badge */}
-                  <div className="text-right bg-[#FEF6ED] border border-[#F1600D]/30 px-3 py-1.5 rounded-xl shrink-0">
+                  <div className="text-right bg-slate-50 border border-[#F1600D]/30 px-3 py-1.5 rounded-xl shrink-0">
                     <div className="text-[10px] text-[#1A265A]/70 font-bold uppercase">Verbleibende Zeit</div>
                     <div className="text-xs font-mono font-black text-[#F1600D]">
                       {getRemainingTime(req.reservedUntil)}
@@ -231,7 +231,7 @@ export const MyRequestsTab: React.FC = () => {
                 </div>
 
                 {/* Details list */}
-                <div className="bg-[#FEF6ED]/60 rounded-xl p-3 text-xs space-y-1.5 text-[#1A265A]/80 border border-[#50A5B1]/10">
+                <div className="bg-slate-50 rounded-xl p-3 text-xs space-y-1.5 text-[#1A265A]/80 border border-[#50A5B1]/10">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-3.5 h-3.5 text-[#50A5B1]" />
                     <span><strong>Datum & Zeit:</strong> {req.date} ({req.time})</span>
@@ -328,7 +328,7 @@ export const MyRequestsTab: React.FC = () => {
                         <span className="font-oswald text-lg font-medium text-[#1A265A] uppercase tracking-wide">
                           {req.sport}
                         </span>
-                        <span className="text-xs bg-[#FEF6ED] text-[#1A265A] font-bold px-2.5 py-0.5 rounded-md border border-[#50A5B1]/20">
+                        <span className="text-xs bg-slate-50 text-[#1A265A] font-bold px-2.5 py-0.5 rounded-md border border-[#50A5B1]/20">
                           {req.participantsCount} {req.participantsCount === 1 ? 'Person' : 'Personen'}
                         </span>
                       </div>
@@ -379,7 +379,7 @@ export const MyRequestsTab: React.FC = () => {
                       <div className="font-bold text-[#1A265A] uppercase tracking-wider text-[11px] text-[#50A5B1]">
                         Deine Anfrage-Details
                       </div>
-                      <p className="text-[#1A265A]/80 italic bg-[#FEF6ED]/70 p-3 rounded-xl border border-[#50A5B1]/10">
+                      <p className="text-[#1A265A]/80 italic bg-slate-50 p-3 rounded-xl border border-[#50A5B1]/10">
                         "{req.description}"
                       </p>
                       <div className="flex flex-wrap items-center gap-4 text-[#1A265A]/70 pt-1">
@@ -400,7 +400,7 @@ export const MyRequestsTab: React.FC = () => {
                     </div>
 
                     {/* Column 2: Offer Panel from Coach if available */}
-                    <div className="bg-[#FEF6ED] p-4 rounded-2xl border border-[#50A5B1]/20 flex flex-col justify-between space-y-3">
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 flex flex-col justify-between space-y-3">
                       <div>
                         <div className="font-extrabold text-[#1A265A] text-xs flex items-center justify-between">
                           <span>COACH-ANGEBOT</span>

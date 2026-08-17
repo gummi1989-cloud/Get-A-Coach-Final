@@ -40,7 +40,7 @@ export const INITIAL_SPORTS: SportCategory[] = [
     id: 'yoga',
     name: 'Yoga & Pilates',
     iconName: 'Sun',
-    description: 'Vinyasa Flow, Hatha Yoga, Pilates Reformer & Core Training.',
+    description: 'Vinyasa Flow, Hatha Yoga, Pilates Reformer, Atemarbeit & Wellbeing.',
     popularInCantons: ['ZH', 'LU', 'GE', 'VD', 'ZG']
   },
   {
@@ -96,7 +96,7 @@ export const INITIAL_SPORTS: SportCategory[] = [
     id: 'sonstiges',
     name: 'Sonstiges',
     iconName: 'Activity',
-    description: 'Weitere Nischen- & Spezialsportarten, Koordinationstraining und individuelle Anfragen.',
+    description: 'Weitere Nischen- & Spezialsportarten, Wellbeing-Coaching, Koordinationstraining und individuelle Anfragen.',
     popularInCantons: ['ZH', 'BE', 'LU', 'BS', 'SG', 'GE', 'VD', 'ZG']
   }
 ];

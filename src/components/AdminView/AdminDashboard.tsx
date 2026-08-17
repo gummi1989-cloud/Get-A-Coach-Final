@@ -77,7 +77,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <h1 className="text-2xl sm:text-3xl font-oswald font-medium uppercase tracking-wide mt-1">
               Plattform-Host Dashboard
             </h1>
-            <p className="text-[11px] sm:text-xs text-[#FEF6ED]/70 leading-tight">
+            <p className="text-[11px] sm:text-xs text-white/70 leading-tight">
               GET A COACH.ch · Kennzahlen & Auszahlungs-Management
             </p>
           </div>
@@ -155,7 +155,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-slate-400">
-                Aktiv registrierte Sportler:innen
+                Aktiv registrierte Kund:innen & Sportler:innen
               </p>
             </div>
 
@@ -242,7 +242,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     Provisions-Aufteilung & Plattform-Einnahmen
                   </h3>
                 </div>
-                <span className="bg-[#FEF6ED] text-[#F1600D] font-bold text-xs px-3 py-1 rounded-full border border-[#F1600D]/20">
+                <span className="bg-slate-50 text-[#F1600D] font-bold text-xs px-3 py-1 rounded-full border border-[#F1600D]/20">
                   Transparente 15% Fee
                 </span>
               </div>
@@ -290,7 +290,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
 
             {/* Quick Host Rules & Quality Control */}
-            <div className="bg-[#FEF6ED] p-6 rounded-3xl border border-[#F1600D]/20 space-y-4">
+            <div className="bg-slate-50 p-6 rounded-3xl border border-[#F1600D]/20 space-y-4">
               <div className="flex items-center gap-2 text-[#1A265A]">
                 <ShieldCheck className="w-5 h-5 text-[#F1600D]" />
                 <h3 className="font-oswald text-lg font-medium uppercase">

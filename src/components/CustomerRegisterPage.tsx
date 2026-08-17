@@ -88,7 +88,7 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
             <span>WERDE TEIL VON <span className="whitespace-nowrap">GET A COACH.CH</span></span>
           </h1>
           <p className="text-xs sm:text-sm text-sky-100 font-medium leading-relaxed pt-1">
-            Registrierung für Sportler:innen & Kursteilnehmer:innen.
+            Registrierung für Sportler:innen, Trainierende & Wellbeing-Kund:innen.
           </p>
         </div>
       </div>
@@ -117,7 +117,7 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
               value={username}
               onChange={e => setUsername(e.target.value)}
               placeholder="z.B. Marc23 oder SportyMarc"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
           </div>
         </div>
@@ -137,7 +137,7 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="marc.bieri@swissmail.ch"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
           </div>
         </div>
@@ -157,7 +157,7 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
               value={phone}
               onChange={e => setPhone(e.target.value)}
               placeholder="+41 79 123 45 67"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
           </div>
           <p className="text-[11px] text-[#1A265A]/70">
@@ -181,7 +181,7 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Mindestens 6 Zeichen"
-              className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FEF6ED]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
+              className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
             <button
               type="button"

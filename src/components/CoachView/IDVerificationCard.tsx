@@ -55,7 +55,7 @@ export const IDVerificationCard: React.FC = () => {
           </p>
         </div>
       ) : (
-        <div className="bg-[#FEF6ED] border-2 border-dashed border-[#50A5B1]/40 rounded-2xl p-8 text-center space-y-4">
+        <div className="bg-slate-50 border-2 border-dashed border-[#50A5B1]/40 rounded-2xl p-8 text-center space-y-4">
           <Upload className="w-10 h-10 text-[#50A5B1] mx-auto" />
           <div>
             <h4 className="font-extrabold text-sm text-[#1A265A]">Dokument hochladen (Pass, ID oder Trainerlizenz)</h4>
