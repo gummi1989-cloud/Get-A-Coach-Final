@@ -106,7 +106,7 @@ export const MOCK_CLIENT_USER: User = {
   name: 'Marc Bieri',
   email: 'marc.bieri@swissmail.ch',
   role: 'kunde',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+  avatar: '',
   phone: '+41 79 456 78 90',
   city: 'Zürich',
   canton: 'ZH'
@@ -117,7 +117,7 @@ export const MOCK_ADMIN_USER: User = {
   name: 'Plattform Host (Admin)',
   email: 'admin@getacoach.ch',
   role: 'admin',
-  avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+  avatar: '',
   phone: '+41 44 123 45 67',
   city: 'Zürich',
   canton: 'ZH'
@@ -128,7 +128,7 @@ export const MOCK_COACH_USER: User = {
   name: 'Svenja Meier',
   email: 'svenja.meier@swiss-padel.ch',
   role: 'coach',
-  avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+  avatar: '',
   phone: '+41 78 123 45 67',
   city: 'Zürich',
   canton: 'ZH',
@@ -173,22 +173,28 @@ export const MOCK_COACH_USER: User = {
   }
 };
 
+export const getFutureDate = (daysAhead: number): string => {
+  const d = new Date();
+  d.setDate(d.getDate() + daysAhead);
+  return d.toISOString().split('T')[0];
+};
+
 export const MOCK_COACH_PROFILE: CoachProfile = {
-  id: 'coach_1',
+  id: 'coach_svenja_test',
   userId: 'user_coach_1',
-  name: 'Svenja Meier',
-  avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+  name: 'Svenja Meier (Test-Coach)',
+  avatar: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=300&auto=format&fit=crop&q=80',
   locationName: 'Zürich',
   canton: 'ZH',
   coordinates: { lat: 47.3769, lng: 8.5417 },
-  hourlyRate: 110,
-  groupRate: 50,
+  hourlyRate: 5,
+  groupRate: 5,
   fiveSessionDiscount: 5,
   tenSessionDiscount: 10,
-  rating: 4.9,
+  rating: 4.95,
   reviewCount: 28,
-  sports: ['Padel Tennis', 'Tennis'],
-  bio: 'Diplomierte Swiss Padel Head Coach mit 8 Jahren Erfahrung. Spezialisiert auf Schlagtechnik, Taktik und Wettkampfvorbereitung.',
+  sports: ['Tennis', 'Padel Tennis', 'Fitness & Ausdauer'],
+  bio: 'Diplomierte Swiss Tennis & Padel Head Coach mit 8 Jahren Erfahrung. Ideal zum Testen der Online-Buchung und Stripe-Zahlung.',
   achievements: ['Schweizer Vizemeisterin Padel 2024', 'SGSV Zertifizierte Trainerin B'],
   certificates: [
     { id: 'cert_svenja_1', title: 'Swiss Padel Coach A', year: '2023' },
@@ -196,14 +202,81 @@ export const MOCK_COACH_PROFILE: CoachProfile = {
   ],
   isVerified: true,
   languages: ['Deutsch', 'Englisch'],
-  slogan: 'Dein Erfolg ist mein Fokus – mit Präzision & Leidenschaft zum Ziel.',
+  slogan: 'Dein persönlicher Test-Coach – Jetzt Stripe Test-Zahlung simulieren!',
   isProfileActive: true,
   featured: true,
   calendarSettings: MOCK_COACH_USER.calendarSettings
 };
 
-export const INITIAL_COACHES: CoachProfile[] = [];
-export const INITIAL_SESSIONS: SessionSlot[] = [];
+export const INITIAL_COACHES: CoachProfile[] = [MOCK_COACH_PROFILE];
+
+export const INITIAL_SESSIONS: SessionSlot[] = [
+  {
+    id: 'session_test_5chf',
+    coachId: 'coach_svenja_test',
+    coachName: 'Svenja Meier (Test-Coach)',
+    coachAvatar: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=300&auto=format&fit=crop&q=80',
+    sport: 'Fitness & Ausdauer',
+    title: '⚡ Express Test-Session (Stripe Testzahlung CHF 5.00)',
+    description: 'Perfekt zum schnellen Testen des Stripe-Zahlungsablaufs (TWINT / Kreditkarte) im Testmodus.',
+    date: getFutureDate(1),
+    startTime: '10:00',
+    endTime: '11:00',
+    locationName: 'Sportzentrum Allmend, Zürich',
+    canton: 'ZH',
+    coordinates: { lat: 47.3769, lng: 8.5417 },
+    type: 'einzel',
+    maxParticipants: 1,
+    currentParticipants: 0,
+    price: 5,
+    status: 'verfuegbar',
+    waitlist: []
+  },
+  {
+    id: 'session_test_tennis_50chf',
+    coachId: 'coach_svenja_test',
+    coachName: 'Svenja Meier (Test-Coach)',
+    coachAvatar: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=300&auto=format&fit=crop&q=80',
+    sport: 'Tennis',
+    title: '🎾 Tennis Einzeltraining: Grundschläge & Taktik (CHF 50.00)',
+    description: '1:1 Coaching auf Sandplatz inklusive Bällen, Platzmiete und individueller Videoanalyse.',
+    date: getFutureDate(2),
+    startTime: '14:00',
+    endTime: '15:00',
+    locationName: 'Tennis Club Grasshopper, Zürich',
+    canton: 'ZH',
+    coordinates: { lat: 47.3769, lng: 8.5417 },
+    type: 'einzel',
+    maxParticipants: 1,
+    currentParticipants: 0,
+    price: 50,
+    status: 'verfuegbar',
+    waitlist: []
+  },
+  {
+    id: 'session_test_padel_25chf',
+    coachId: 'coach_svenja_test',
+    coachName: 'Svenja Meier (Test-Coach)',
+    coachAvatar: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=300&auto=format&fit=crop&q=80',
+    sport: 'Padel Tennis',
+    title: '🏓 Padel Tennis Match-Strategie (CHF 25.00)',
+    description: 'Gruppentraining für 2 bis 4 Teilnehmer. Fokus auf Stellungsspiel, Bandeja und Vibora.',
+    date: getFutureDate(3),
+    startTime: '17:30',
+    endTime: '18:30',
+    locationName: 'Padel Arena Zürich-West',
+    canton: 'ZH',
+    coordinates: { lat: 47.3769, lng: 8.5417 },
+    type: 'gruppe',
+    minParticipants: 2,
+    maxParticipants: 4,
+    currentParticipants: 0,
+    price: 25,
+    status: 'verfuegbar',
+    waitlist: []
+  }
+];
+
 export const INITIAL_BOOKINGS: Booking[] = [];
 export const INITIAL_MESSAGES: ChatMessage[] = [];
 

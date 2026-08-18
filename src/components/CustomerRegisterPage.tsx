@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { User, Mail, Phone, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Phone, Lock, ArrowRight, Eye, EyeOff, Upload, Trash2 } from 'lucide-react';
+import { UserAvatar } from './UserAvatar';
 
 interface CustomerRegisterPageProps {
   onSuccess?: () => void;
@@ -20,6 +21,7 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('+41 ');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [ageConfirmed, setAgeConfirmed] = useState(false);
@@ -63,7 +65,8 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
       username: username.trim(),
       email: email.trim(),
       phone: phone.trim(),
-      password
+      password,
+      avatar: avatar.trim() || undefined
     });
 
     if (res.success) {
@@ -119,6 +122,39 @@ export const CustomerRegisterPage: React.FC<CustomerRegisterPageProps> = ({
               placeholder="z.B. Marc23 oder SportyMarc"
               className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
             />
+          </div>
+        </div>
+
+        {/* Profilbild (Optional) with Initials Fallback */}
+        <div className="p-4 rounded-2xl bg-slate-50 border border-[#50A5B1]/20 space-y-2">
+          <label className="font-extrabold text-xs text-[#1A265A] flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <Upload className="w-3.5 h-3.5 text-[#F1600D]" />
+              Profilbild (optional)
+            </span>
+            <span className="text-[10px] text-slate-500 font-semibold">Ohne Bild: Initial im Kreis</span>
+          </label>
+          <div className="flex items-center gap-4">
+            <UserAvatar
+              src={avatar}
+              name={username || 'Kund:in'}
+              role="kunde"
+              size="lg"
+              shape="circle"
+              bordered
+              borderColor="border-[#50A5B1]"
+              editable
+              onImageChange={(dataUrl) => setAvatar(dataUrl)}
+              onImageRemove={() => setAvatar('')}
+            />
+            <div className="text-xs text-[#1A265A]/70 space-y-1">
+              <p className="font-semibold text-[#1A265A]">
+                {avatar ? 'Eigenes Profilbild ausgewählt.' : 'Kein Bild hochgeladen – dein Initial wird im Kreis angezeigt.'}
+              </p>
+              <p className="text-[11px] text-slate-500">
+                Klicke auf den Kreis oder das Kamerasymbol, um ein Foto auszuwählen.
+              </p>
+            </div>
           </div>
         </div>
 

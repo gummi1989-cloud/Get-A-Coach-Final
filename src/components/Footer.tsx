@@ -38,9 +38,10 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
               Bargeldlose Zahlung
             </h4>
             <p className="text-white/80">Sichere Abrechnung in CHF:</p>
-            <div className="flex flex-wrap gap-2 pt-1">
-              <span className="bg-white/10 text-[#50A5B1] font-semibold text-xs px-3 py-1.5 rounded-lg border border-white/15">
-                TWINT
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="bg-black text-white font-semibold text-xs px-2.5 py-1 rounded-lg border border-white/20 flex items-center gap-1.5 shadow-2xs">
+                <img src="/twint_logo.png" alt="TWINT" className="h-4 w-auto object-contain" referrerPolicy="no-referrer" />
+                <span className="text-[11px] font-bold">TWINT</span>
               </span>
               <span className="bg-white/10 text-white font-medium text-xs px-3 py-1.5 rounded-lg border border-white/15">
                 Visa / Mastercard

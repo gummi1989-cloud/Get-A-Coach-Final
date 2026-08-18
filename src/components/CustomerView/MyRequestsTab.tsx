@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
+import { createAndRedirectToCheckout } from '../../services/stripeService';
+import { TwintBadgeIcon } from '../TwintLogo';
 import {
   Inbox,
   Clock,
@@ -93,9 +95,32 @@ export const MyRequestsTab: React.FC = () => {
     setWithdrawBookingId(null);
   };
 
-  const handlePayOffer = (requestId: string) => {
+  const handlePayOffer = async (requestId: string) => {
+    const targetReq = customRequests.find(r => r.id === requestId);
+    if (!targetReq || !targetReq.offerPrice) {
+      acceptAndPayCustomOffer(requestId, selectedPaymentMethod);
+      setPayingRequestId(null);
+      return;
+    }
+
+    // Call accept in state
     acceptAndPayCustomOffer(requestId, selectedPaymentMethod);
     setPayingRequestId(null);
+
+    // Redirect to Stripe checkout for real payment
+    await createAndRedirectToCheckout({
+      coachName: targetReq.coachName,
+      price: targetReq.offerPrice,
+      bookingId: targetReq.id,
+      sessionId: targetReq.id,
+      title: `Individuelles Coaching (${targetReq.sport})`,
+      sport: targetReq.sport,
+      date: targetReq.offerDate || 'Nach Vereinbarung',
+      time: targetReq.offerTime || '',
+      customerEmail: currentUser?.email || targetReq.userEmail || '',
+      customerName: currentUser?.name || targetReq.userName || '',
+      paymentMethod: selectedPaymentMethod
+    });
   };
 
   return (
@@ -453,21 +478,31 @@ export const MyRequestsTab: React.FC = () => {
                               <label className="text-[10px] font-bold text-[#1A265A] block uppercase">
                                 Zahlungsart Wählen:
                               </label>
-                              <div className="grid grid-cols-2 gap-1">
-                                {(['TWINT', 'Kreditkarte'] as const).map(pm => (
-                                  <button
-                                    key={pm}
-                                    type="button"
-                                    onClick={() => setSelectedPaymentMethod(pm)}
-                                    className={`py-1 text-[10px] font-bold rounded-lg border transition ${
-                                      selectedPaymentMethod === pm
-                                        ? 'bg-[#1A265A] text-white border-[#1A265A]'
-                                        : 'bg-slate-50 text-[#1A265A]/70 border-slate-200'
-                                    }`}
-                                  >
-                                    {pm}
-                                  </button>
-                                ))}
+                              <div className="grid grid-cols-2 gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedPaymentMethod('TWINT')}
+                                  className={`py-1.5 px-2 text-xs font-bold rounded-lg border transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                                    selectedPaymentMethod === 'TWINT'
+                                      ? 'bg-black text-white border-black shadow-xs'
+                                      : 'bg-slate-50 text-[#1A265A]/80 border-slate-200 hover:border-slate-300'
+                                  }`}
+                                >
+                                  <TwintBadgeIcon size={20} className="p-0.5" />
+                                  <span>TWINT</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedPaymentMethod('Kreditkarte')}
+                                  className={`py-1.5 px-2 text-xs font-bold rounded-lg border transition flex items-center justify-center gap-1.5 cursor-pointer ${
+                                    selectedPaymentMethod === 'Kreditkarte'
+                                      ? 'bg-[#1A265A] text-white border-[#1A265A] shadow-xs'
+                                      : 'bg-slate-50 text-[#1A265A]/80 border-slate-200 hover:border-slate-300'
+                                  }`}
+                                >
+                                  <CreditCard className="w-3.5 h-3.5" />
+                                  <span>Kreditkarte</span>
+                                </button>
                               </div>
                               <button
                                 onClick={() => handlePayOffer(req.id)}

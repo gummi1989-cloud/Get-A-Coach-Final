@@ -5,6 +5,8 @@ import { InternalCalendarManager } from './InternalCalendarManager';
 import { CalendarSyncAndExportCard } from './CalendarSyncAndExportCard';
 import { CoachPayoutReceiptModal } from './CoachPayoutReceiptModal';
 import { CreateSessionModal } from './CreateSessionModal';
+import { DeleteAccountModal } from '../DeleteAccountModal';
+import { UserAvatar } from '../UserAvatar';
 import {
   TrendingUp,
   Calendar,
@@ -27,7 +29,8 @@ import {
   XCircle,
   AlertCircle,
   Plus,
-  Eye
+  Eye,
+  Trash2
 } from 'lucide-react';
 
 interface CoachDashboardProps {
@@ -53,14 +56,15 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
     retroactiveConfirmRequest,
     createCustomOffer,
     cancelBooking,
-    sendChatMessage
+    sendChatMessage,
+    updateUserAvatar
   } = useApp();
 
   const defaultCoachProfile: CoachProfile = {
     id: 'coach_' + currentUser.id,
     userId: currentUser.id,
     name: currentUser.name || 'Coach',
-    avatar: currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    avatar: currentUser.avatar || '',
     locationName: currentUser.city || 'Zürich',
     canton: (currentUser.canton as CantonCode) || 'ZH',
     coordinates: { lat: 47.3769, lng: 8.5417 },
@@ -125,6 +129,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
 
   const [showPayoutModal, setShowPayoutModal] = useState<boolean>(false);
   const [showAddSessionModal, setShowAddSessionModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [cancellingBooking, setCancellingBooking] = useState<Booking | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string>('Juli 2026');
@@ -164,10 +169,17 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
           {/* Top Welcome Header */}
           <div className="bg-gradient-to-r from-[#F1600D] via-[#f3772b] to-[#d85208] text-white rounded-3xl p-6 sm:p-8 border border-orange-400/30 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <img
+              <UserAvatar
                 src={currentCoach.avatar}
-                alt={currentCoach.name}
-                className="w-16 h-16 rounded-2xl object-cover border-2 border-white/50 shadow-xs"
+                name={currentCoach.name}
+                role="coach"
+                size="xl"
+                shape="circle"
+                bordered
+                borderColor="border-white/50"
+                editable
+                onImageChange={(dataUrl) => updateUserAvatar(dataUrl)}
+                onImageRemove={() => updateUserAvatar('')}
               />
               <div>
                 <div className="flex items-center gap-2">
@@ -873,7 +885,7 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
 
       {/* Cancellation Confirmation Modal */}
       {cancellingBooking && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in fade-in zoom-in duration-150">
             <div className="flex items-center gap-3 text-rose-600">
               <div className="w-10 h-10 rounded-2xl bg-rose-100 flex items-center justify-center shrink-0">
@@ -922,6 +934,35 @@ export const CoachDashboard: React.FC<CoachDashboardProps> = ({
           </div>
         </div>
       )}
+
+      {/* Privacy & Danger Zone: Coach Account Deletion */}
+      <div className="bg-white rounded-3xl p-6 border border-red-200/80 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h3 className="text-base font-extrabold text-[#1A265A] flex items-center gap-2">
+              <Trash2 className="w-4 h-4 text-red-600" />
+              <span>Coach-Konto & Daten unwiderruflich löschen</span>
+            </h3>
+            <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
+              Möchtest du dein Coach-Profil und alle deine Daten endgültig von getacoach.ch entfernen? Bei Bestätigung werden dein Profil, alle Trainings-Slots, Buchungshistorien, Chat-Nachrichten und Kalendereinstellungen restlos aus dem System gelöscht.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowDeleteModal(true)}
+            className="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 font-extrabold text-xs transition flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Konto endgültig löschen</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Delete Account Modal Confirmation */}
+      <DeleteAccountModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+      />
 
       {/* Toast notification */}
       {toastMessage && (

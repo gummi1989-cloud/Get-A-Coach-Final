@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Booking, CoachProfile, CustomRequest } from '../../types';
 import { ReceiptModal } from './ReceiptModal';
+import { DeleteAccountModal } from '../DeleteAccountModal';
+import { UserAvatar } from '../UserAvatar';
 import {
   LayoutDashboard,
   Calendar,
@@ -19,7 +21,9 @@ import {
   ArrowRight,
   Plus,
   Tag,
-  Check
+  Check,
+  Camera,
+  Trash2
 } from 'lucide-react';
 
 interface CustomerDashboardProps {
@@ -43,11 +47,13 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
     favoriteCoachIds,
     cancelBooking,
     acceptAndPayCustomOffer,
-    rejectCustomRequest
+    rejectCustomRequest,
+    updateUserAvatar
   } = useApp();
 
   const [activeSubTab, setActiveSubTab] = useState<'bookings' | 'requests' | 'abos' | 'favorites'>('bookings');
   const [selectedReceiptBooking, setSelectedReceiptBooking] = useState<Booking | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Filter user specific data
   const myBookings = bookings.filter(b => b.userId === currentUser.id);
@@ -83,16 +89,49 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
-      {/* Header Banner */}
+      {/* Header Banner with Profile Avatar */}
       <div className="bg-gradient-to-r from-[#1A265A] via-[#263773] to-[#50A5B1] text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-[#50A5B1]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-oswald font-medium uppercase tracking-wide text-white flex items-center gap-3">
-            <LayoutDashboard className="w-8 h-8 sm:w-10 sm:h-10 text-white bg-white/10 p-2 rounded-2xl shrink-0" />
-            <span>{currentUser.name}</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-white/90 max-w-2xl leading-relaxed">
-            Willkommen zurück! Hier hast du all deine gebuchten Lektionen, Anfragen und gespeicherten Coaches im Blick.
-          </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+          <div className="relative group">
+            <UserAvatar
+              src={currentUser.avatar}
+              name={currentUser.name}
+              role={currentUser.role}
+              size="2xl"
+              shape="circle"
+              bordered
+              borderColor="border-white/50"
+              editable
+              onImageChange={(dataUrl) => updateUserAvatar(dataUrl)}
+              onImageRemove={() => updateUserAvatar('')}
+              title="Klicke hier, um dein Profilbild hochzuladen oder zu ändern"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h1 className="text-2xl sm:text-3xl font-oswald font-medium uppercase tracking-wide text-white">
+                {currentUser.name}
+              </h1>
+              <span className="bg-white/20 text-white font-bold text-xs px-2.5 py-0.5 rounded-full border border-white/30">
+                Kund:in
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-white/90 max-w-2xl leading-relaxed">
+              {currentUser.avatar
+                ? 'Profilbild aktiv. Klicke auf dein Bild, um es zu aktualisieren oder zu entfernen.'
+                : 'Kein Profilbild hinterlegt – dein Benutzer-Initial wird im Kreis angezeigt. Klicke auf den Kreis, um ein Foto hochzuladen.'}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-white/80">
+              <span className="bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20 font-medium">
+                {currentUser.email}
+              </span>
+              {currentUser.phone && (
+                <span className="bg-white/15 px-2.5 py-0.5 rounded-full border border-white/20 font-medium">
+                  {currentUser.phone}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -248,10 +287,14 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
             {/* Coach Info */}
             <div className="flex items-center gap-3 bg-white/10 p-3.5 rounded-2xl border border-white/15">
-              <img
+              <UserAvatar
                 src={nextBooking.coachAvatar}
-                alt={nextBooking.coachName}
-                className="w-12 h-12 rounded-full object-cover ring-2 ring-[#50A5B1]"
+                name={nextBooking.coachName}
+                role="coach"
+                size="lg"
+                shape="circle"
+                bordered
+                borderColor="border-[#50A5B1]"
               />
               <div>
                 <span className="text-[10px] text-white/70 block">Dein Coach</span>
@@ -578,7 +621,14 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
               {myFavoriteCoaches.map(coach => (
                 <div key={coach.id} className="bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/20 space-y-3 flex flex-col justify-between">
                   <div className="flex items-center gap-3">
-                    <img src={coach.avatar} alt={coach.name} className="w-12 h-12 rounded-full object-cover ring-2 ring-[#50A5B1]" />
+                    <UserAvatar
+                      src={coach.avatar}
+                      name={coach.name}
+                      role="coach"
+                      size="lg"
+                      shape="circle"
+                      isVerified={coach.isVerified}
+                    />
                     <div>
                       <h3 className="font-black text-xs text-[#1A265A]">{coach.name}</h3>
                       <p className="text-[11px] text-[#50A5B1] font-bold">{coach.sports.join(', ')}</p>
@@ -605,6 +655,35 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({
           )}
         </div>
       )}
+
+      {/* Privacy & Danger Zone: Account Deletion */}
+      <div className="bg-white rounded-3xl p-6 border border-red-200/80 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h3 className="text-base font-extrabold text-[#1A265A] flex items-center gap-2">
+              <Trash2 className="w-4 h-4 text-red-600" />
+              <span>Datenschutz & Konto löschen</span>
+            </h3>
+            <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
+              Möchtest du getacoach.ch nicht mehr nutzen? Du kannst dein Kund:innen-Konto und alle zugehörigen Daten (Buchungen, Chat-Nachrichten, Profil & Abos) jederzeit dauerhaft und vollständig aus dem System löschen.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowDeleteModal(true)}
+            className="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 font-extrabold text-xs transition flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Konto endgültig löschen</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Delete Account Modal Confirmation */}
+      <DeleteAccountModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+      />
 
       {/* Receipt Modal Popup */}
       {selectedReceiptBooking && (

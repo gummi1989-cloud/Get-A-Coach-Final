@@ -101,6 +101,19 @@
         "createdAt": { "type": "string" }
       },
       "required": ["id", "senderId", "receiverId", "text"]
+    },
+    "deletedAccounts": {
+      "title": "Deleted Accounts",
+      "description": "Log of permanently deleted accounts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string" },
+        "deletedAt": { "type": "string" }
+      },
+      "required": ["email", "deletedAt"]
     }
   },
   "firestore": {
@@ -128,6 +141,10 @@
       "chatMessages": {
         "entity": "chatMessages",
         "description": "Chat messages"
+      },
+      "deletedAccounts": {
+        "entity": "deletedAccounts",
+        "description": "Deleted accounts blacklist"
       }
     }
   }

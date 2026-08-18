@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CoachProfile } from '../../types';
 import { useApp } from '../../context/AppContext';
+import { UserAvatar } from '../UserAvatar';
 import {
   X,
   Users,
@@ -88,10 +89,15 @@ export const CustomRequestModal: React.FC<CustomRequestModalProps> = ({ coach, o
 
         {/* Coach Preview Card */}
         <div className="p-4 bg-slate-50 border-b border-[#50A5B1]/20 flex items-center gap-3">
-          <img
+          <UserAvatar
             src={coach.avatar}
-            alt={coach.name}
-            className="w-12 h-12 rounded-xl object-cover border-2 border-[#50A5B1]/30 shrink-0"
+            name={coach.name}
+            role="coach"
+            size="md"
+            shape="circle"
+            bordered
+            borderColor="border-[#50A5B1]/30"
+            isVerified={coach.isVerified}
           />
           <div className="min-w-0">
             <h4 className="font-extrabold text-[#1A265A] text-sm truncate">{coach.name}</h4>

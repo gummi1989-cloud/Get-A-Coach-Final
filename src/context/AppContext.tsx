@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { db, auth } from '../lib/firebase';
-import { clearAllDemoDataFromFirestore } from '../utils/cleanFirestore';
 import {
   collection,
   doc,
   getDoc,
   setDoc,
   updateDoc,
+  deleteDoc,
   onSnapshot
 } from 'firebase/firestore';
 import {
   signOut,
+  deleteUser,
   onAuthStateChanged
 } from 'firebase/auth';
 import {
@@ -33,12 +34,14 @@ import {
   MOCK_CLIENT_USER,
   MOCK_COACH_USER,
   MOCK_ADMIN_USER,
+  MOCK_COACH_PROFILE,
   INITIAL_COACHES,
   INITIAL_SESSIONS,
   INITIAL_BOOKINGS,
   INITIAL_MESSAGES
 } from '../data/mockData';
 import { roundCHF, calculateCoachPayout } from '../utils/financeUtils';
+import { cleanForFirestore } from '../utils/firestoreUtils';
 
 /**
  * Atomic evaluation helper to check if a 2-hour booking request has expired against current System Date
@@ -157,14 +160,18 @@ interface AppContextType {
   acceptCoachTaxDeclaration: () => void;
   filterContactDetails: (text: string) => { cleanedText: string; containsContactInfo: boolean };
   // Admin Payout Actions
-  markBookingsPaidOutUntilDate: (cutoffDate: string) => { updatedCount: number; totalPaidAmount: number; message: string };
+  markBookingsPaidOutUntilDate: (cutoffDate: string, coachId?: string) => { updatedCount: number; totalPaidAmount: number; message: string };
   toggleBookingPaidOut: (bookingId: string) => void;
+  // User Profile & Avatar actions
+  updateUserAvatar: (avatarUrl: string) => void;
+  updateUserProfile: (updatedFields: Partial<User>) => void;
   // Auth state & actions
   isAuthenticated: boolean;
-  login: (role: UserRole, emailInput?: string, passwordInput?: string) => void;
-  registerCustomer: (data: { username: string; email: string; phone: string; password?: string }) => { success: boolean; message: string };
-  registerCoach: (data: { fullName: string; email: string; phone: string; password?: string }) => { success: boolean; message: string };
+  login: (role: UserRole, emailInput?: string, passwordInput?: string) => { success: boolean; message?: string };
+  registerCustomer: (data: { username: string; email: string; phone: string; password?: string; avatar?: string }) => { success: boolean; message: string };
+  registerCoach: (data: { fullName: string; email: string; phone: string; password?: string; avatar?: string }) => { success: boolean; message: string };
   logout: () => void;
+  deleteUserAccount: (targetUserId?: string) => Promise<{ success: boolean; message: string }>;
   authNotice: string | null;
   openAuthModalWithNotice: (notice?: string) => void;
   clearAuthNotice: () => void;
@@ -172,90 +179,106 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// LocalStorage helpers for deleted accounts blacklist & registered user caching
+const getStoredDeletedEmails = (): string[] => {
+  try {
+    const raw = localStorage.getItem('getacoach_deleted_emails');
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
+
+const storeDeletedEmail = (email: string) => {
+  try {
+    const list = getStoredDeletedEmails();
+    const normalized = email.trim().toLowerCase();
+    if (normalized && !list.includes(normalized)) {
+      list.push(normalized);
+      localStorage.setItem('getacoach_deleted_emails', JSON.stringify(list));
+    }
+  } catch (e) {
+    console.warn('LocalStorage store deleted email warning:', e);
+  }
+};
+
+const removeStoredDeletedEmail = (email: string) => {
+  try {
+    const list = getStoredDeletedEmails();
+    const normalized = email.trim().toLowerCase();
+    const filtered = list.filter(e => e.toLowerCase() !== normalized);
+    localStorage.setItem('getacoach_deleted_emails', JSON.stringify(filtered));
+  } catch (e) {
+    console.warn('LocalStorage remove deleted email warning:', e);
+  }
+};
+
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User>(MOCK_CLIENT_USER);
   const [authNotice, setAuthNotice] = useState<string | null>(null);
 
-  const login = (role: UserRole, emailInput?: string, _passwordInput?: string) => {
-    setIsAuthenticated(true);
-    if (role === 'admin') {
-      setCurrentUser(MOCK_ADMIN_USER);
-    } else if (role === 'kunde') {
-      const userEmail = emailInput && emailInput.trim() ? emailInput.trim() : 'kunde@getacoach.ch';
-      let userName = 'Angemeldete/r Kund:in';
-      if (emailInput && emailInput.includes('@')) {
-        const prefix = emailInput.split('@')[0].replace(/[\._\-\+]/g, ' ');
-        userName = prefix.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      }
-      const activeCust: User = {
-        id: 'user_cust_' + Date.now(),
-        name: userName || 'Angemeldete/r Kund:in',
-        email: userEmail,
-        role: 'kunde',
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-        phone: '+41 79 123 45 67',
-        city: 'Zürich',
-        canton: 'ZH',
-        agb_accepted_at: new Date().toISOString(),
-        agb_version: '1.0'
-      };
-      setCurrentUser(activeCust);
-    } else {
-      const userEmail = emailInput && emailInput.trim() ? emailInput.trim() : 'coach@getacoach.ch';
-      let coachName = 'Angemeldete/r Coach';
-      if (emailInput && emailInput.includes('@')) {
-        const prefix = emailInput.split('@')[0].replace(/[\._\-\+]/g, ' ');
-        coachName = prefix.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      }
-      const existingCoach = coaches.find(c => c.userId === userEmail || c.name.toLowerCase() === coachName.toLowerCase());
-      const coachUserId = existingCoach?.userId || 'user_coach_' + Date.now();
-      const activeCoach: User = {
-        id: coachUserId,
-        name: existingCoach?.name || coachName,
-        email: userEmail,
-        role: 'coach',
-        avatar: existingCoach?.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
-        phone: '+41 79 123 45 67',
-        city: existingCoach?.locationName || 'Zürich',
-        canton: existingCoach?.canton || 'ZH',
-        isVerified: existingCoach?.isVerified ?? false,
-        verificationStatus: existingCoach?.isVerified ? 'verifiziert' : 'ausstehend',
-        agb_accepted_at: new Date().toISOString(),
-        agb_version: '1.0',
-        coach_tax_declaration_accepted_at: new Date().toISOString()
-      };
-      setCurrentUser(activeCoach);
-    }
-    setAuthNotice(null);
-  };
+  // Application Data States
+  const [coaches, setCoaches] = useState<CoachProfile[]>(INITIAL_COACHES);
+  const [sessions, setSessions] = useState<SessionSlot[]>(INITIAL_SESSIONS);
+  const [bookings, setBookings] = useState<Booking[]>(INITIAL_BOOKINGS);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const [customRequests, setCustomRequests] = useState<CustomRequest[]>([]);
+  const [userAbos, setUserAbos] = useState<UserAbo[]>([]);
+  const [userVouchers, setUserVouchers] = useState<UserVoucher[]>([]);
+  const [deletedEmails, setDeletedEmails] = useState<string[]>(getStoredDeletedEmails);
+  const [registeredUsers, setRegisteredUsers] = useState<User[]>([]);
 
-  // Permanently wipe any residual demo data from Firestore and establish clean baseline
+  // Seed test coach and test offers into Firestore for simulation and testing
   useEffect(() => {
-    clearAllDemoDataFromFirestore().catch((err) => {
-      console.warn('Error during Firestore cleanup:', err);
-    });
+    const seedTestCoachAndSessions = async () => {
+      try {
+        const coachDocRef = doc(db, 'coaches', MOCK_COACH_PROFILE.id);
+        const coachSnap = await getDoc(coachDocRef);
+        if (!coachSnap.exists()) {
+          await setDoc(coachDocRef, cleanForFirestore(MOCK_COACH_PROFILE), { merge: true });
+        }
+
+        for (const session of INITIAL_SESSIONS) {
+          const sessionDocRef = doc(db, 'sessions', session.id);
+          const sessionSnap = await getDoc(sessionDocRef);
+          if (!sessionSnap.exists()) {
+            await setDoc(sessionDocRef, cleanForFirestore(session), { merge: true });
+          }
+        }
+      } catch (err) {
+        console.warn('Note on Firestore test seeding:', err);
+      }
+    };
+
+    seedTestCoachAndSessions();
   }, []);
 
-  // Firestore real-time listeners (Clean production baseline)
+  // Firestore real-time listeners
   useEffect(() => {
     const unsubCoaches = onSnapshot(collection(db, 'coaches'), (snapshot) => {
       if (snapshot.empty) {
-        setCoaches([]);
+        setCoaches(INITIAL_COACHES);
       } else {
         const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as CoachProfile));
-        setCoaches(loaded);
+        setCoaches(loaded.length > 0 ? loaded : INITIAL_COACHES);
       }
-    }, (e) => console.warn('Firestore coaches listener fallback:', e));
+    }, (e) => {
+      console.warn('Firestore coaches listener fallback:', e);
+      setCoaches(INITIAL_COACHES);
+    });
 
     const unsubSessions = onSnapshot(collection(db, 'sessions'), (snapshot) => {
       if (snapshot.empty) {
-        setSessions([]);
+        setSessions(INITIAL_SESSIONS);
       } else {
         const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as SessionSlot));
-        setSessions(loaded);
+        setSessions(loaded.length > 0 ? loaded : INITIAL_SESSIONS);
       }
-    }, (e) => console.warn('Firestore sessions listener fallback:', e));
+    }, (e) => {
+      console.warn('Firestore sessions listener fallback:', e);
+      setSessions(INITIAL_SESSIONS);
+    });
 
     const unsubBookings = onSnapshot(collection(db, 'bookings'), (snapshot) => {
       if (snapshot.empty) {
@@ -284,12 +307,30 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       }
     }, (e) => console.warn('Firestore requests listener fallback:', e));
 
+    const unsubDeleted = onSnapshot(collection(db, 'deletedAccounts'), (snapshot) => {
+      if (!snapshot.empty) {
+        const emailsFromDb = snapshot.docs.map(d => (d.data().email || d.id || '').toLowerCase()).filter(Boolean);
+        setDeletedEmails(prev => Array.from(new Set([...prev, ...emailsFromDb])));
+      }
+    }, (e) => console.warn('Firestore deletedAccounts listener fallback:', e));
+
+    const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
+      if (snapshot.empty) {
+        setRegisteredUsers([]);
+      } else {
+        const loaded = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as User));
+        setRegisteredUsers(loaded);
+      }
+    }, (e) => console.warn('Firestore users listener fallback:', e));
+
     return () => {
       unsubCoaches();
       unsubSessions();
       unsubBookings();
       unsubChat();
       unsubRequests();
+      unsubDeleted();
+      unsubUsers();
     };
   }, []);
 
@@ -311,7 +352,115 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return () => unsubAuth();
   }, []);
 
-  const registerCustomer = (data: { username: string; email: string; phone: string; password?: string }) => {
+  const login = (role: UserRole, emailInput?: string, _passwordInput?: string): { success: boolean; message?: string } => {
+    const normalizedEmail = (emailInput || '').trim().toLowerCase();
+
+    // Check if account was deleted
+    const isDeleted = (normalizedEmail && deletedEmails.includes(normalizedEmail)) || 
+                      (normalizedEmail && getStoredDeletedEmails().includes(normalizedEmail));
+    if (isDeleted) {
+      return {
+        success: false,
+        message: 'Dieses Konto wurde dauerhaft aus dem System gelöscht. Eine Anmeldung ist nicht mehr möglich. Bitte registriere dich bei Bedarf neu.'
+      };
+    }
+
+    if (role === 'admin') {
+      setIsAuthenticated(true);
+      setCurrentUser(MOCK_ADMIN_USER);
+      setAuthNotice(null);
+      return { success: true };
+    }
+
+    if (role === 'coach') {
+      // Find matching coach by userId, id or name
+      const existingCoach = coaches.find(c =>
+        (c.userId && c.userId.toLowerCase() === normalizedEmail) ||
+        (c.id && c.id.toLowerCase() === normalizedEmail) ||
+        c.name.toLowerCase() === normalizedEmail
+      );
+      const userCoach = registeredUsers.find(u => u.role === 'coach' && u.email.toLowerCase() === normalizedEmail);
+
+      // If neither coach profile nor coach user doc exists and email is not default demo
+      if (!existingCoach && !userCoach && normalizedEmail !== 'coach@getacoach.ch' && normalizedEmail !== '') {
+        return {
+          success: false,
+          message: 'Kein aktives Coach-Konto mit dieser E-Mail-Adresse gefunden. Falls du dein Konto gelöscht hast, ist keine Anmeldung mehr möglich. Bitte registriere dich bei Bedarf neu.'
+        };
+      }
+
+      const coachUserId = existingCoach?.userId || userCoach?.id || 'user_coach_' + Date.now();
+      let coachName = existingCoach?.name || userCoach?.name || 'Angemeldete/r Coach';
+      if (!coachName || coachName === 'Angemeldete/r Coach') {
+        if (emailInput && emailInput.includes('@')) {
+          const prefix = emailInput.split('@')[0].replace(/[\._\-\+]/g, ' ');
+          coachName = prefix.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        }
+      }
+
+      const activeCoach: User = {
+        id: coachUserId,
+        name: coachName,
+        email: emailInput && emailInput.trim() ? emailInput.trim() : 'coach@getacoach.ch',
+        role: 'coach',
+        avatar: existingCoach?.avatar || userCoach?.avatar || '',
+        phone: userCoach?.phone || '+41 79 123 45 67',
+        city: existingCoach?.locationName || userCoach?.city || 'Zürich',
+        canton: existingCoach?.canton || userCoach?.canton || 'ZH',
+        isVerified: existingCoach?.isVerified ?? false,
+        verificationStatus: existingCoach?.isVerified ? 'verifiziert' : 'ausstehend',
+        agb_accepted_at: userCoach?.agb_accepted_at || new Date().toISOString(),
+        agb_version: '1.0',
+        coach_tax_declaration_accepted_at: new Date().toISOString()
+      };
+
+      setIsAuthenticated(true);
+      setCurrentUser(activeCoach);
+      setAuthNotice(null);
+      return { success: true };
+    }
+
+    // Role: 'kunde'
+    const existingCust = registeredUsers.find(u => u.role === 'kunde' && u.email.toLowerCase() === normalizedEmail);
+    const userEmail = emailInput && emailInput.trim() ? emailInput.trim() : 'kunde@getacoach.ch';
+
+    let userName = existingCust?.name || 'Angemeldete/r Kund:in';
+    if (!existingCust && emailInput && emailInput.includes('@')) {
+      const prefix = emailInput.split('@')[0].replace(/[\._\-\+]/g, ' ');
+      userName = prefix.split(' ').filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+
+    const activeCust: User = {
+      id: existingCust?.id || ('user_cust_' + Date.now()),
+      name: userName || 'Angemeldete/r Kund:in',
+      email: userEmail,
+      role: 'kunde',
+      avatar: existingCust?.avatar || '',
+      phone: existingCust?.phone || '+41 79 123 45 67',
+      city: existingCust?.city || 'Zürich',
+      canton: existingCust?.canton || 'ZH',
+      agb_accepted_at: existingCust?.agb_accepted_at || new Date().toISOString(),
+      agb_version: '1.0'
+    };
+
+    if (!existingCust && userEmail) {
+      setDoc(doc(db, 'users', activeCust.id), activeCust).catch(() => {});
+    }
+
+    setIsAuthenticated(true);
+    setCurrentUser(activeCust);
+    setAuthNotice(null);
+    return { success: true };
+  };
+
+  const registerCustomer = (data: { username: string; email: string; phone: string; password?: string; avatar?: string }) => {
+    const normalizedEmail = data.email.trim().toLowerCase();
+    // Unblock from deleted blacklist if registering afresh
+    removeStoredDeletedEmail(normalizedEmail);
+    setDeletedEmails(prev => prev.filter(e => e.toLowerCase() !== normalizedEmail));
+    const sanitizedKey = normalizedEmail.replace(/[\/\.#$\[\]]/g, '_');
+    deleteDoc(doc(db, 'deletedAccounts', sanitizedKey)).catch(() => {});
+
     const formattedPhone = data.phone.trim().startsWith('+') ? data.phone.trim() : `+41 ${data.phone.trim().replace(/^0/, '')}`;
     const newUser: User = {
       id: 'user_cust_' + Date.now(),
@@ -321,7 +470,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       city: 'Zürich',
       canton: 'ZH',
       role: 'kunde',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      avatar: data.avatar || '',
       agb_accepted_at: new Date().toISOString(),
       agb_version: '1.0'
     };
@@ -330,12 +479,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setAuthNotice(null);
 
     // Save user to Firestore asynchronously
-    setDoc(doc(db, 'users', newUser.id), newUser).catch(err => console.error('Error saving user to Firestore:', err));
+    setDoc(doc(db, 'users', newUser.id), cleanForFirestore(newUser)).catch(err => console.error('Error saving user to Firestore:', err));
 
     return { success: true, message: 'Erfolgreich als Kunde registriert!' };
   };
 
-  const registerCoach = (data: { fullName: string; email: string; phone: string; password?: string }) => {
+  const registerCoach = (data: { fullName: string; email: string; phone: string; password?: string; avatar?: string }) => {
+    const normalizedEmail = data.email.trim().toLowerCase();
+    // Unblock from deleted blacklist if registering afresh
+    removeStoredDeletedEmail(normalizedEmail);
+    setDeletedEmails(prev => prev.filter(e => e.toLowerCase() !== normalizedEmail));
+    const sanitizedKey = normalizedEmail.replace(/[\/\.#$\[\]]/g, '_');
+    deleteDoc(doc(db, 'deletedAccounts', sanitizedKey)).catch(() => {});
+
     const coachUserId = 'user_coach_' + Date.now();
     const formattedPhone = data.phone.trim().startsWith('+') ? data.phone.trim() : `+41 ${data.phone.trim().replace(/^0/, '')}`;
     const newUser: User = {
@@ -347,7 +503,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       canton: 'ZH',
       role: 'coach',
       isVerified: false,
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+      avatar: data.avatar || '',
       agb_accepted_at: new Date().toISOString(),
       agb_version: '1.0',
       coach_tax_declaration_accepted_at: new Date().toISOString()
@@ -384,8 +540,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setAuthNotice(null);
 
     // Save user and coach profile to Firestore
-    setDoc(doc(db, 'users', newUser.id), newUser).catch(err => console.error('Error saving coach user to Firestore:', err));
-    setDoc(doc(db, 'coaches', newCoachProfile.id), newCoachProfile).catch(err => console.error('Error saving coach profile to Firestore:', err));
+    setDoc(doc(db, 'users', newUser.id), cleanForFirestore(newUser)).catch(err => console.error('Error saving coach user to Firestore:', err));
+    setDoc(doc(db, 'coaches', newCoachProfile.id), cleanForFirestore(newCoachProfile)).catch(err => console.error('Error saving coach profile to Firestore:', err));
 
     return { success: true, message: 'Stufe 1 Account-Erstellung erfolgreich!' };
   };
@@ -404,12 +560,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const clearAuthNotice = () => {
     setAuthNotice(null);
   };
-  const [coaches, setCoaches] = useState<CoachProfile[]>(INITIAL_COACHES);
-  const [sessions, setSessions] = useState<SessionSlot[]>(INITIAL_SESSIONS);
-  const [bookings, setBookings] = useState<Booking[]>(INITIAL_BOOKINGS);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
-  const [customRequests, setCustomRequests] = useState<CustomRequest[]>([]);
-  const [userAbos, setUserAbos] = useState<UserAbo[]>([]);
 
   // Contact details filter for internal messaging protection (Anti-Evasion Filter)
   const filterContactDetails = (text: string) => {
@@ -504,7 +654,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       ...extra
     };
     setChatMessages(prev => [...prev, newMsg]);
-    setDoc(doc(db, 'chatMessages', newMsg.id), newMsg).catch(e => console.error('Error saving chat message:', e));
+    setDoc(doc(db, 'chatMessages', newMsg.id), cleanForFirestore(newMsg)).catch(e => console.error('Error saving chat message:', e));
   };
 
   // Periodically check and auto-expire pending 2-hour booking requests
@@ -589,10 +739,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       userId: currentUser.id,
       userName: currentUser.name,
       userEmail: currentUser.email,
-      userPhone: currentUser.phone,
+      userPhone: currentUser.phone || '',
       coachId: session.coachId,
       coachName: session.coachName,
-      coachAvatar: session.coachAvatar,
+      coachAvatar: session.coachAvatar || '',
       sport: session.sport,
       sessionTitle: session.title,
       date: session.date,
@@ -601,21 +751,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       canton: session.canton,
       pricePaid: finalPrice,
       paymentMethod,
-      twintRefId: twintRef,
+      twintRefId: twintRef || undefined,
       paymentStatus: 'Bezahlt',
       bookingDate: requestedAt,
       status: 'bestaetigt',
       requestStatus: 'anfrage_ausstehend',
       requestedAt,
       reservedUntil,
-      pdfAttachment: pdfAttachment || session.pdfAttachment,
+      pdfAttachment: pdfAttachment || session.pdfAttachment || undefined,
       clientRated: false,
       coachRated: false,
       blindRatingStatus: 'ausstehend'
     };
 
     setBookings(prev => [newBooking, ...prev]);
-    setDoc(doc(db, 'bookings', newBooking.id), newBooking).catch(e => console.error('Error saving booking to Firestore:', e));
+    setDoc(doc(db, 'bookings', newBooking.id), cleanForFirestore(newBooking)).catch(e => console.error('Error saving booking to Firestore:', e));
 
     // Update Session reservation timer
     setSessions(prev =>
@@ -818,7 +968,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     setCustomRequests(prev => [newReq, ...prev]);
-    setDoc(doc(db, 'customRequests', newReq.id), newReq).catch(e => console.error('Error saving custom request to Firestore:', e));
+    setDoc(doc(db, 'customRequests', newReq.id), cleanForFirestore(newReq)).catch(e => console.error('Error saving custom request to Firestore:', e));
 
     const targetCoach = coaches.find(c => c.id === requestData.coachId);
     const coachUserId = targetCoach?.userId || 'user_coach_1';
@@ -963,7 +1113,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       userPhone: targetReq.userPhone,
       coachId: targetReq.coachId,
       coachName: targetReq.coachName,
-      coachAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+      coachAvatar: coaches.find(c => c.id === targetReq.coachId)?.avatar || '',
       sport: targetReq.sport,
       sessionTitle: `Individuelles Coaching (${targetReq.participantsCount} Pers.)`,
       date: targetReq.offerDate || 'Nach Vereinbarung',
@@ -972,20 +1122,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       canton: 'ZH',
       pricePaid: targetReq.offerPrice,
       paymentMethod,
-      twintRefId: twintRef,
+      twintRefId: twintRef || undefined,
       paymentStatus: 'Bezahlt',
       bookingDate: new Date().toISOString(),
       status: 'bestaetigt',
       requestStatus: 'bestaetigt',
       isCustomOffer: true,
       customRequestId: requestId,
-      pdfAttachment: targetReq.pdfAttachment,
+      pdfAttachment: targetReq.pdfAttachment || undefined,
       clientRated: false,
       coachRated: false,
       blindRatingStatus: 'ausstehend'
     };
 
     setBookings(prev => [newBooking, ...prev]);
+    setDoc(doc(db, 'bookings', newBooking.id), cleanForFirestore(newBooking)).catch(e => console.error('Error saving custom booking to Firestore:', e));
 
     const targetCoach = coaches.find(c => c.id === targetReq.coachId);
     const coachUserId = targetCoach?.userId || 'user_coach_1';
@@ -1043,7 +1194,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const attachPdfToSession = (sessionId: string, pdf: PdfAttachment) => {
     setSessions(prev => prev.map(s => (s.id === sessionId ? { ...s, pdfAttachment: pdf } : s)));
   };
-  const [userVouchers] = useState<UserVoucher[]>([]);
 
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     {
@@ -1131,7 +1281,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         email: currentUser.email || 'coach@getacoach.ch',
         role: 'coach',
         phone: currentUser.phone || '+41 79 123 45 67',
-        avatar: existingCoach?.avatar || currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+        avatar: existingCoach?.avatar || currentUser.avatar || '',
         city: existingCoach?.locationName || currentUser.city || 'Zürich',
         canton: existingCoach?.canton || (currentUser.canton as CantonCode) || 'ZH',
         isVerified: existingCoach?.isVerified || false,
@@ -1531,7 +1681,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     setSessions(prev => [newSession, ...prev]);
-    setDoc(doc(db, 'sessions', newSession.id), newSession).catch(e => console.error('Error creating session in Firestore:', e));
+    setDoc(doc(db, 'sessions', newSession.id), cleanForFirestore(newSession)).catch(e => console.error('Error creating session in Firestore:', e));
   };
 
   // Update existing session by Coach
@@ -1596,6 +1746,38 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setNotifications([]);
   };
 
+  const updateUserAvatar = (avatarUrl: string) => {
+    setCurrentUser(prev => {
+      const updated = { ...prev, avatar: avatarUrl };
+      if (updated.id) {
+        updateDoc(doc(db, 'users', updated.id), { avatar: avatarUrl }).catch(e =>
+          console.warn('Error updating user avatar in Firestore:', e)
+        );
+      }
+      return updated;
+    });
+
+    // If logged in user is a coach, also sync their CoachProfile avatar
+    if (currentUser.role === 'coach') {
+      const targetCoach = coaches.find(c => c.userId === currentUser.id || c.id === currentUser.id);
+      if (targetCoach) {
+        updateCoachProfile(targetCoach.id, { avatar: avatarUrl });
+      }
+    }
+  };
+
+  const updateUserProfile = (updatedFields: Partial<User>) => {
+    setCurrentUser(prev => {
+      const updated = { ...prev, ...updatedFields };
+      if (updated.id) {
+        updateDoc(doc(db, 'users', updated.id), updatedFields).catch(e =>
+          console.warn('Error updating user profile in Firestore:', e)
+        );
+      }
+      return updated;
+    });
+  };
+
   const updateCoachProfile = (coachId: string, updatedFields: Partial<CoachProfile>) => {
     setCoaches(prev =>
       prev.map(c => (c.id === coachId ? { ...c, ...updatedFields } : c))
@@ -1614,7 +1796,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     ]);
   };
 
-  const markBookingsPaidOutUntilDate = (cutoffDate: string) => {
+  const markBookingsPaidOutUntilDate = (cutoffDate: string, coachId?: string) => {
     if (currentUser.role !== 'admin') {
       return {
         updatedCount: 0,
@@ -1626,21 +1808,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     let updatedCount = 0;
     let totalPaidAmount = 0;
     const nowIso = new Date().toISOString().split('T')[0];
+    const updatedBookingIds: string[] = [];
 
     setBookings(prevBookings => {
       return prevBookings.map(b => {
-        if (b.status === 'abgeschlossen' && !b.isPaidOut && b.date <= cutoffDate) {
+        const isEligibleStatus = b.status === 'abgeschlossen' || b.status === 'bestaetigt';
+        const matchesCoach = !coachId || b.coachId === coachId;
+        if (isEligibleStatus && !b.isPaidOut && b.date <= cutoffDate && matchesCoach) {
           updatedCount++;
           const netAmount = b.coachCompensation ?? calculateCoachPayout(b.pricePaid);
           totalPaidAmount += netAmount;
+          updatedBookingIds.push(b.id);
           return {
             ...b,
+            status: 'abgeschlossen',
             isPaidOut: true,
             paidOutAt: nowIso
           };
         }
         return b;
       });
+    });
+
+    // Sync Firestore records
+    updatedBookingIds.forEach(id => {
+      updateDoc(doc(db, 'bookings', id), {
+        status: 'abgeschlossen',
+        isPaidOut: true,
+        paidOutAt: nowIso
+      }).catch(e => console.warn('Firestore booking payout update warning:', e));
     });
 
     const roundedTotal = roundCHF(totalPaidAmount);
@@ -1661,19 +1857,163 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
 
     const nowIso = new Date().toISOString().split('T')[0];
+    let nextPaidState = false;
     setBookings(prevBookings =>
       prevBookings.map(b => {
         if (b.id === bookingId) {
-          const nextPaid = !b.isPaidOut;
+          nextPaidState = !b.isPaidOut;
           return {
             ...b,
-            isPaidOut: nextPaid,
-            paidOutAt: nextPaid ? nowIso : undefined
+            isPaidOut: nextPaidState,
+            paidOutAt: nextPaidState ? nowIso : undefined
           };
         }
         return b;
       })
     );
+
+    updateDoc(doc(db, 'bookings', bookingId), {
+      isPaidOut: nextPaidState,
+      paidOutAt: nextPaidState ? nowIso : null
+    }).catch(e => console.warn('Firestore toggle booking payout update warning:', e));
+  };
+
+  const deleteUserAccount = async (targetUserId?: string): Promise<{ success: boolean; message: string }> => {
+    const userIdToDelete = targetUserId || currentUser.id;
+    const targetEmail = (currentUser.email || '').trim().toLowerCase();
+    const userRole = currentUser.role;
+    const isCoach = userRole === 'coach' || coaches.some(c => c.userId === userIdToDelete || c.id === userIdToDelete);
+
+    try {
+      // 1. Mark account as permanently deleted in LocalStorage and Firestore
+      if (targetEmail) {
+        storeDeletedEmail(targetEmail);
+        setDeletedEmails(prev => Array.from(new Set([...prev, targetEmail])));
+        const sanitizedKey = targetEmail.replace(/[\/\.#$\[\]]/g, '_');
+        await setDoc(doc(db, 'deletedAccounts', sanitizedKey), {
+          id: sanitizedKey,
+          email: targetEmail,
+          userId: userIdToDelete,
+          role: userRole,
+          deletedAt: new Date().toISOString()
+        }).catch(e => console.warn('Firestore deletedAccounts record error:', e));
+      }
+
+      // 2. Delete user from 'users' collection in Firestore
+      if (userIdToDelete) {
+        await deleteDoc(doc(db, 'users', userIdToDelete)).catch(e => console.warn('User doc delete warning:', e));
+      }
+      setRegisteredUsers(prev => prev.filter(u => u.id !== userIdToDelete && u.email.toLowerCase() !== targetEmail));
+
+      if (isCoach) {
+        // Find all coach profiles matching this user or email
+        const coachProfilesToDelete = coaches.filter(
+          c => c.userId === userIdToDelete || c.id === userIdToDelete || (c.userId && c.userId.toLowerCase() === targetEmail)
+        );
+        const coachProfileIds = coachProfilesToDelete.map(c => c.id);
+
+        // Delete coach documents from Firestore
+        for (const cp of coachProfilesToDelete) {
+          await deleteDoc(doc(db, 'coaches', cp.id)).catch(e => console.warn('Coach doc delete warning:', e));
+        }
+
+        // Delete all sessions for these coaches
+        const sessionsToDelete = sessions.filter(s => coachProfileIds.includes(s.coachId));
+        for (const s of sessionsToDelete) {
+          await deleteDoc(doc(db, 'sessions', s.id)).catch(e => console.warn('Session delete warning:', e));
+        }
+
+        // Delete all bookings for these coaches or user
+        const bookingsToDelete = bookings.filter(b => coachProfileIds.includes(b.coachId) || b.userId === userIdToDelete);
+        for (const b of bookingsToDelete) {
+          await deleteDoc(doc(db, 'bookings', b.id)).catch(e => console.warn('Booking delete warning:', e));
+        }
+
+        // Delete all custom requests for these coaches or user
+        const requestsToDelete = customRequests.filter(r => coachProfileIds.includes(r.coachId) || r.userId === userIdToDelete);
+        for (const r of requestsToDelete) {
+          await deleteDoc(doc(db, 'customRequests', r.id)).catch(e => console.warn('Request delete warning:', e));
+        }
+
+        // Delete all chat messages involving this coach
+        const chatMessagesToDelete = chatMessages.filter(
+          m => coachProfileIds.includes(m.coachId) || m.senderId === userIdToDelete || m.receiverId === userIdToDelete || m.userId === userIdToDelete
+        );
+        for (const m of chatMessagesToDelete) {
+          await deleteDoc(doc(db, 'chatMessages', m.id)).catch(e => console.warn('Chat delete warning:', e));
+        }
+
+        // Update in-memory local state
+        setCoaches(prev => prev.filter(c => !coachProfileIds.includes(c.id) && c.userId !== userIdToDelete && c.userId?.toLowerCase() !== targetEmail));
+        setSessions(prev => prev.filter(s => !coachProfileIds.includes(s.coachId)));
+        setBookings(prev => prev.filter(b => !coachProfileIds.includes(b.coachId) && b.userId !== userIdToDelete));
+        setCustomRequests(prev => prev.filter(r => !coachProfileIds.includes(r.coachId) && r.userId !== userIdToDelete));
+        setChatMessages(prev => prev.filter(m => !coachProfileIds.includes(m.coachId) && m.senderId !== userIdToDelete && m.receiverId !== userIdToDelete && m.userId !== userIdToDelete));
+
+      } else {
+        // Customer Account Deletion
+        // Delete all customer bookings
+        const bookingsToDelete = bookings.filter(b => b.userId === userIdToDelete);
+        for (const b of bookingsToDelete) {
+          await deleteDoc(doc(db, 'bookings', b.id)).catch(e => console.warn('Booking delete warning:', e));
+        }
+
+        // Delete all customer custom requests
+        const requestsToDelete = customRequests.filter(r => r.userId === userIdToDelete);
+        for (const r of requestsToDelete) {
+          await deleteDoc(doc(db, 'customRequests', r.id)).catch(e => console.warn('Request delete warning:', e));
+        }
+
+        // Delete all chat messages involving this customer
+        const chatMessagesToDelete = chatMessages.filter(
+          m => m.userId === userIdToDelete || m.senderId === userIdToDelete || m.receiverId === userIdToDelete
+        );
+        for (const m of chatMessagesToDelete) {
+          await deleteDoc(doc(db, 'chatMessages', m.id)).catch(e => console.warn('Chat delete warning:', e));
+        }
+
+        // Remove from session waitlists
+        setSessions(prev =>
+          prev.map(s => ({
+            ...s,
+            waitlist: s.waitlist.filter(w => w.userId !== userIdToDelete)
+          }))
+        );
+
+        // Update in-memory local state
+        setBookings(prev => prev.filter(b => b.userId !== userIdToDelete));
+        setCustomRequests(prev => prev.filter(r => r.userId !== userIdToDelete));
+        setChatMessages(prev => prev.filter(m => m.userId !== userIdToDelete && m.senderId !== userIdToDelete && m.receiverId !== userIdToDelete));
+        setUserAbos([]);
+        setUserVouchers([]);
+      }
+
+      // Delete or sign out Firebase Auth user
+      if (auth.currentUser) {
+        try {
+          await deleteUser(auth.currentUser);
+        } catch (authErr) {
+          console.warn('Firebase Auth deleteUser (fallback to signOut):', authErr);
+          await signOut(auth).catch(() => {});
+        }
+      }
+
+      // Reset authentication & current user
+      setIsAuthenticated(false);
+      setCurrentUser(MOCK_CLIENT_USER);
+      setAuthNotice(null);
+
+      return {
+        success: true,
+        message: 'Dein Konto und alle zugehörigen Daten wurden erfolgreich und unwiderruflich aus dem System gelöscht.'
+      };
+    } catch (error: any) {
+      console.error('Error during full account deletion:', error);
+      return {
+        success: false,
+        message: error?.message || 'Fehler beim Löschen des Kontos. Bitte versuche es erneut.'
+      };
+    }
   };
 
   return (
@@ -1741,11 +2081,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         acceptCoachTaxDeclaration,
         markBookingsPaidOutUntilDate,
         toggleBookingPaidOut,
+        updateUserAvatar,
+        updateUserProfile,
         isAuthenticated,
         login,
         registerCustomer,
         registerCoach,
         logout,
+        deleteUserAccount,
         authNotice,
         openAuthModalWithNotice,
         clearAuthNotice

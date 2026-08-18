@@ -39,11 +39,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       return;
     }
     setLoginError(null);
+    const res = login(selectedRole, loginEmail.trim(), loginPassword);
+    if (res && !res.success) {
+      setLoginError(res.message || 'Anmeldung fehlgeschlagen.');
+      return;
+    }
     acceptAgb("1.0");
     if (selectedRole === 'coach') {
       acceptCoachTaxDeclaration();
     }
-    login(selectedRole, loginEmail.trim(), loginPassword);
     if (onSuccessRole) {
       onSuccessRole(selectedRole);
     }

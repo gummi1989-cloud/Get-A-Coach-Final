@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { createDefaultCoachProfile } from '../utils/coachUtils';
+import { UserAvatar } from './UserAvatar';
 import {
   X,
   Send,
@@ -142,10 +143,15 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
         {/* Header */}
         <div className="bg-[#1A265A] text-white p-4 flex items-center justify-between border-b border-[#50A5B1]/20 relative">
           <div className="flex items-center gap-3">
-            <img
+            <UserAvatar
               src={targetCoach.avatar}
-              alt={targetCoach.name}
-              className="w-11 h-11 rounded-xl object-cover border-2 border-[#50A5B1]/40 shrink-0"
+              name={targetCoach.name}
+              role="coach"
+              size="md"
+              shape="circle"
+              bordered
+              borderColor="border-[#50A5B1]/40"
+              isVerified={targetCoach.isVerified}
             />
             <div className="relative">
               <div className="flex items-center gap-1.5">
@@ -207,7 +213,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ onClose, targetCoachId =
                         c.id === targetCoach.id ? 'bg-[#50A5B1]/10 text-[#1A265A] font-bold' : 'hover:bg-slate-50'
                       }`}
                     >
-                      <img src={c.avatar} alt={c.name} className="w-8 h-8 rounded-lg object-cover" />
+                      <UserAvatar src={c.avatar} name={c.name} role="coach" size="xs" shape="circle" />
                       <div className="flex-1 min-w-0">
                         <div className="text-xs font-bold truncate text-[#1A265A]">{c.name}</div>
                         <div className="text-[10px] text-slate-500 truncate">{c.sports[0]} · {c.locationName}</div>

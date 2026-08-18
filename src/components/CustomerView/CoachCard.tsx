@@ -3,6 +3,7 @@ import { CoachProfile, SessionSlot } from '../../types';
 import { Star, MapPin, ShieldCheck, Check, Calendar, MessageSquare, ArrowRight, Zap } from 'lucide-react';
 import { FavoriteHeartButton } from '../FavoriteHeartButton';
 import { useApp } from '../../context/AppContext';
+import { UserAvatar } from '../UserAvatar';
 
 interface CoachCardProps {
   coach: CoachProfile;
@@ -28,20 +29,17 @@ export const CoachCard: React.FC<CoachCardProps> = ({
       <div>
         {/* Top Header: Avatar, Name, Verification Badge, Rating */}
         <div className="flex items-start gap-4">
-          <div className="relative shrink-0">
-            <img
+          <div className="relative shrink-0 cursor-pointer" onClick={() => onSelectCoach(coach)}>
+            <UserAvatar
               src={coach.avatar}
-              alt={coach.name}
-              className="w-16 h-16 rounded-2xl object-cover border-2 border-[#50A5B1]/30 shadow-xs group-hover:scale-105 transition-transform"
+              name={coach.name}
+              role="coach"
+              size="lg"
+              shape="circle"
+              bordered
+              borderColor="border-[#50A5B1]/30"
+              isVerified={coach.isVerified}
             />
-            {coach.isVerified && (
-              <span
-                className="absolute -bottom-1 -right-1 bg-[#F1600D] text-white p-1 rounded-full text-xs font-black shadow-xs border-2 border-white"
-                title="Ausweis Verifiziert"
-              >
-                <Check className="w-3 h-3 stroke-[3]" />
-              </span>
-            )}
           </div>
 
           <div className="flex-1 min-w-0">

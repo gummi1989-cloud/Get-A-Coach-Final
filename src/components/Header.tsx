@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Logo } from './Logo';
+import { UserAvatar } from './UserAvatar';
 import {
   Search,
   Calendar,
@@ -214,10 +215,14 @@ export const Header: React.FC<HeaderProps> = ({
                 {/* Current User Badge & Profile */}
                 <div className="flex items-center gap-1.5 sm:gap-2 sm:pl-2 sm:border-l sm:border-[#50A5B1]/20 shrink-0">
                   {currentUser.role !== 'admin' && (
-                    <img
+                    <UserAvatar
                       src={currentUser.avatar}
-                      alt={currentUser.name}
-                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-[#50A5B1]/40 shadow-xs"
+                      name={currentUser.name}
+                      role={currentUser.role}
+                      size="sm"
+                      shape="circle"
+                      bordered
+                      borderColor="border-[#50A5B1]/40"
                     />
                   )}
                   <div className="hidden lg:block text-left">

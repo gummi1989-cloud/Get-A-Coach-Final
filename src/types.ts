@@ -67,7 +67,7 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  avatar: string;
+  avatar?: string;
   phone: string;
   city: string;
   canton: CantonCode;
@@ -92,7 +92,7 @@ export interface CoachProfile {
   id: string;
   userId: string;
   name: string;
-  avatar: string;
+  avatar?: string;
   sports: string[];
   slogan?: string; // Max. 100 Zeichen
   bio: string; // Bio & Trainingsphilosophie
@@ -194,12 +194,15 @@ export interface Booking {
   pricePaid: number; // CHF
   paymentMethod: 'TWINT' | 'Kreditkarte';
   twintRefId?: string;
-  paymentStatus: 'Bezahlt' | 'Rückerstattet 100%' | 'Rückerstattet 50%';
+  paymentStatus: 'Bezahlt' | 'Rückerstattet 100%' | 'Rückerstattet 50%' | 'paid' | string;
   bookingDate: string; // ISO string
-  status: 'bestaetigt' | 'storniert_gt24h' | 'storniert_lt24h' | 'abgeschlossen';
+  status: 'bestaetigt' | 'storniert_gt24h' | 'storniert_lt24h' | 'abgeschlossen' | 'confirmed' | string;
   cancellationDate?: string;
   refundAmount?: number;
   coachCompensation?: number;
+  stripeSessionId?: string;
+  stripePaymentIntentId?: string;
+  paidAt?: any;
   // Request & Reservation tracking (2-hour lock)
   requestStatus?: 'anfrage_ausstehend' | 'bestaetigt' | 'abgelaufen' | 'abgelehnt' | 'zurueckgezogen';
   requestedAt?: string; // ISO timestamp

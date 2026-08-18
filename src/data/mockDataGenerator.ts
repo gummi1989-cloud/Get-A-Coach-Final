@@ -4,26 +4,26 @@ import { INITIAL_SPORTS } from './mockData';
 
 // Generate 35 Realistic Swiss Coaches
 const COACH_NAMES = [
-  { name: 'Svenja Meier', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80', bio: 'Swiss Padel Head Coach mit 8 Jahren Erfahrung. Schlagtechnik & Turniervorbereitung.' },
-  { name: 'Lukas Keller', avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80', bio: 'Paddel- und Surf-Instruktor an Flusswellen & Seen. Balance, Kantensteuerung & Flow.' },
-  { name: 'Elena Rossi', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80', bio: 'Vinyasa Yoga Teacher & Personal Trainer. Mobilität, Tiefenentspannung & Core Strength.' },
-  { name: 'Marco Odermatt-Schmid', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80', bio: 'Ehemaliger Leistungssportler. Hochintensives HIIT, Langhanteltraining & Athletik.' },
-  { name: 'Fabian Wenger', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80', bio: 'Swiss Tennis B-Trainer. Technikanalyse per Video & Taktik für Anfänger bis Pros.' },
-  { name: 'Janine Sutter', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80', bio: 'Pilates Reformer & Bodyweight Specialist. Gezieltes Rumpftraining & Haltungskorrektur.' },
-  { name: 'Patrick Baumgartner', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80', bio: 'Crossfit L2 Trainer & Olympic Weightlifting Coach. Kraft, Ausdauer & Mentale Härte.' },
-  { name: 'Chantal Favre', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80', bio: 'Schwimm- & Aquatics Coach. Kraultechnik, Atemrhythmus & Freiwasser-Vorbereitung.' },
-  { name: 'Gian-Luca Bernasconi', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80', bio: 'Kampfsport- & Selbstverteidigungs-Instruktor. Kickboxen & Krav Maga.' },
-  { name: 'Brigitte Huber', avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&auto=format&fit=crop&q=80', bio: 'PGA Golf Professional. Schwunganalyse, Kurzspiel & Platzreife-Intensivkurse.' },
-  { name: 'Pascal Zürcher', avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80', bio: 'Marathon & Trailrun Coach. Laufstilanalyse, Laktat-Tests & Pacing-Strategien.' },
-  { name: 'Rahel Tobler', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80', bio: 'MTB Enduro & Road Bike Guide. Fahrtechnik, Spitzkehren & Kurvendynamik.' },
-  { name: 'Nico Ammann', avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80', bio: 'Dipl. Kletter- & Bouldertrainer. Vorstieg, Sturztraining & Grifftechnik.' },
-  { name: 'Monika Bärtschi', avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=300&auto=format&fit=crop&q=80', bio: 'Squash & Badminton Pro. Beinarbeit, Reflexe & Taktik im Court.' },
-  { name: 'Simon Brunner', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80', bio: 'Kickbox-Champion Schweiz. Sparring, Pratzenarbeit & Kardio-Kick.' },
-  { name: 'Saskia Lüscher', avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&auto=format&fit=crop&q=80', bio: 'SUP & Open Water Instructor. Stand Up Paddling, Balance & Core Workout.' },
-  { name: 'Dominik Tschudi', avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80', bio: 'Beachvolleyball Pro-Coach. Zuspiel, Block & Aufschlag-Effizienz.' },
-  { name: 'Melanie Freimann', avatar: 'https://images.unsplash.com/photo-1548142813-c348350df52b?w=300&auto=format&fit=crop&q=80', bio: 'Zumba & Tanz-Instruktorin. Rhythmus, Ausdauer & Pure Freude an Bewegung.' },
-  { name: 'Beat Inderbitzin', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80', bio: 'Calisthenics & Street Workout Specialist. Muscle-ups, Handstand & Human Flag.' },
-  { name: 'Cornelia Stadelmann', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80', bio: 'Triathlon & Endurance Coach. Koppeltraining, Wechselzone & Ernährungsplanung.' }
+  { name: 'Svenja Meier', avatar: '', bio: 'Swiss Padel Head Coach mit 8 Jahren Erfahrung. Schlagtechnik & Turniervorbereitung.' },
+  { name: 'Lukas Keller', avatar: '', bio: 'Paddel- und Surf-Instruktor an Flusswellen & Seen. Balance, Kantensteuerung & Flow.' },
+  { name: 'Elena Rossi', avatar: '', bio: 'Vinyasa Yoga Teacher & Personal Trainer. Mobilität, Tiefenentspannung & Core Strength.' },
+  { name: 'Marco Odermatt-Schmid', avatar: '', bio: 'Ehemaliger Leistungssportler. Hochintensives HIIT, Langhanteltraining & Athletik.' },
+  { name: 'Fabian Wenger', avatar: '', bio: 'Swiss Tennis B-Trainer. Technikanalyse per Video & Taktik für Anfänger bis Pros.' },
+  { name: 'Janine Sutter', avatar: '', bio: 'Pilates Reformer & Bodyweight Specialist. Gezieltes Rumpftraining & Haltungskorrektur.' },
+  { name: 'Patrick Baumgartner', avatar: '', bio: 'Crossfit L2 Trainer & Olympic Weightlifting Coach. Kraft, Ausdauer & Mentale Härte.' },
+  { name: 'Chantal Favre', avatar: '', bio: 'Schwimm- & Aquatics Coach. Kraultechnik, Atemrhythmus & Freiwasser-Vorbereitung.' },
+  { name: 'Gian-Luca Bernasconi', avatar: '', bio: 'Kampfsport- & Selbstverteidigungs-Instruktor. Kickboxen & Krav Maga.' },
+  { name: 'Brigitte Huber', avatar: '', bio: 'PGA Golf Professional. Schwunganalyse, Kurzspiel & Platzreife-Intensivkurse.' },
+  { name: 'Pascal Zürcher', avatar: '', bio: 'Marathon & Trailrun Coach. Laufstilanalyse, Laktat-Tests & Pacing-Strategien.' },
+  { name: 'Rahel Tobler', avatar: '', bio: 'MTB Enduro & Road Bike Guide. Fahrtechnik, Spitzkehren & Kurvendynamik.' },
+  { name: 'Nico Ammann', avatar: '', bio: 'Dipl. Kletter- & Bouldertrainer. Vorstieg, Sturztraining & Grifftechnik.' },
+  { name: 'Monika Bärtschi', avatar: '', bio: 'Squash & Badminton Pro. Beinarbeit, Reflexe & Taktik im Court.' },
+  { name: 'Simon Brunner', avatar: '', bio: 'Kickbox-Champion Schweiz. Sparring, Pratzenarbeit & Kardio-Kick.' },
+  { name: 'Saskia Lüscher', avatar: '', bio: 'SUP & Open Water Instructor. Stand Up Paddling, Balance & Core Workout.' },
+  { name: 'Dominik Tschudi', avatar: '', bio: 'Beachvolleyball Pro-Coach. Zuspiel, Block & Aufschlag-Effizienz.' },
+  { name: 'Melanie Freimann', avatar: '', bio: 'Zumba & Tanz-Instruktorin. Rhythmus, Ausdauer & Pure Freude an Bewegung.' },
+  { name: 'Beat Inderbitzin', avatar: '', bio: 'Calisthenics & Street Workout Specialist. Muscle-ups, Handstand & Human Flag.' },
+  { name: 'Cornelia Stadelmann', avatar: '', bio: 'Triathlon & Endurance Coach. Koppeltraining, Wechselzone & Ernährungsplanung.' }
 ];
 
 export function generate300CoachesAndSessions(): { coaches: CoachProfile[]; sessions: SessionSlot[] } {

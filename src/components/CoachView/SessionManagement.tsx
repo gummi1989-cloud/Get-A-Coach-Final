@@ -10,7 +10,7 @@ export const SessionManagement: React.FC = () => {
     id: 'coach_' + currentUser.id,
     userId: currentUser.id,
     name: currentUser.name || 'Coach',
-    avatar: currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    avatar: currentUser.avatar || '',
     locationName: currentUser.city || 'Zürich',
     canton: (currentUser.canton as CantonCode) || 'ZH',
     coordinates: { lat: 47.3769, lng: 8.5417 },
@@ -400,7 +400,7 @@ export const SessionManagement: React.FC = () => {
 
       {/* Modal: Edit Existing Session (Bereits erfasste Kurse bearbeiten) */}
       {editingSession && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-[#50A5B1]/30 shadow-2xl space-y-4 animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-3 border-b border-[#50A5B1]/20">
               <h3 className="text-base text-[#1A265A] flex items-center gap-2">

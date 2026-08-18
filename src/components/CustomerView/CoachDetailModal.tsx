@@ -3,6 +3,7 @@ import { CoachProfile, SessionSlot } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { FavoriteHeartButton } from '../FavoriteHeartButton';
 import { CustomRequestModal } from './CustomRequestModal';
+import { UserAvatar } from '../UserAvatar';
 import {
   X,
   Star,
@@ -127,19 +128,16 @@ export const CoachDetailModal: React.FC<CoachDetailModalProps> = ({
         <div className="relative bg-[#1A265A] text-white p-6 sm:p-8 pt-12 sm:pt-12">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
             <div className="relative shrink-0">
-              <img
+              <UserAvatar
                 src={coach.avatar}
-                alt={coach.name}
-                className="w-24 h-24 rounded-2xl object-cover border-4 border-[#50A5B1]/30 shadow-md"
+                name={coach.name}
+                role="coach"
+                size="2xl"
+                shape="circle"
+                bordered
+                borderColor="border-[#50A5B1]/30"
+                isVerified={coach.isVerified}
               />
-              {coach.isVerified && (
-                <span
-                  className="absolute -bottom-2 -right-2 bg-[#F1600D] text-white p-1.5 rounded-full shadow-md border-2 border-[#1A265A]"
-                  title="Ausweis Verifiziert"
-                >
-                  <Check className="w-4 h-4 stroke-[3]" />
-                </span>
-              )}
             </div>
 
             <div className="flex-1 min-w-0">

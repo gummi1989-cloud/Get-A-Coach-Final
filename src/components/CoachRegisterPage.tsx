@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { User, Mail, Phone, Lock, ArrowRight, Eye, EyeOff, Zap } from 'lucide-react';
+import { User, Mail, Phone, Lock, ArrowRight, Eye, EyeOff, Zap, Upload, Trash2 } from 'lucide-react';
+import { UserAvatar } from './UserAvatar';
 
 interface CoachRegisterPageProps {
   onSuccess?: () => void;
@@ -21,6 +22,7 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('+41 ');
   const [password, setPassword] = useState('');
+  const [avatar, setAvatar] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [agbAccepted, setAgbAccepted] = useState(false);
   const [commissionAccepted, setCommissionAccepted] = useState(false);
@@ -77,7 +79,8 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
       fullName: fullCombinedName,
       email: email.trim(),
       phone: phone.trim(),
-      password
+      password,
+      avatar: avatar.trim() || undefined
     });
 
     if (res.success) {
@@ -153,6 +156,39 @@ export const CoachRegisterPage: React.FC<CoachRegisterPageProps> = ({
                 placeholder="z.B. Meier"
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#50A5B1]/30 bg-[#FFFFFF]/50 text-xs font-bold text-[#1A265A] focus:outline-none focus:border-[#F1600D] focus:bg-white"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Coach Profilbild (Optional) with Initials Fallback */}
+        <div className="p-4 rounded-2xl bg-slate-50 border border-[#50A5B1]/20 space-y-2">
+          <label className="font-extrabold text-xs text-[#1A265A] flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <Upload className="w-3.5 h-3.5 text-[#F1600D]" />
+              Coach-Profilbild (optional)
+            </span>
+            <span className="text-[10px] text-slate-500 font-semibold">Ohne Bild: Initial im Kreis</span>
+          </label>
+          <div className="flex items-center gap-4">
+            <UserAvatar
+              src={avatar}
+              name={`${firstName} ${lastName}`.trim() || 'Coach'}
+              role="coach"
+              size="lg"
+              shape="circle"
+              bordered
+              borderColor="border-[#50A5B1]"
+              editable
+              onImageChange={(dataUrl) => setAvatar(dataUrl)}
+              onImageRemove={() => setAvatar('')}
+            />
+            <div className="text-xs text-[#1A265A]/70 space-y-1">
+              <p className="font-semibold text-[#1A265A]">
+                {avatar ? 'Eigenes Coach-Foto ausgewählt.' : 'Kein Bild hochgeladen – dein Vorname-Initial wird im Kreis angezeigt.'}
+              </p>
+              <p className="text-[11px] text-slate-500">
+                Klicke auf den Kreis oder das Kamerasymbol, um ein Foto hochzuladen.
+              </p>
             </div>
           </div>
         </div>

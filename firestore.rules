@@ -24,6 +24,10 @@ service cloud.firestore {
     match /chatMessages/{messageId} {
       allow read, write: if true;
     }
+
+    match /deletedAccounts/{accountId} {
+      allow read, write: if true;
+    }
   }
 }
 

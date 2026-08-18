@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Booking } from '../../types';
 import { ReceiptModal } from './ReceiptModal';
+import { UserAvatar } from '../UserAvatar';
 import {
   Calendar,
   CalendarCheck,
@@ -86,10 +87,14 @@ export const MyBookingsTab: React.FC = () => {
         {/* Top Header Row */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#50A5B1]/15">
           <div className="flex items-center gap-3">
-            <img
+            <UserAvatar
               src={booking.coachAvatar}
-              alt={booking.coachName}
-              className="w-12 h-12 rounded-2xl object-cover border-2 border-[#50A5B1]/30 shadow-2xs"
+              name={booking.coachName}
+              role="coach"
+              size="md"
+              shape="circle"
+              bordered
+              borderColor="border-[#50A5B1]/30"
             />
             <div>
               <div className="flex items-center gap-2 flex-wrap">
@@ -391,7 +396,7 @@ export const MyBookingsTab: React.FC = () => {
 
       {/* Rating Dialog */}
       {ratingBooking && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[110] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
             <h3 className="font-extrabold text-lg text-slate-900">Coach bewerten</h3>
             <p className="text-xs text-slate-600">

@@ -14,7 +14,7 @@ export async function seedAllTestData() {
     role: 'kunde',
     city: 'Zürich',
     canton: 'ZH',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     agb_accepted_at: new Date().toISOString()
   };
 
@@ -26,7 +26,7 @@ export async function seedAllTestData() {
     role: 'kunde',
     city: 'Bern',
     canton: 'BE',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     agb_accepted_at: new Date().toISOString()
   };
 
@@ -38,7 +38,7 @@ export async function seedAllTestData() {
     role: 'kunde',
     city: 'Luzern',
     canton: 'LU',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     agb_accepted_at: new Date().toISOString()
   };
 
@@ -51,7 +51,7 @@ export async function seedAllTestData() {
     role: 'coach',
     city: 'Zürich',
     canton: 'ZH',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     isVerified: true,
     verificationStatus: 'verifiziert',
     verificationDocName: 'ausweis_svenja_meier_swisspadel.pdf'
@@ -61,7 +61,7 @@ export async function seedAllTestData() {
     id: 'coach_1',
     userId: 'user_coach_1',
     name: 'Svenja Meier',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     sports: ['Padel Tennis', 'Tennis'],
     slogan: 'Dein Erfolg ist mein Fokus – mit Präzision & Leidenschaft zum Ziel.',
     bio: 'Diplomierte Swiss Padel Head Coach mit 8 Jahren Erfahrung. Spezialisiert auf Schlagtechnik, Taktik und Wettkampfvorbereitung.',
@@ -97,7 +97,7 @@ export async function seedAllTestData() {
     role: 'coach',
     city: 'Bern',
     canton: 'BE',
-    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     isVerified: true,
     verificationStatus: 'verifiziert',
     verificationDocName: 'ausweis_lukas_keller.pdf'
@@ -107,7 +107,7 @@ export async function seedAllTestData() {
     id: 'coach_2',
     userId: 'user_coach_2',
     name: 'Lukas Keller',
-    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     sports: ['Wassersport (Schwimmen, Surfen, SUP)'],
     slogan: 'Flow, Balance & Wassergefühl – Dein Surfer-Coach an der Aare.',
     bio: 'Zertifizierter Flusswellen-Surfer & SUP Instruktor. 6 Jahre Guiding an der Scherzligschleuse Thun und Aare Bern.',
@@ -143,7 +143,7 @@ export async function seedAllTestData() {
     role: 'coach',
     city: 'Luzern',
     canton: 'LU',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     isVerified: true,
     verificationStatus: 'verifiziert',
     verificationDocName: 'ausweis_elena_rossi.pdf'
@@ -153,7 +153,7 @@ export async function seedAllTestData() {
     id: 'coach_3',
     userId: 'user_coach_3',
     name: 'Elena Rossi',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     sports: ['Yoga & Pilates'],
     slogan: 'Körperliche Stärke & geistige Klarheit im Einklang.',
     bio: 'Vinyasa Flow & Pilates Reformer Teacher. 500h RYT Ausbildung in Indien & Schweiz.',
@@ -186,7 +186,7 @@ export async function seedAllTestData() {
     id: 'sess_test_1',
     coachId: 'coach_1',
     coachName: 'Svenja Meier',
-    coachAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Padel Tennis',
     title: 'Padel Tennis 1:1 Technikanalyse & Taktik',
     description: 'Intensives Einzelcoaching inklusive Video-Feedback für Schlagtechnik & Netztaktik.',
@@ -208,7 +208,7 @@ export async function seedAllTestData() {
     id: 'sess_test_2',
     coachId: 'coach_2',
     coachName: 'Lukas Keller',
-    coachAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Wassersport (Schwimmen, Surfen, SUP)',
     title: 'Aare Flusswellen-Surfen für Einsteiger',
     description: 'Sicherer Einstieg ins Welle-Surfen an der Aare mit kompletter Neoprenausrüstung.',
@@ -231,7 +231,7 @@ export async function seedAllTestData() {
     id: 'sess_test_3',
     coachId: 'coach_3',
     coachName: 'Elena Rossi',
-    coachAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Yoga & Pilates',
     title: 'Vinyasa Flow & Deep Core Relaxation',
     description: 'Dynamisches Yogatraining direkt am Vierwaldstättersee mit geführter Meditation.',
@@ -254,7 +254,7 @@ export async function seedAllTestData() {
     id: 'sess_test_4',
     coachId: 'coach_1',
     coachName: 'Svenja Meier',
-    coachAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Tennis',
     title: 'Tennis Match-Strategie & Aufschlag-Masterclass',
     description: 'Praxisorientierter Matchaufbau, Platzierung beim Aufschlag und Return-Drills.',
@@ -282,7 +282,7 @@ export async function seedAllTestData() {
     userPhone: '+41 79 111 22 33',
     coachId: 'coach_1',
     coachName: 'Svenja Meier',
-    coachAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Padel Tennis',
     sessionTitle: 'Padel Tennis 1:1 Technikanalyse & Taktik',
     date: '2026-08-18',
@@ -310,7 +310,7 @@ export async function seedAllTestData() {
     userPhone: '+41 78 222 33 44',
     coachId: 'coach_2',
     coachName: 'Lukas Keller',
-    coachAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Wassersport (Schwimmen, Surfen, SUP)',
     sessionTitle: 'Aare Flusswellen-Surfen für Einsteiger',
     date: '2026-08-19',
@@ -337,7 +337,7 @@ export async function seedAllTestData() {
     userPhone: '+41 79 333 44 55',
     coachId: 'coach_3',
     coachName: 'Elena Rossi',
-    coachAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    coachAvatar: '',
     sport: 'Yoga & Pilates',
     sessionTitle: 'Vinyasa Flow & Deep Core Relaxation',
     date: '2026-08-20',

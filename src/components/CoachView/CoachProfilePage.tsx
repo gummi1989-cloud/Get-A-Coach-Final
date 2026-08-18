@@ -40,6 +40,7 @@ import {
 import { IDVerificationCard } from './IDVerificationCard';
 import { CoachPricingAndFeesTab } from './CoachPricingAndFeesTab';
 import { BlindRatingsCoachTab } from './BlindRatingsCoachTab';
+import { UserAvatar } from '../UserAvatar';
 
 const CANTONS: CantonCode[] = [
   'ZH', 'BE', 'LU', 'UR', 'SZ', 'OW', 'NW', 'GL',
@@ -116,7 +117,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
     id: 'coach_' + currentUser.id,
     userId: currentUser.id,
     name: currentUser.name || 'Coach',
-    avatar: currentUser.avatar || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    avatar: currentUser.avatar || '',
     locationName: currentUser.city || 'Zürich',
     canton: (currentUser.canton as CantonCode) || 'ZH',
     coordinates: { lat: 47.3769, lng: 8.5417 },
@@ -175,10 +176,9 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
     return validateSwissIBAN(val).isValid;
   };
 
-  // Check mandatory fields for profile activation
+  // Check mandatory fields for profile activation (Note: profile photo is optional; initial in circle is the fallback)
   const getMissingProfileRequirements = (): string[] => {
     const missing: string[] = [];
-    if (!avatar || !avatar.trim()) missing.push('Profilbild');
     if (!selectedSports || selectedSports.length === 0) missing.push('Mindestens eine Sportart / Kategorie');
     if (!locationName || !locationName.trim()) missing.push('Hauptstandort / Einzugsgebiet');
     if (!hourlyRate || Number(hourlyRate) <= 0) missing.push('Standard-Stundensatz (CHF)');
@@ -580,26 +580,30 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                 />
               </div>
 
-              {/* Profilbild Upload (JPG / PNG) */}
+              {/* Profilbild Upload (JPG / PNG / WebP) */}
               <div className="col-span-1 sm:col-span-2 bg-slate-50 p-4 rounded-2xl border border-[#50A5B1]/30">
                 <label className="font-extrabold text-[#1A265A] block mb-2 text-xs flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Upload className="w-4 h-4 text-[#F1600D]" />
-                    Profilbild hochladen (JPG oder PNG)
+                    Profilbild hochladen (optional)
                   </span>
-                  <span className="text-[10px] text-[#1A265A]/60 font-semibold">Max. 8 MB</span>
+                  <span className="text-[10px] text-[#1A265A]/60 font-semibold">Ohne Bild: Initial im Kreis</span>
                 </label>
                 
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                   <div className="relative shrink-0">
-                    <img
+                    <UserAvatar
                       src={avatar}
-                      alt="Profilbild Vorschau"
-                      className="w-20 h-20 rounded-2xl object-cover border-2 border-[#50A5B1] shadow-xs"
+                      name={name || 'Coach'}
+                      role="coach"
+                      size="2xl"
+                      shape="circle"
+                      bordered
+                      borderColor="border-[#50A5B1]"
+                      editable
+                      onImageChange={(dataUrl) => setAvatar(dataUrl)}
+                      onImageRemove={() => setAvatar('')}
                     />
-                    <div className="absolute -bottom-1 -right-1 bg-[#1A265A] text-white p-1 rounded-full text-[10px]">
-                      <Camera className="w-3.5 h-3.5 text-white" />
-                    </div>
                   </div>
 
                   <div className="flex-1 w-full space-y-2 text-center sm:text-left">
@@ -618,19 +622,23 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
                         className="bg-[#1A265A] hover:bg-[#253675] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-2 cursor-pointer shadow-xs"
                       >
                         <Upload className="w-3.5 h-3.5 text-[#50A5B1]" />
-                        <span>Bild hochladen (JPG / PNG)</span>
+                        <span>{avatar ? 'Anderes Bild hochladen' : 'Foto hochladen (JPG / PNG)'}</span>
                       </button>
 
-                      {avatar !== currentCoach.avatar && (
+                      {avatar ? (
                         <button
                           type="button"
-                          onClick={() => setAvatar(currentCoach.avatar)}
-                          className="px-3 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 font-semibold text-xs transition cursor-pointer flex items-center gap-1.5"
-                          title="Auf Ursprungsbild zurücksetzen"
+                          onClick={() => setAvatar('')}
+                          className="px-3.5 py-2.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100 font-semibold text-xs transition cursor-pointer flex items-center gap-1.5"
+                          title="Bild entfernen und Initial im Kreis anzeigen"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
-                          <span>Zurücksetzen</span>
+                          <span>Bild entfernen (Initial nutzen)</span>
                         </button>
+                      ) : (
+                        <span className="text-[11px] text-slate-500 font-medium italic">
+                          Aktuell wird dein Anfangsbuchstabe im Kreis angezeigt.
+                        </span>
                       )}
                     </div>
                   </div>
@@ -1085,7 +1093,7 @@ export const CoachProfilePage: React.FC<CoachProfilePageProps> = ({ initialSubTa
 
       {/* Modal: New Slot Creation Form */}
       {showAddSlotModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-[#50A5B1]/20 shadow-2xl space-y-4 animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between pb-3 border-b border-[#50A5B1]/20">
               <h3 className="font-black text-base text-[#1A265A] flex items-center gap-2">
