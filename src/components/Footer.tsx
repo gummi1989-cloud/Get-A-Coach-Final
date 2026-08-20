@@ -1,3 +1,4 @@
+import { PWAInstallButton } from "./PWAInstallButton";
 import React from 'react';
 import { ShieldCheck, Lock } from 'lucide-react';
 import { Logo } from './Logo';
@@ -9,6 +10,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
   return (
     <footer className="relative z-10 bg-[#1A265A] text-white mt-16 border-t border-[#50A5B1]/20">
+      <div className="w-full flex justify-center py-4 bg-slate-900/40 border-b border-slate-800"><PWAInstallButton /></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           

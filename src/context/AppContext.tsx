@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { db, auth } from '../lib/firebase';
+import { sendBookingConfirmationEmail, sendCancellationEmail } from '../services/emailService';
 import {
   collection,
   doc,
@@ -214,8 +215,35 @@ const removeStoredDeletedEmail = (email: string) => {
 };
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<User>(MOCK_CLIENT_USER);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      const isReturnFromStripe = new URLSearchParams(window.location.search).get('payment') === 'success';
+      if (isReturnFromStripe) return true;
+      return localStorage.getItem('getacoach_is_auth') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [currentUser, setCurrentUser] = useState<User>(() => {
+    try {
+      const isReturnFromStripe = new URLSearchParams(window.location.search).get('payment') === 'success';
+      const saved = localStorage.getItem('getacoach_current_user');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+      if (isReturnFromStripe) {
+        const lastEmail = localStorage.getItem('getacoach_last_booking_email') || 'kunde@getacoach.ch';
+        return {
+          ...MOCK_CLIENT_USER,
+          email: lastEmail,
+          role: 'kunde'
+        };
+      }
+      return MOCK_CLIENT_USER;
+    } catch {
+      return MOCK_CLIENT_USER;
+    }
+  });
   const [authNotice, setAuthNotice] = useState<string | null>(null);
 
   // Application Data States
@@ -844,6 +872,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setBookings(prev =>
       prev.map(b => (b.id === bookingId ? { ...b, requestStatus: 'bestaetigt', status: 'bestaetigt' } : b))
     );
+    const updatedBooking = { ...booking, status: 'bestaetigt', requestStatus: 'bestaetigt' };
+    const coachForEmail = coaches.find(c => c.id === booking.coachId);
+    sendBookingConfirmationEmail(updatedBooking, coachForEmail?.email).catch(err => console.error('E-Mail Fehler:', err));
 
     setSessions(prev =>
       prev.map(s => {
@@ -1137,6 +1168,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     setBookings(prev => [newBooking, ...prev]);
     setDoc(doc(db, 'bookings', newBooking.id), cleanForFirestore(newBooking)).catch(e => console.error('Error saving custom booking to Firestore:', e));
+    const targetCoachForOffer = coaches.find(c => c.id === targetReq.coachId);
+    sendBookingConfirmationEmail(newBooking, targetCoachForOffer?.email).catch(err => console.error('E-Mail Fehler:', err));
 
     const targetCoach = coaches.find(c => c.id === targetReq.coachId);
     const coachUserId = targetCoach?.userId || 'user_coach_1';
@@ -1459,6 +1492,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         'system_notice'
       );
     }
+    sendCancellationEmail(targetBooking, isGreaterThan24h ? '100% Rückerstattung' : '50% Rückerstattung').catch(err => console.error('E-Mail Fehler:', err));
 
     // Free the slot in session & check waitlist
     let waitlistTriggeredName = '';

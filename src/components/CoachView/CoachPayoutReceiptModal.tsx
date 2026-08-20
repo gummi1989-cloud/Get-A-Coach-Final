@@ -212,7 +212,7 @@ export const CoachPayoutReceiptModal: React.FC<CoachPayoutReceiptModalProps> = (
               </div>
               <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 leading-snug">
                 GET A COACH Schweiz AG · Seefeldstrasse 123 · 8008 Zürich<br />
-                CHE-482.910.331 MWST · support@getacoach.ch
+                CHE-482.910.331 MWST · headcoach@get-a-coach.ch
               </p>
             </div>
 

@@ -55,7 +55,7 @@ export const ImpressumPage: React.FC<ImpressumPageProps> = ({ onBack }) => {
               <p>Schweiz</p>
               <div className="pt-2 flex items-center gap-2 text-xs font-bold text-[#1A265A]">
                 <Mail className="w-4 h-4 text-[#50A5B1]" />
-                <span>E-Mail: <a href="mailto:support@getacoach.ch" className="text-[#F1600D] hover:underline">support@getacoach.ch</a></span>
+                <span>E-Mail: <a href="mailto:headcoach@get-a-coach.ch" className="text-[#F1600D] hover:underline">headcoach@get-a-coach.ch</a></span>
               </div>
             </div>
           </div>

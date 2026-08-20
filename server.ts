@@ -5,14 +5,15 @@ import Stripe from 'stripe';
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { createServer as createViteServer } from 'vite';
+import { onRequest } from 'firebase-functions/v2/https';
 import firebaseConfig from './firebase-applet-config.json';
 
 // Load environment variables from .env.local and .env
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
-const app = express();
-const PORT = 3000;
+export const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Initialize Firebase client for Firestore backend operations
 const firebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
@@ -43,266 +44,167 @@ app.post(
     const sig = req.headers['stripe-signature'];
     const webhookSecret = (process.env.STRIPE_WEBHOOK_SECRET || '').trim();
 
-    let event: Stripe.Event;
+    if (!webhookSecret) {
+      console.warn('STRIPE_WEBHOOK_SECRET is not set. Skipping webhook signature verification.');
+      return res.status(200).json({ received: true, warning: 'Webhook secret missing' });
+    }
 
+    if (!sig) {
+      console.error('Webhook error: Missing stripe-signature header.');
+      return res.status(400).send('Webhook Error: Missing stripe-signature');
+    }
+
+    let event: Stripe.Event;
     try {
-      if (sig && webhookSecret) {
-        const stripe = getStripe();
-        event = stripe.webhooks.constructEvent(req.body, sig as string, webhookSecret);
-      } else {
-        const bodyStr = Buffer.isBuffer(req.body) ? req.body.toString('utf8') : JSON.stringify(req.body);
-        event = JSON.parse(bodyStr) as Stripe.Event;
-      }
+      const stripe = getStripe();
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
     } catch (err: any) {
-      console.error('⚠️ Stripe Webhook signature verification failed:', err.message);
+      console.error(`Webhook signature verification failed: ${err.message}`);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Handle checkout.session.completed
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const bookingId = session.metadata?.bookingId || session.client_reference_id;
+    try {
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const bookingId = session.metadata?.bookingId || session.client_reference_id;
 
-      console.log(`✅ [Stripe Webhook] Checkout Session completed! Booking ID: ${bookingId}, Stripe Session: ${session.id}`);
-
-      if (bookingId) {
-        try {
-          const bookingRef = doc(firestoreDb, 'bookings', bookingId);
+        if (bookingId) {
           await setDoc(
-            bookingRef,
+            doc(firestoreDb, 'bookings', bookingId),
             {
               paymentStatus: 'paid',
-              status: 'confirmed',
-              paidAt: serverTimestamp(),
+              paymentProvider: 'stripe',
               stripeSessionId: session.id,
-              stripePaymentIntentId: typeof session.payment_intent === 'string' ? session.payment_intent : '',
-              customerEmail: session.customer_details?.email || session.customer_email || '',
-              customerName: session.customer_details?.name || '',
-              amountTotal: session.amount_total ? session.amount_total / 100 : 0,
-              currency: session.currency || 'chf',
+              stripePaymentIntentId: session.payment_intent,
+              amountTotal: session.amount_total ? session.amount_total / 100 : undefined,
+              currency: session.currency,
               updatedAt: serverTimestamp()
             },
             { merge: true }
           );
-
-          // Also update customRequests document if applicable
-          try {
-            const reqRef = doc(firestoreDb, 'customRequests', bookingId);
-            await setDoc(
-              reqRef,
-              {
-                status: 'bestaetigt',
-                paymentStatus: 'paid',
-                paidAt: serverTimestamp(),
-                stripeSessionId: session.id,
-                updatedAt: serverTimestamp()
-              },
-              { merge: true }
-            );
-          } catch {
-            // ignore if not a custom request
-          }
-
-          console.log(`✅ [Firestore] Booking ${bookingId} marked as paymentStatus: 'paid' and status: 'confirmed'.`);
-        } catch (dbError: any) {
-          console.error('❌ [Firestore Error] Failed to update booking from Stripe Webhook:', dbError);
         }
       }
+      return res.status(200).json({ received: true });
+    } catch (error: any) {
+      console.error('Error handling webhook event:', error);
+      return res.status(500).json({ error: 'Internal server error processing webhook' });
     }
-
-    return res.status(200).json({ received: true });
   }
 );
 
-// Standard JSON parser for other API routes
+// Standard Middleware
 app.use(express.json());
 
-// Health Check API
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    stripe_configured: Boolean(process.env.STRIPE_SECRET_KEY || true),
-    webhook_configured: Boolean(process.env.STRIPE_WEBHOOK_SECRET || true),
-    firestore_db: firebaseConfig.firestoreDatabaseId,
-    timestamp: new Date().toISOString()
-  });
-});
+// -----------------------------------------------------------------------------
+// Stripe Create Checkout Session Endpoint
+// -----------------------------------------------------------------------------
+app.post(
+  ['/api/create-checkout-session', '/api/createCheckoutSession', '/api/stripe-checkout'],
+  async (req, res) => {
+    try {
+      const { coachId, coachName, serviceTitle, amount, duration, clientName, clientEmail, bookingId } = req.body;
 
-// Stripe Checkout Session Creation Handler
-const handleCheckoutSessionCreation = async (req: express.Request, res: express.Response) => {
-  try {
-    const {
-      amount,
-      price,
-      coachName = 'Coach',
-      bookingId = '',
-      sessionId = '',
-      title = 'Sport Coaching',
-      sport = 'Sport',
-      date = '',
-      time = '',
-      customerEmail = '',
-      customerName = '',
-      paymentMethod = 'all'
-    } = req.body;
+      if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+        return res.status(400).json({
+          success: false,
+          error: 'Ungültiger Betrag angegeben.'
+        });
+      }
 
-    const finalAmount = Number(price !== undefined ? price : amount);
-    const resolvedBookingId = String(bookingId || sessionId || `book_${Date.now()}`);
+      const stripe = getStripe();
+      const origin = req.headers.origin || req.headers.referer || `http://${req.headers.host}`;
+      const cleanOrigin = origin.replace(/\/+$/, '');
 
-    if (!finalAmount || finalAmount <= 0) {
-      return res.status(400).json({
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card', 'twint'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'chf',
+              product_data: {
+                name: `Coaching: ${serviceTitle || 'Session'} mit ${coachName || 'Coach'}`,
+                description: duration ? `Dauer: ${duration} Minuten` : undefined,
+              },
+              unit_amount: Math.round(Number(amount) * 100),
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: `${cleanOrigin}/?payment=success&bookingId=${bookingId || ''}&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${cleanOrigin}/?payment=cancelled&bookingId=${bookingId || ''}`,
+        customer_email: clientEmail || undefined,
+        client_reference_id: bookingId || undefined,
+        metadata: {
+          bookingId: bookingId || '',
+          coachId: coachId || '',
+          coachName: coachName || '',
+          clientName: clientName || '',
+          clientEmail: clientEmail || ''
+        }
+      });
+
+      return res.status(200).json({
+        success: true,
+        id: session.id,
+        url: session.url
+      });
+    } catch (error: any) {
+      console.error('Error creating Stripe Checkout session:', error);
+      return res.status(500).json({
         success: false,
-        error: 'Ungültiger Betrag: Preis (CHF) muss größer als 0 sein.'
+        error: error.message || 'Fehler beim Erstellen der Stripe Checkout-Session.'
       });
     }
+  }
+);
 
-    const stripe = getStripe();
-
-    // Determine host origin for redirect URLs
-    const proto = req.headers['x-forwarded-proto'] || req.protocol || 'http';
-    const host = req.headers['x-forwarded-host'] || req.headers.host || `localhost:${PORT}`;
-    const origin = `${proto}://${host}`;
-
-    // Payment methods: card and twint for Swiss Francs (CHF)
-    let paymentMethodTypes: Stripe.Checkout.SessionCreateParams.PaymentMethodType[] = ['card', 'twint'];
-
-    if (paymentMethod === 'TWINT') {
-      paymentMethodTypes = ['twint', 'card'];
-    } else if (paymentMethod === 'Kreditkarte' || paymentMethod === 'card') {
-      paymentMethodTypes = ['card'];
-    }
-
-    // Build line item description
-    const descriptionParts = [
-      sport ? `Sportart: ${sport}` : '',
-      date ? `Datum: ${date}` : '',
-      time ? `Zeit: ${time}` : '',
-      `Coach: ${coachName}`,
-      `Buchungs-ID: ${resolvedBookingId}`
-    ].filter(Boolean);
-
-    const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      payment_method_types: paymentMethodTypes,
-      line_items: [
-        {
-          price_data: {
-            currency: 'chf',
-            product_data: {
-              name: `${sport ? sport + ' - ' : ''}${title} (${coachName})`,
-              description: descriptionParts.join(' | ') || `GET A COACH Buchung #${resolvedBookingId}`,
-              metadata: {
-                coachName: String(coachName),
-                sport: String(sport),
-                bookingId: resolvedBookingId,
-                sessionId: String(sessionId || resolvedBookingId),
-                price: String(finalAmount),
-                date: String(date)
-              }
-            },
-            unit_amount: Math.round(finalAmount * 100) // Rappen (1 CHF = 100 Cents)
-          },
-          quantity: 1
-        }
-      ],
-      mode: 'payment',
-      success_url: `${origin}/booking/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/booking/cancel`,
-      client_reference_id: resolvedBookingId,
-      metadata: {
-        bookingId: resolvedBookingId,
-        sessionId: String(sessionId || resolvedBookingId),
-        coachName: String(coachName || ''),
-        price: String(finalAmount),
-        sport: String(sport || ''),
-        date: String(date || ''),
-        time: String(time || ''),
-        customerName: String(customerName || ''),
-        customerEmail: String(customerEmail || '')
-      }
-    };
-
-    if (customerEmail && customerEmail.includes('@')) {
-      sessionParams.customer_email = customerEmail;
-    }
-
-    let session: Stripe.Checkout.Session;
+// -----------------------------------------------------------------------------
+// Stripe Retrieve Session Status Endpoint
+// -----------------------------------------------------------------------------
+app.get(
+  ['/api/session-status', '/api/stripe-session-status'],
+  async (req, res) => {
     try {
-      session = await stripe.checkout.sessions.create(sessionParams);
-    } catch (createErr: any) {
-      if (createErr.message && (createErr.message.includes('twint') || createErr.message.includes('payment_method_types'))) {
-        console.warn('⚠️ Stripe checkout error with twint, falling back to card payment method:', createErr.message);
-        sessionParams.payment_method_types = ['card'];
-        session = await stripe.checkout.sessions.create(sessionParams);
-      } else {
-        throw createErr;
+      const sessionId = req.query.session_id as string;
+      if (!sessionId) {
+        return res.status(400).json({ success: false, error: 'Session ID erforderlich.' });
       }
+
+      const stripe = getStripe();
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+      return res.status(200).json({
+        success: true,
+        status: session.status,
+        payment_status: session.payment_status,
+        customer_email: session.customer_details?.email,
+        customer_name: session.customer_details?.name,
+        metadata: session.metadata
+      });
+    } catch (error: any) {
+      console.error('Error retrieving Stripe Checkout session:', error);
+      return res.status(500).json({
+        success: false,
+        error: error.message || 'Fehler beim Abrufen der Stripe Checkout-Session.'
+      });
     }
-
-    return res.json({
-      success: true,
-      url: session.url,
-      sessionId: session.id,
-      bookingId: resolvedBookingId
-    });
-  } catch (error: any) {
-    console.error('Error creating Stripe Checkout session:', error);
-    return res.status(500).json({
-      success: false,
-      error: error.message || 'Fehler beim Erstellen der Stripe Checkout-Session.'
-    });
   }
-};
+);
 
-// Register endpoints for checkout session
-app.post('/api/createCheckoutSession', handleCheckoutSessionCreation);
-app.post('/api/create-checkout-session', handleCheckoutSessionCreation);
-app.post('/api/checkout', handleCheckoutSessionCreation);
+// Export Cloud Function
+export const api = onRequest({ secrets: ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET'] }, app);
 
-// Retrieve Checkout Session Status
-app.get('/api/checkout/session/:id', async (req, res) => {
-  try {
-    const stripe = getStripe();
-    const session = await stripe.checkout.sessions.retrieve(req.params.id);
-
-    return res.json({
-      success: true,
-      id: session.id,
-      payment_status: session.payment_status,
-      status: session.status,
-      amount_total: session.amount_total ? session.amount_total / 100 : 0,
-      currency: session.currency,
-      customer_email: session.customer_details?.email,
-      customer_name: session.customer_details?.name,
-      metadata: session.metadata
-    });
-  } catch (error: any) {
-    console.error('Error retrieving Stripe Checkout session:', error);
-    return res.status(500).json({
-      success: false,
-      error: error.message || 'Fehler beim Abrufen der Stripe Checkout-Session.'
-    });
-  }
-});
-
-async function start() {
-  // Vite middleware in dev mode
-  if (process.env.NODE_ENV !== 'production') {
+// Only start standalone server in local development
+if (process.env.NODE_ENV !== 'production' && !process.env.FUNCTION_TARGET && !process.env.K_SERVICE) {
+  (async () => {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa'
     });
     app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Local dev server running on http://localhost:${PORT}`);
     });
-  }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`GET A COACH fullstack server running on http://localhost:${PORT}`);
-  });
+  })();
 }
-
-start();

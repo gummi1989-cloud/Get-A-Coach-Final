@@ -47,7 +47,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
       const bookingId = localBookingRes.bookingId || `book_${Date.now()}`;
 
       // Call createCheckoutSession and redirect user to Stripe
-      const result = await createAndRedirectToCheckout({
+      try {
+          localStorage.setItem('getacoach_is_auth', 'true');
+          localStorage.setItem('getacoach_current_user', JSON.stringify(currentUser));
+          localStorage.setItem('getacoach_last_booking_email', clientEmail || currentUser.email);
+        } catch (e) {}
+        const result = await createAndRedirectToCheckout({
         coachName: session.coachName,
         price: finalPrice,
         bookingId: bookingId,
@@ -174,7 +179,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ session, onClose, on
             >
               <TwintBadgeIcon size={40} className="shadow-xs" />
               <div>
-                <div className="text-xs font-black tracking-wide text-[#1A265A]">TWINT</div>
+                <div className="font-bold text-sm text-[#1A265A]">TWINT</div>
                 <div className="text-[10px] text-[#1A265A]/70 font-medium">Bargeldlos via App</div>
               </div>
             </button>

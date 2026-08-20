@@ -50,7 +50,17 @@ const MainApp: React.FC = () => {
     authNotice
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<string>('search');
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('payment') === 'success') {
+        return 'my_bookings';
+      }
+    } catch (e) {
+      console.warn('URL parse error:', e);
+    }
+    return 'search';
+  });
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const spacerRef = useRef<HTMLDivElement>(null);
   const [logoPosition, setLogoPosition] = useState<{ top: number; height: number } | null>(null);
@@ -141,6 +151,17 @@ const MainApp: React.FC = () => {
       setActiveTab('register_customer');
     } else if (window.location.pathname === '/register/coach' || window.location.hash === '#register/coach' || window.location.hash === '#register_coach') {
       setActiveTab('register_coach');
+    }
+  }, []);
+
+  // Handle return from Stripe Payment (TWINT / Card)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentStatus = urlParams.get('payment');
+    if (paymentStatus === 'success') {
+      setActiveTab('my_bookings');
+      // Clean up URL without reloading
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
 
